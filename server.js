@@ -7,6 +7,7 @@ import {wrapper} from "axios-cookiejar-support";
 import {CookieJar} from "tough-cookie";
 import * as http from "http";
 import querystring from "querystring";
+import fs from "fs";
 
 
 // load cookie
@@ -15,9 +16,9 @@ const cookieFileName = "data/cookie.json";
 let cookieJar;
 try
 {
-    const cookieFile = Bun.file(cookieFileName);
-    let cookieString = await cookieFile.text();
+    const cookieString = fs.readFileSync(cookieFileName, "utf8");
     cookieJar = CookieJar.fromJSON(cookieString);
+    console.log("Cookie loaded");
 }
 catch(e)
 {
@@ -84,12 +85,17 @@ const server = http.createServer(async (req, res) => {
                 }
             });
 
-            console.log(cookieJar.toJSON());
-
             const lastUrl = new URL(loginResponse.request.res.responseUrl);
             console.log(lastUrl);
             if(!lastUrl.hostname !== "lng-tgk-aime-gw.am-all.net") // login success
             {
+                // store login cookie
+                fs.writeFile(cookieFileName, JSON.stringify(cookieJar.toJSON()), (err) => {
+                    if(err)
+                    {
+                        console.error(err);
+                    }
+                });
                 res.writeHead(302, {"Location": lastUrl.pathname});
                 res.end();
             }
