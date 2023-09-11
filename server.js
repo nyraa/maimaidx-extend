@@ -26,8 +26,6 @@ catch(e)
     cookieJar = new CookieJar();
 }
 
-cookieJar.setCookieSync("test=foo, Path=/", "https://apichallenges.herokuapp.com/mirror/request");
-
 
 const axiosInstance = wrapper(axios.create({
     withCredentials: true,
