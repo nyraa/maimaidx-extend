@@ -86,10 +86,18 @@ const server = http.createServer(async (req, res) => {
 
             console.log(cookieJar.toJSON());
 
-            const data = loginResponse.data;
-            res.writeHead(200, {"Content-Type": "text/html"});
-            res.write(data);
-            res.end();
+            const lastUrl = new URL(loginResponse.request.res.responseUrl);
+            console.log(lastUrl);
+            if(!lastUrl.hostname !== "lng-tgk-aime-gw.am-all.net") // login success
+            {
+                res.writeHead(302, {"Location": lastUrl.pathname});
+                res.end();
+            }
+            else
+            {
+                res.writeHead(401, {"Content-Type": "text/plain"});
+                res.end("401 Unauthorized");
+            }
         }
     }
     else
