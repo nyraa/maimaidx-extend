@@ -70,7 +70,6 @@ const server = http.createServer(async (req, res) => {
             }).then((body) => {
                 return querystring.parse(body);
             });
-            console.log(postBody);
             if(!postBody.username || !postBody.password)
             {
                 res.writeHead(400, {"Content-Type": "text/plain"});
@@ -89,13 +88,15 @@ const server = http.createServer(async (req, res) => {
             console.log(lastUrl);
             if(!lastUrl.hostname !== "lng-tgk-aime-gw.am-all.net") // login success
             {
-                // store login cookie
-                fs.writeFile(cookieFileName, JSON.stringify(cookieJar.toJSON()), (err) => {
+                // save login cookie
+                fs.writeFile(cookieFileName, JSON.stringify(cookieJar.toJSON(), null, 4), (err) => {
                     if(err)
                     {
                         console.error(err);
                     }
                 });
+
+                // redirect to home
                 res.writeHead(302, {"Location": lastUrl.pathname});
                 res.end();
             }
@@ -132,6 +133,14 @@ const server = http.createServer(async (req, res) => {
             {
                 res.writeHead(405, {"Content-Type": "text/plain"});
                 res.end("405 Method Not Allowed");
+            }
+            const lastUrl = new URL(proxyResponse.request.res.responseUrl);
+            if(lastUrl.hostname === "lng-tgk-aime-gw.am-all.net")
+            {
+                // redirect to login
+                res.writeHead(302, {"Location": "/login"});
+                res.end();
+                return;
             }
         }
         catch(e)
