@@ -1,0 +1,16 @@
+{
+  "name": "maimaidx_extend",
+  "module": "server.js",
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "type": "module",
+  "dependencies": {
+    "axios": "^1.5.0",
+    "axios-cookiejar-support": "^4.0.7",
+    "tough-cookie": "^4.1.3"
+  }
+}
