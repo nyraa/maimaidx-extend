@@ -162,7 +162,10 @@ const server = http.createServer(async (req, res) => {
                 const newAction = origAction.replace("https://maimaidx-eng.com/", "/");
                 $(element).attr("action", newAction);
             });
-            res.end($.html());
+
+            let html = $.html();
+            html = html.replace(/<!-- Google tag \(gtag\.js\) -->(\n|.)*?<!-- End Google tag \(gtag.js\) -->/, "");
+            res.end(html);
         }
         else
         {
