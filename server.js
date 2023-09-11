@@ -7,6 +7,7 @@ import {wrapper} from "axios-cookiejar-support";
 import {CookieJar} from "tough-cookie";
 import * as http from "http";
 import querystring from "querystring";
+import * as cheerio from "cheerio";
 import fs from "fs";
 
 
@@ -36,6 +37,7 @@ const axiosInstance = wrapper(axios.create({
 const maimaidxUrl = "https://maimaidx-eng.com";
 
 const server = http.createServer(async (req, res) => {
+    console.log(req.url, req.method);
     if(req.url === "/login")
     {
         if(req.method === "GET")
@@ -117,7 +119,16 @@ const server = http.createServer(async (req, res) => {
             }
             else if(req.method === "POST")
             {
-                proxyResponse = await axiosInstance.post(maimaidxUrl + req.url, req.body);
+                const postBody = await new Promise((resolve, reject) => {
+                    let body = "";
+                    req.on("data", (chunk) => {
+                        body += chunk.toString();
+                    });
+                    req.on("end", () => {
+                        resolve(body);
+                    });
+                });
+                proxyResponse = await axiosInstance.post(maimaidxUrl + req.url, postBody);
             }
             else
             {
@@ -130,7 +141,26 @@ const server = http.createServer(async (req, res) => {
             proxyResponse = e.response;
         }
         res.writeHead(proxyResponse.status, proxyResponse.headers);
-        res.end(proxyResponse.data);
+        if(proxyResponse.status === 200)
+        {
+            const $ = cheerio.load(proxyResponse.data);
+            $('a[href^="https://maimaidx-eng.com/"]').each((index, element) => {
+                const origHref = $(element).attr("href");
+                const newHref = origHref.replace("https://maimaidx-eng.com/", "/");
+                $(element).attr("href", newHref);
+            });
+
+            $('form[action^="https://maimaidx-eng.com/"]').each((index, element) => {
+                const origAction = $(element).attr("action");
+                const newAction = origAction.replace("https://maimaidx-eng.com/", "/");
+                $(element).attr("action", newAction);
+            });
+            res.end($.html());
+        }
+        else
+        {
+            res.end(proxyResponse.data);
+        }
     }
 });
 
