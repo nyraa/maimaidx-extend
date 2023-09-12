@@ -116,7 +116,8 @@ const server = http.createServer(async (req, res) => {
             const userIdPath = req.url.replace("/extend/photo/", "");
             const targetUrl = maimaidxUrl + "/maimai-mobile/img/photo/" + userIdPath;
 
-
+            try
+            {
             const proxyResponse = await axiosInstance.get(targetUrl, {
                 responseType: "arraybuffer"
             });
@@ -126,6 +127,15 @@ const server = http.createServer(async (req, res) => {
                 "Cache-Control": "no-cache"
             });
             res.end(proxyResponse.data);
+            }
+            catch(e)
+            {
+                res.writeHead(502, {
+                    "Content-Type": "text/plain"
+                });
+                res.end("502 Bad Gateway");
+                return;
+            }
         }
     }
     else
