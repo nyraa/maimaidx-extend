@@ -167,6 +167,14 @@ const server = http.createServer(async (req, res) => {
         catch(e)
         {
             proxyResponse = e.response;
+            if(proxyResponse === undefined)
+            {
+                res.writeHead(502, {
+                    "Content-Type": "text/plain"
+                });
+                res.end("502 Bad Gateway");
+                return;
+            }
         }
         res.writeHead(proxyResponse.status, {
             "Content-Type": proxyResponse.headers["content-type"],
