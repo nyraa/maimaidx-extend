@@ -1,6 +1,9 @@
 {
   "name": "maimaidx_extend",
   "module": "server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
   "devDependencies": {
     "bun-types": "latest"
   },
