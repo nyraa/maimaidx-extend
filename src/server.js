@@ -206,6 +206,10 @@ const server = http.createServer(async (req, res) => {
                 $(element).attr("src", newSrc);
             });
 
+            // replace back url
+            $('button[onclick^="location.href=\'https://maimaidx-eng.com/"]').each((index, element) => {
+                $(element).attr("onclick", "location.href='/'");
+            });
 
             let html = $.html();
             html = html.replace(/<!-- Google tag \(gtag\.js\) -->(\n|.)*?<!-- End Google tag \(gtag.js\) -->/, "");
