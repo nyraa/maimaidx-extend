@@ -147,7 +147,9 @@ const server = http.createServer(async (req, res) => {
         {
             proxyResponse = e.response;
         }
-        res.writeHead(proxyResponse.status, proxyResponse.headers);
+        res.writeHead(proxyResponse.status, {
+            "Content-Type": proxyResponse.headers["content-type"]
+        });
         if(proxyResponse.status === 200)
         {
             const $ = cheerio.load(proxyResponse.data);
