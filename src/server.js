@@ -9,6 +9,10 @@ import * as cheerio from "cheerio";
 import { axiosInstance, saveCookie } from "./cookie.js";
 
 
+// start Daemon
+import startDaemon from "./daemon.js";
+startDaemon(axiosInstance);
+
 const maimaidxUrl = "https://maimaidx-eng.com";
 
 const server = http.createServer(async (req, res) => {
