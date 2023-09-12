@@ -107,6 +107,27 @@ const server = http.createServer(async (req, res) => {
             }
         }
     }
+    else if(req.url.startsWith("/extend"))
+    {
+        if(req.url.startsWith("/extend/photo/"))
+        {
+            // SITE/extend/photo/user/ID
+            // TODO get /user/ID
+            const userIdPath = req.url.replace("/extend/photo/", "");
+            const targetUrl = maimaidxUrl + "/maimai-mobile/img/photo/" + userIdPath;
+
+
+            const proxyResponse = await axiosInstance.get(targetUrl, {
+                responseType: "arraybuffer"
+            });
+            res.writeHead(proxyResponse.status, {
+                "Content-Type": proxyResponse.headers["content-type"],
+                "Expires": -1,
+                "Cache-Control": "no-cache"
+            });
+            res.end(proxyResponse.data);
+        }
+    }
     else
     {
         let proxyResponse;
@@ -155,17 +176,28 @@ const server = http.createServer(async (req, res) => {
         if(proxyResponse.status === 200)
         {
             const $ = cheerio.load(proxyResponse.data);
+
+            // replace anchor href
             $('a[href^="https://maimaidx-eng.com/"]').each((index, element) => {
                 const origHref = $(element).attr("href");
                 const newHref = origHref.replace("https://maimaidx-eng.com/", "/");
                 $(element).attr("href", newHref);
             });
 
+            // replace form action
             $('form[action^="https://maimaidx-eng.com/"]').each((index, element) => {
                 const origAction = $(element).attr("action");
                 const newAction = origAction.replace("https://maimaidx-eng.com/", "/");
                 $(element).attr("action", newAction);
             });
+
+            // replace photo src
+            $('img[src^="https://maimaidx-eng.com/maimai-mobile/img/photo/"]').each((index, element) => {
+                const origSrc = $(element).attr("src");
+                const newSrc = origSrc.replace("https://maimaidx-eng.com/maimai-mobile/img/photo/", "/extend/photo/");
+                $(element).attr("src", newSrc);
+            });
+
 
             let html = $.html();
             html = html.replace(/<!-- Google tag \(gtag\.js\) -->(\n|.)*?<!-- End Google tag \(gtag.js\) -->/, "");
