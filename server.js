@@ -165,6 +165,8 @@ const server = http.createServer(async (req, res) => {
 
             let html = $.html();
             html = html.replace(/<!-- Google tag \(gtag\.js\) -->(\n|.)*?<!-- End Google tag \(gtag.js\) -->/, "");
+            html = html.replace(/<!-- Google Tag Manager -->(.|\n)*?<!-- End Google Tag Manager -->/, "");
+            html = html.replace(/<!-- Google Tag Manager \(noscript\) -->(.|\n)*?<!-- End Google Tag Manager \(noscript\) -->/, "");
             res.end(html);
         }
         else
