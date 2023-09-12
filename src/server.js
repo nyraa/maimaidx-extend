@@ -136,6 +136,7 @@ const server = http.createServer(async (req, res) => {
             }
             catch(e)
             {
+                console.error(e);
                 res.writeHead(502, {
                     "Content-Type": "text/plain"
                 });
@@ -182,6 +183,7 @@ const server = http.createServer(async (req, res) => {
         }
         catch(e)
         {
+            console.error(e);
             proxyResponse = e.response;
             if(proxyResponse === undefined)
             {
