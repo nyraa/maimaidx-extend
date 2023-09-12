@@ -32,6 +32,16 @@ const axiosInstance = wrapper(axios.create({
     jar: cookieJar,
 }));
 
+function saveCookie()
+{
+    fs.writeFile(cookieFileName, JSON.stringify(cookieJar.toJSON(), null, 4), (err) => {
+        if(err)
+        {
+            console.error(err);
+        }
+    });
+}
+
 const maimaidxUrl = "https://maimaidx-eng.com";
 
 const server = http.createServer(async (req, res) => {
@@ -89,12 +99,7 @@ const server = http.createServer(async (req, res) => {
             if(!lastUrl.hostname !== "lng-tgk-aime-gw.am-all.net") // login success
             {
                 // save login cookie
-                fs.writeFile(cookieFileName, JSON.stringify(cookieJar.toJSON(), null, 4), (err) => {
-                    if(err)
-                    {
-                        console.error(err);
-                    }
-                });
+                saveCookie();
 
                 // redirect to home
                 res.writeHead(302, {"Location": lastUrl.pathname});
@@ -118,15 +123,16 @@ const server = http.createServer(async (req, res) => {
 
             try
             {
-            const proxyResponse = await axiosInstance.get(targetUrl, {
-                responseType: "arraybuffer"
-            });
-            res.writeHead(proxyResponse.status, {
-                "Content-Type": proxyResponse.headers["content-type"],
-                "Expires": -1,
-                "Cache-Control": "no-cache"
-            });
-            res.end(proxyResponse.data);
+                const proxyResponse = await axiosInstance.get(targetUrl, {
+                    responseType: "arraybuffer"
+                });
+                saveCookie();
+                res.writeHead(proxyResponse.status, {
+                    "Content-Type": proxyResponse.headers["content-type"],
+                    "Expires": -1,
+                    "Cache-Control": "no-cache"
+                });
+                res.end(proxyResponse.data);
             }
             catch(e)
             {
