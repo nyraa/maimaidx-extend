@@ -148,7 +148,9 @@ const server = http.createServer(async (req, res) => {
             proxyResponse = e.response;
         }
         res.writeHead(proxyResponse.status, {
-            "Content-Type": proxyResponse.headers["content-type"]
+            "Content-Type": proxyResponse.headers["content-type"],
+            "Expires": -1,
+            "Cache-Control": "no-cache"
         });
         if(proxyResponse.status === 200)
         {
