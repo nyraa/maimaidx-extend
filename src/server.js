@@ -2,45 +2,12 @@
 const {wrapper} = require("axios-cookiejar-support");
 const {CookieJar} = require("tough-cookie"); */
 
-import axios from "axios";
-import {wrapper} from "axios-cookiejar-support";
-import {CookieJar} from "tough-cookie";
 import * as http from "http";
 import querystring from "querystring";
 import * as cheerio from "cheerio";
-import fs from "fs";
 
+import { axiosInstance, saveCookie } from "./cookie.js";
 
-// load cookie
-const cookieFileName = "data/cookie.json";
-
-let cookieJar;
-try
-{
-    const cookieString = fs.readFileSync(cookieFileName, "utf8");
-    cookieJar = CookieJar.fromJSON(cookieString);
-    console.log("Cookie loaded");
-}
-catch(e)
-{
-    cookieJar = new CookieJar();
-}
-
-
-const axiosInstance = wrapper(axios.create({
-    withCredentials: true,
-    jar: cookieJar,
-}));
-
-function saveCookie()
-{
-    fs.writeFile(cookieFileName, JSON.stringify(cookieJar.toJSON(), null, 4), (err) => {
-        if(err)
-        {
-            console.error(err);
-        }
-    });
-}
 
 const maimaidxUrl = "https://maimaidx-eng.com";
 
