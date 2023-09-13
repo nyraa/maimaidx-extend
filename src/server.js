@@ -5,8 +5,13 @@ const {CookieJar} = require("tough-cookie"); */
 import * as http from "http";
 import querystring from "querystring";
 import * as cheerio from "cheerio";
+import Router from "./router.js";
 
 import { axiosInstance, saveCookie } from "./cookie.js";
+
+// inject
+import "./injects/photosInject.js";
+import "./injects/generalInject.js";
 
 
 // start Daemon
@@ -172,38 +177,8 @@ const server = http.createServer(async (req, res) => {
         });
         if(proxyResponse.status === 200)
         {
-            const $ = cheerio.load(proxyResponse.data);
-
-            // replace anchor href
-            $('a[href^="https://maimaidx-eng.com/"]').each((index, element) => {
-                const origHref = $(element).attr("href");
-                const newHref = origHref.replace("https://maimaidx-eng.com/", "/");
-                $(element).attr("href", newHref);
-            });
-
-            // replace form action
-            $('form[action^="https://maimaidx-eng.com/"]').each((index, element) => {
-                const origAction = $(element).attr("action");
-                const newAction = origAction.replace("https://maimaidx-eng.com/", "/");
-                $(element).attr("action", newAction);
-            });
-
-            // replace photo src
-            $('img[src^="https://maimaidx-eng.com/maimai-mobile/img/photo/"]').each((index, element) => {
-                const origSrc = $(element).attr("src");
-                const newSrc = origSrc.replace("https://maimaidx-eng.com/maimai-mobile/img/photo/", "/extend/photo/");
-                $(element).attr("src", newSrc);
-            });
-
-            // replace back url
-            $('button[onclick^="location.href=\'https://maimaidx-eng.com/"]').each((index, element) => {
-                $(element).attr("onclick", "location.href='/'");
-            });
-
-            let html = $.html();
-            html = html.replace(/<!-- Google tag \(gtag\.js\) -->(\n|.)*?<!-- End Google tag \(gtag.js\) -->/, "");
-            html = html.replace(/<!-- Google Tag Manager -->(.|\n)*?<!-- End Google Tag Manager -->/, "");
-            html = html.replace(/<!-- Google Tag Manager \(noscript\) -->(.|\n)*?<!-- End Google Tag Manager \(noscript\) -->/, "");
+            const pathname = req.url.split("?")[0];
+            const html = Router.route(pathname, req, proxyResponse.data);
             res.end(html);
         }
         else
