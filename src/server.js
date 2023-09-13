@@ -11,7 +11,7 @@ import { axiosInstance, saveCookie } from "./cookie.js";
 
 // start Daemon
 import startDaemon from "./daemon.js";
-startDaemon(axiosInstance);
+startDaemon();
 
 const maimaidxUrl = "https://maimaidx-eng.com";
 

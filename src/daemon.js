@@ -1,7 +1,8 @@
 import db from "./database.js";
 import * as cheerio from "cheerio";
+import { axiosInstance, saveCookie } from "./cookie.js";
 
-export default function startDaemon(axiosInstance)
+export default function startDaemon()
 {
     // check photos
     setTimeout(async () => {
