@@ -102,6 +102,8 @@ const server = http.createServer(async (req, res) => {
                 const proxyResponse = await axiosInstance.get(targetUrl, {
                     responseType: "arraybuffer"
                 });
+
+                // save photo image proxy cookie
                 saveCookie();
                 res.writeHead(proxyResponse.status, {
                     "Content-Type": proxyResponse.headers["content-type"],
@@ -148,6 +150,10 @@ const server = http.createServer(async (req, res) => {
                 res.writeHead(405, {"Content-Type": "text/plain"});
                 res.end("405 Method Not Allowed");
             }
+
+            // save proxy cookie
+            saveCookie();
+
             const lastUrl = new URL(proxyResponse.request.res.responseUrl);
             if(lastUrl.hostname === "lng-tgk-aime-gw.am-all.net")
             {
