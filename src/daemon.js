@@ -3,6 +3,71 @@ import * as cheerio from "cheerio";
 import { axiosInstance, saveCookie } from "./cookie.js";
 import fs from "fs";
 
+function getRecordDetails(href)
+{
+    return new Promise((resolve, reject) => {
+        axiosInstance.get(href).then((res) => {
+            const $ = cheerio.load(res.data);
+
+            const level = $(".playlog_diff").attr("src").match(/diff_(\w+)\.png/)[1];
+            const trackNum = parseInt($(".sub_title .red").text().match(/TRACK (\d+)/)[1]);
+            const datetime = new Date($(".sub_title span:not(.red)").text().trim() + " GMT+0900");
+            const songname = $(".basic_block.m_5.p_5.p_l_10.f_13.break").text().trim();
+            const clear = $("basic_block>img").length > 0 ? true : false;
+            const kind = $(".playlog_music_kind_icon").attr("src").match(/music_(\w+)\.png/)[1];
+            const coverSrc = $(".music_img").attr("src");
+            const achievement = $(".playlog_achievement_txt").text().trim();
+            const newrecord = $(".playlog_achievement_newrecord").length > 0 ? true : false;
+            const scorerank = $(".playlog_scorerank").attr("src").match(/playlog\/(\w+)\.png/)[1];
+            const [deluxscore, deluxscoreTotal] = $(".playlog_score_block div").first().text().replace(/[^\/\d]/g, "").split("/");
+            const deluxscoreNewrecord = $(".playlog_deluxscore_newrecord").length > 0 ? true : false;
+            const slot1 = $(".playlog_result_innerblock>img").first().attr("src").match(/playlog\/(\w+)\.png/)[1];
+            const slot2 = $(".playlog_result_innerblock>img").eq(1).attr("src").match(/playlog\/(\w+)\.png/)[1];
+            const matchingRank = $(".playlog_matching_icon").attr("src").match(/playlog\/(\w+)\.png/)[1];
+
+            const charas = $(".playlog_chara_container").map((index, element) => {
+                const chara = $(element);
+                const id = chara.find(".chara_cycle_img").attr("src").match(/\/(\w+)\.png/)[1];
+                const star = parseInt(chara.find(".playlog_chara_star_block").text().match(/(\d+)/)[1]);
+                const level = parseInt(chara.find(".playlog_chara_lv_block").text().match(/(\d+)/)[1]);
+                return {
+                    id,
+                    star,
+                    level
+                };
+            }).toArray();
+
+            const [fast, late] = $(".playlog_fl_block>div").map((index, element) => parseInt($(element).text())).toArray();
+
+            const detailsTable = $(".playlog_notes_detail tr:not(:first-child)").map((index, element) => {
+                return new Array($(element).find("td").map((index, element) => parseInt($(element).text())).toArray());
+            }).toArray().reduce((obj, val, index) => {
+                obj[["tap", "hold", "slide", "touch", "break"][index]] = val;
+                return obj;
+            }, {});
+
+            console.log({
+                level,
+                trackNum,
+                datetime,
+                songname,
+                kind,
+                coverSrc,
+                achievement,
+                newrecord,
+                scorerank,
+                deluxscore,
+                deluxscoreTotal,
+                deluxscoreNewrecord,
+                slot1,
+                slot2,
+                matchingRank
+            });
+        });
+    });
+}
+
+
 function formatFilenameDatetime(date)
 {
     const yyyy = date.getFullYear();
