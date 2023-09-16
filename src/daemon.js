@@ -19,7 +19,11 @@ function getRecordDetails(href)
             const achievement = $(".playlog_achievement_txt").text().trim();
             const newrecord = $(".playlog_achievement_newrecord").length > 0 ? true : false;
             const scorerank = $(".playlog_scorerank").attr("src").match(/playlog\/(\w+)\.png/)[1];
-            const [deluxscore, deluxscoreTotal] = $(".playlog_score_block div").first().text().replace(/[^\/\d]/g, "").split("/");
+
+
+            const [deluxscore, deluxscoreTotal, maxcombo, maxcomboTotal, maxsync, maxsyncTotal] = $(".playlog_score_block div").map((index, element) => {
+                return $(element).text().split("/").map((val) => parseInt(val.replace(/[^\d]/g, "")));
+            }).toArray();
             const deluxscoreNewrecord = $(".playlog_deluxscore_newrecord").length > 0 ? true : false;
             const slot1 = $(".playlog_result_innerblock>img").first().attr("src").match(/playlog\/(\w+)\.png/)[1];
             const slot2 = $(".playlog_result_innerblock>img").eq(1).attr("src").match(/playlog\/(\w+)\.png/)[1];
@@ -46,10 +50,27 @@ function getRecordDetails(href)
                 return obj;
             }, {});
 
+            const rating = parseInt($(".rating_block").text());
+            const ratingChange = parseInt($(".playlog_rating_detail_block span").text().match(/([\+-]\d+)/)[1]);
+
+            const matchs = $(".see_through_block>span").map((index, element) => {
+                const container = $(element);
+                if(container.hasClass("gray_block"))
+                {
+                    return null;
+                }
+                const matchLevel = container.attr("class").match(/playlog_(\w+)_container/)[1];
+                const matchName = container.text().trim();
+                return {
+                    matchLevel,
+                    matchName
+                };
+            }).toArray();
+
             console.log({
+                datetime,
                 level,
                 trackNum,
-                datetime,
                 songname,
                 kind,
                 coverSrc,
@@ -61,7 +82,14 @@ function getRecordDetails(href)
                 deluxscoreNewrecord,
                 slot1,
                 slot2,
-                matchingRank
+                matchingRank,
+                charas,
+                fast,
+                late,
+                detailsTable,
+                rating,
+                ratingChange,
+                matchs
             });
         });
     });
