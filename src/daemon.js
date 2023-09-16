@@ -3,6 +3,18 @@ import * as cheerio from "cheerio";
 import { axiosInstance, saveCookie } from "./cookie.js";
 import fs from "fs";
 
+function formatFilenameDatetime(date)
+{
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, "0");  // Months are 0-based in JS
+    const dd = String(date.getDate()).padStart(2, "0");
+    const hh = String(date.getHours()).padStart(2, "0");
+    const min = String(date.getMinutes()).padStart(2, "0");
+
+    return `${yyyy}${mm}${dd}${hh}${min}`;
+}
+
+
 export default function startDaemon()
 {
     // check photos
@@ -52,11 +64,14 @@ export default function startDaemon()
                 const imgsrc = block.find("img.w_430").attr("src");
                 const level = block.find("div.p_r.p_5").attr("class").match(/music_(\w+)_score_back/)[1];
                 const kind = block.find("img.music_kind_icon").attr("src").match(/music_(\w+)\.png/)[1];
+                const datetimeString = formatFilenameDatetime(datetime);
+                const filename = `${datetimeString}_${imgsrc.split("/").pop()}.jpg`;
                 db.data.photos.push({
                     datetime: datetime.toISOString(),
                     songname: songname,
                     level: level,
                     kind: kind,
+                    filename: filename
                 });
                 console.log(`${datetime.toISOString()} ${songname} ${level} ${kind} ${imgsrc}`);
 
@@ -64,7 +79,7 @@ export default function startDaemon()
                     responseType: "arraybuffer"
                 });
 
-                const imageFileName = `photos/${new URL(imgsrc).pathname.split("/").pop()}.jpg`;
+                const imageFileName = `photos/${filename}`;
                 fs.writeFileSync(imageFileName, photoResponse.data);
             });
 
