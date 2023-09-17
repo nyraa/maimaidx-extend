@@ -95,28 +95,28 @@ function getRecordDetails(href)
 
             resolve({
                 details: {
-                datetime,
-                level,
-                trackNum,
-                songname,
-                kind,
-                coverSrc,
-                achievement,
-                newrecord,
-                scorerank,
-                deluxscore,
-                deluxscoreTotal,
-                deluxscoreNewrecord,
-                slot1,
-                slot2,
-                matchingRank,
-                charas,
-                fast,
-                late,
-                detailsTable,
-                rating,
-                ratingChange,
-                matchs
+                    datetime,
+                    level,
+                    trackNum,
+                    songname,
+                    kind,
+                    coverSrc,
+                    achievement,
+                    newrecord,
+                    scorerank,
+                    deluxscore,
+                    deluxscoreTotal,
+                    deluxscoreNewrecord,
+                    slot1,
+                    slot2,
+                    matchingRank,
+                    charas,
+                    fast,
+                    late,
+                    detailsTable,
+                    rating,
+                    ratingChange,
+                    matchs
                 },
                 finished: recordFetching === false
             });
@@ -217,4 +217,52 @@ export default function startDaemon()
             saveCookie();
         });
     }, 1000);
+
+    // check records
+    setInterval(async () => {
+        const recordUrl = "https://maimaidx-eng.com/maimai-mobile/record/";
+        axiosInstance.get(recordUrl).then(async (res) => {
+            return res.data;
+        }).then((html) => {
+            const $ = cheerio.load(html);
+            console.log($("title").text());
+            const blocks = $(".p_10.t_l.f_0.v_b");
+            const lastTime = new Date(db.data.lastRecordTime);
+            let newLastTime = lastTime;
+
+            blocks.each(async (index, element) => {
+                const block = $(element);
+                const blockDatetime = new Date(block.find(".sub_title span:not(.red)").text().trim() + " GMT+0900");
+
+                if(blockDatetime <= lastTime)
+                {
+                    return;
+                }
+                if(blockDatetime > newLastTime)
+                {
+                    console.log("time updated");
+                    newLastTime = blockDatetime;
+                }
+
+
+                const detailsHref = `https://maimaidx-eng.com/maimai-mobile/record/playlogDetail/?idx=${encodeURIComponent(block.find('input[name="idx"]').attr("value"))}`;
+                const {details, finished} = await getRecordDetails(detailsHref);
+                db.data.records.push(details);
+                console.log(details);
+
+
+                if(finished && newLastTime > lastTime)
+                {
+                    console.log("save records");
+                    db.data.lastRecordTime = newLastTime.toISOString();
+                    db.data.records = db.chain.get("records").orderBy((e) => new Date(e.datetime), "desc").value();
+                    db.write();
+                }
+            });
+        }).catch((e) => {
+            console.error(e);
+        }).finally(() => {
+            saveCookie();
+        });
+    }, 1000 * 60 * 30);
 };
