@@ -16,12 +16,6 @@ Router.register(/.*/, (req, html) => {
         $(element).attr("action", newAction);
     });
 
-    // replace photo src
-    $('img[src^="https://maimaidx-eng.com/maimai-mobile/img/photo/"]').each((index, element) => {
-        const origSrc = $(element).attr("src");
-        const newSrc = origSrc.replace("https://maimaidx-eng.com/maimai-mobile/img/photo/", "/extend/photo/");
-        $(element).attr("src", newSrc);
-    });
 
     // replace back url
     $('button[onclick^="location.href=\'https://maimaidx-eng.com/"]').each((index, element) => {
