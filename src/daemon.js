@@ -3,9 +3,22 @@ import * as cheerio from "cheerio";
 import { axiosInstance, saveCookie } from "./cookie.js";
 import fs from "fs";
 
+const recordQueue = [];
+let recordFetching = false;
 function getRecordDetails(href)
 {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+        await new Promise((resolve, reject) => {
+            if(recordFetching)
+            {
+                recordQueue.push(resolve);
+            }
+            else
+            {
+                recordFetching = true;
+                resolve();
+            }
+        });
         axiosInstance.get(href).then((res) => {
             const $ = cheerio.load(res.data);
 
@@ -46,7 +59,7 @@ function getRecordDetails(href)
             const [fast, late] = $(".playlog_fl_block>div").map((index, element) => parseInt($(element).text())).toArray();
 
             const detailsTable = $(".playlog_notes_detail tr:not(:first-child)").map((index, element) => {
-                return new Array($(element).find("td").map((index, element) => parseInt($(element).text())).toArray());
+                return new Array($(element).find("td").map((index, element) => parseInt($(element).text())).toArray().map((e) => isNaN(e) ? null : e));
             }).toArray().reduce((obj, val, index) => {
                 obj[["tap", "hold", "slide", "touch", "break"][index]] = val;
                 return obj;
@@ -69,7 +82,19 @@ function getRecordDetails(href)
                 };
             }).toArray();
 
-            console.log({
+            if(recordQueue.length === 0)
+            {
+                recordFetching = false;
+            }
+            else
+            {
+                setTimeout(() => {
+                    recordQueue.shift()();
+                }, 2000);
+            }
+
+            resolve({
+                details: {
                 datetime,
                 level,
                 trackNum,
@@ -92,6 +117,8 @@ function getRecordDetails(href)
                 rating,
                 ratingChange,
                 matchs
+                },
+                finished: recordFetching === false
             });
         });
     });
