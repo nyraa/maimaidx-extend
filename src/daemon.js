@@ -27,7 +27,9 @@ function getRecordDetails(href)
             const deluxscoreNewrecord = $(".playlog_deluxscore_newrecord").length > 0 ? true : false;
             const slot1 = $(".playlog_result_innerblock>img").first().attr("src").match(/playlog\/(\w+)\.png/)[1];
             const slot2 = $(".playlog_result_innerblock>img").eq(1).attr("src").match(/playlog\/(\w+)\.png/)[1];
-            const matchingRank = $(".playlog_matching_icon").attr("src").match(/playlog\/(\w+)\.png/)[1];
+
+            const matchingIcon = $(".playlog_matching_icon");
+            const matchingRank = matchingIcon.length > 0 ? $(".playlog_matching_icon").attr("src").match(/playlog\/(\w+)\.png/)[1] : null;
 
             const charas = $(".playlog_chara_container").map((index, element) => {
                 const chara = $(element);
