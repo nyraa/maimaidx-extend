@@ -90,11 +90,11 @@ const server = http.createServer(async (req, res) => {
     }
     else if(req.url.startsWith("/extend"))
     {
-        if(req.url.startsWith("/extend/photo/"))
+        if(req.url.startsWith("/extend/photoproxy/"))
         {
             // SITE/extend/photo/user/ID
             // TODO get /user/ID
-            const userIdPath = req.url.replace("/extend/photo/", "");
+            const userIdPath = req.url.replace("/extend/photoproxy/", "");
             const targetUrl = maimaidxUrl + "/maimai-mobile/img/photo/" + userIdPath;
 
             try

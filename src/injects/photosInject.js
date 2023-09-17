@@ -7,10 +7,10 @@ Router.register(/\/photo\/$/, (req, html) => {
     // replace photo src
     $('img[src^="https://maimaidx-eng.com/maimai-mobile/img/photo/"]').each((index, element) => {
         const origSrc = $(element).attr("src");
-        const newSrc = origSrc.replace("https://maimaidx-eng.com/maimai-mobile/img/photo/", "/extend/photo/");
+        const newSrc = origSrc.replace("https://maimaidx-eng.com/maimai-mobile/img/photo/", "/extend/photoproxy/");
         $(element).attr("src", newSrc);
     });
 
-    
+
     return $.html();
 });
