@@ -5,7 +5,12 @@ const {CookieJar} = require("tough-cookie"); */
 import * as http from "http";
 import querystring from "querystring";
 import * as cheerio from "cheerio";
+
+// html inject router
 import Router from "./router.js";
+
+// database
+import db from "./database.js";
 
 import { axiosInstance, saveCookie } from "./cookie.js";
 
@@ -121,6 +126,23 @@ const server = http.createServer(async (req, res) => {
                 res.end("502 Bad Gateway");
                 return;
             }
+        }
+        else if(req.url.startsWith("/extend/photodata/"))
+        {
+            const url = new URL("http://localhost" + req.url);
+            const offset = url.searchParams.get("offset");
+            if(offset === null)
+            {
+                res.writeHead(400, {"Content-Type": "text/plain"});
+                res.end("400 Bad Request");
+                return;
+            }
+            const data = db.chain.get("photos").drop(offset).take(10).value();
+
+            res.writeHead(200, {
+                "Content-Type": "application/json"
+            });
+            res.end(JSON.stringify(data));
         }
         else
         {
