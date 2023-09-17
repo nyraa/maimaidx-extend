@@ -179,6 +179,7 @@ export default function startDaemon()
             if(newLastTime > lastTime)
             {
                 db.data.lastPhotoTime = newLastTime.toISOString();
+                db.data.photos = db.chain.get("photos").orderBy((e) => new Date(e.datetime), "desc").value();
                 db.write();
             }
         }).catch((e) => {
