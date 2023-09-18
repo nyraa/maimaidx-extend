@@ -18,6 +18,7 @@ import { axiosInstance, saveCookie } from "./cookie.js";
 // inject
 import "./injects/photosInject.js";
 import "./injects/generalInject.js";
+import "./injects/recordInject.js";
 
 
 // start Daemon
