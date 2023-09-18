@@ -4,7 +4,6 @@ const {CookieJar} = require("tough-cookie"); */
 
 import * as http from "http";
 import querystring from "querystring";
-import * as cheerio from "cheerio";
 import fs from "fs";
 
 // html inject router
