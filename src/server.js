@@ -5,6 +5,7 @@ const {CookieJar} = require("tough-cookie"); */
 import * as http from "http";
 import querystring from "querystring";
 import * as cheerio from "cheerio";
+import fs from "fs";
 
 // html inject router
 import Router from "./router.js";
@@ -126,6 +127,28 @@ const server = http.createServer(async (req, res) => {
                 res.end("502 Bad Gateway");
                 return;
             }
+        }
+        else if(req.url.startsWith("/extend/photofile/"))
+        {
+            const filename = req.url.split("/").pop().split("?")[0];
+            const filesource = "./photos/" + filename;
+            try
+            {
+                const data = fs.readFileSync(filesource);
+                res.writeHead(200, {
+                    "Content-Type": "image/jpeg",
+                    "Expires": -1,
+                    "Cache-Control": "no-cache"
+                });
+                res.end(data);
+            }
+            catch(e)
+            {
+                res.writeHead(404, {"Content-Type": "text/plain"});
+                res.end("404 Not Found");
+                return;
+            }
+
         }
         else if(req.url.startsWith("/extend/photodata/"))
         {
