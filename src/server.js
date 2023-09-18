@@ -153,8 +153,8 @@ const server = http.createServer(async (req, res) => {
         else if(req.url.startsWith("/extend/photodata/"))
         {
             const url = new URL("http://localhost" + req.url);
-            const offset = url.searchParams.get("offset");
-            if(offset === null || isNaN(parseInt(offset)))
+            const offset = parseInt(url.searchParams.get("offset"));
+            if(isNaN(offset))
             {
                 res.writeHead(400, {"Content-Type": "text/plain"});
                 res.end("400 Bad Request");
@@ -164,8 +164,8 @@ const server = http.createServer(async (req, res) => {
             const data = db.chain.get("photos").drop(offset).take(take).value();
             const response = {
                 data: data,
-                offset: parseInt(offset),
-                next: data.length === take ? parseInt(offset) + take : null
+                offset: offset,
+                next: db.data.photos.length - offset - take > 0 ? offset + take : null
             };
 
             res.writeHead(200, {
@@ -176,8 +176,8 @@ const server = http.createServer(async (req, res) => {
         else if(req.url.startsWith("/extend/recorddata/"))
         {
             const url = new URL("http://localhost" + req.url);
-            const offset = url.searchParams.get("offset");
-            if(offset === null || isNaN(parseInt(offset)))
+            const offset = parseInt(url.searchParams.get("offset"));
+            if(isNaN(offset))
             {
                 res.writeHead(400, {"Content-Type": "text/plain"});
                 res.end("400 Bad Request");
@@ -187,8 +187,8 @@ const server = http.createServer(async (req, res) => {
             const data = db.chain.get("records").drop(offset).take(take).value();
             const response = {
                 data: data,
-                offset: parseInt(offset),
-                next: data.length === take ? parseInt(offset) + take : null
+                offset: offset,
+                next: db.data.records.length - offset - take > 0 ? offset + take : null
             };
 
             res.writeHead(200, {
