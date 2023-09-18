@@ -26,7 +26,7 @@ function getRecordDetails(href)
             const trackNum = parseInt($(".sub_title .red").text().match(/TRACK (\d+)/)[1]);
             const datetime = new Date($(".sub_title span:not(.red)").text().trim() + " GMT+0900");
             const songname = $(".basic_block.m_5.p_5.p_l_10.f_13.break").text().trim();
-            const clear = $("basic_block>img").length > 0 ? true : false;
+            const clear = $(".basic_block>img").length > 0 ? true : false;
             const kind = $(".playlog_music_kind_icon").attr("src").match(/music_(\w+)\.png/)[1];
             const coverSrc = $(".music_img").attr("src");
             const achievement = $(".playlog_achievement_txt").text().trim();
@@ -99,6 +99,7 @@ function getRecordDetails(href)
                     level,
                     trackNum,
                     songname,
+                    clear,
                     kind,
                     coverSrc,
                     achievement,
