@@ -154,7 +154,7 @@ const server = http.createServer(async (req, res) => {
         {
             const url = new URL("http://localhost" + req.url);
             const offset = url.searchParams.get("offset");
-            if(offset === null)
+            if(offset === null || isNaN(parseInt(offset)))
             {
                 res.writeHead(400, {"Content-Type": "text/plain"});
                 res.end("400 Bad Request");
@@ -164,7 +164,30 @@ const server = http.createServer(async (req, res) => {
             const data = db.chain.get("photos").drop(offset).take(take).value();
             const response = {
                 data: data,
-                offset: offset,
+                offset: parseInt(offset),
+                next: data.length === take ? parseInt(offset) + take : null
+            };
+
+            res.writeHead(200, {
+                "Content-Type": "application/json"
+            });
+            res.end(JSON.stringify(response));
+        }
+        else if(req.url.startsWith("/extend/recorddata/"))
+        {
+            const url = new URL("http://localhost" + req.url);
+            const offset = url.searchParams.get("offset");
+            if(offset === null || isNaN(parseInt(offset)))
+            {
+                res.writeHead(400, {"Content-Type": "text/plain"});
+                res.end("400 Bad Request");
+                return;
+            }
+            const take = 50;
+            const data = db.chain.get("records").drop(offset).take(take).value();
+            const response = {
+                data: data,
+                offset: parseInt(offset),
                 next: data.length === take ? parseInt(offset) + take : null
             };
 
