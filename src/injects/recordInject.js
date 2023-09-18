@@ -70,8 +70,8 @@ Router.register(/\/record\/$/, (req, html) => {
                                 \`;
                                 $("#viewmore_action").before(domstring);
                             }
-                            viewmore_offset = data.offset;
-                            if(data.offset === null)
+                            viewmore_offset = data.next;
+                            if(viewmore_offset === null)
                             {
                                 $("#viewmore_action").remove();
                             }
