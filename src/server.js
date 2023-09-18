@@ -137,12 +137,18 @@ const server = http.createServer(async (req, res) => {
                 res.end("400 Bad Request");
                 return;
             }
-            const data = db.chain.get("photos").drop(offset).take(10).value();
+            const take = 10;
+            const data = db.chain.get("photos").drop(offset).take(take).value();
+            const response = {
+                data: data,
+                offset: offset,
+                next: data.length === take ? parseInt(offset) + take : null
+            };
 
             res.writeHead(200, {
                 "Content-Type": "application/json"
             });
-            res.end(JSON.stringify(data));
+            res.end(JSON.stringify(response));
         }
         else
         {
