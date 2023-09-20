@@ -150,7 +150,7 @@ function formatFilenameDatetime(date)
 export default function startDaemon()
 {
     // check photos
-    setTimeout(async () => {
+    setInterval(async () => {
         const photoUrl = "https://maimaidx-eng.com/photo/";
         axiosInstance.get(photoUrl).then(async (res) => {
             let html;
@@ -226,7 +226,7 @@ export default function startDaemon()
         }).finally(() => {
             saveCookie();
         });
-    }, 1000);
+    }, 1000 * 60 * 30);
 
     // check records
     setInterval(async () => {
