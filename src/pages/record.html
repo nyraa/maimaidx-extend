@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes">
+        <script>
+            var baseW = 768;
+            var iOSW = 0;
+            var ua = navigator.userAgent.toLowerCase();
+            var isiOS = (ua.indexOf("iphone") > -1) || (ua.indexOf("ipod") > -1) || (ua.indexOf("ipad") > -1);
+            if(isiOS)
+            {
+                iOSW = document.documentElement.clientWidth;
+            }
+            window.addEventListener("resize", updateMetaViewport, false);
+            window.addEventListener("orientationchange", updateMetaViewport, false);
+            var ev = document.createEvent("UIEvent");
+            ev.initEvent("resize", true, true)
+            window.dispatchEvent(ev);
+            function updateMetaViewport()
+            {
+                var viewportContent;
+                var w = window.outerWidth;
+                if(isiOS)
+                {
+                    w = iOSW;
+                }
+                if(w < baseW)
+                {
+                    viewportContent = "width=480,initial-scale=" + w / 480 + ",user-scalable=yes,shrink-to-fit=no";
+                } else
+                {
+                    viewportContent = "width=device-width,initial-scale=1.0,user-scalable=yes,shrink-to-fit=no";
+                }
+                document.querySelector("meta[name='viewport']").setAttribute("content", viewportContent);
+            }
+        </script>
+        <meta name="format-detection" content="telephone=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8; IE=EmulateIE9">
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Cache-Control" content="no-cache">
+        <meta http-equiv="Expires" content="-1">
+        <meta name="robots" content="INDEX, FOLLOW">
+        <meta name="author" content="(C) SEGA">
+        <meta name="copyright" content="©SEGA">
+        <meta name="description"
+            content="This is an official website of 'maimai DX', the latest game in maimai series which created by SEGA Interactive Co., Ltd.">
+        <meta name="keywords" content="maimaiDXNET,maimaiDX,maimai deluxe,sega">
+        <meta name="theme-color" content="#51bcf3">
+        <meta name="mkd" content="7293c62586ebaef13ae029c8c814ce04">
+
+        <title>maimai DX NET－Game Record－</title>
+        <link rel="stylesheet" href="https://maimaidx-eng.com/maimai-mobile/css/common.css?ver=1.35?20230401">
+        <link rel="apple-touch-icon-precomposed" href="https://maimaidx-eng.com/maimai-mobile/apple-touch-icon.png">
+        <link rel="icon" type="image/png" href="https://maimaidx-eng.com/maimai-mobile/apple-touch-icon.png">
+    </head>
+
+    <body oncontextmenu="return false;">
+
+        <div class="wrapper t_c">
+            <div class="spmenu_toggle"></div>
+            <nav class="spmenu_navigation" style="display:none">
+                <img src="https://maimaidx-eng.com/maimai-mobile/img/menu_title.png" class="w_320 m_t_20">
+                <div class="container p_10 f_0">
+                    <div class="p_5">
+                        <div class="d_ib col2"><a href="/maimai-mobile/home/"><img
+                                    src="https://maimaidx-eng.com/maimai-mobile/img/menu_home.png" class="w_112"></a></div>
+                        <div class="d_ib col2"><a href="/maimai-mobile/playerData/"><img
+                                    src="https://maimaidx-eng.com/maimai-mobile/img/menu_playerdata.png" class="w_112"></a>
+                        </div>
+                    </div>
+                    <div class="p_5">
+                        <div class="d_ib col2"><a href="/maimai-mobile/friend/"><img
+                                    src="https://maimaidx-eng.com/maimai-mobile/img/menu_friend.png" class="w_112"></a>
+                        </div>
+                        <div class="d_ib col2"><a href="/maimai-mobile/photo/"><img
+                                    src="https://maimaidx-eng.com/maimai-mobile/img/menu_photo.png" class="w_112"></a></div>
+                    </div>
+                    <div class="p_5">
+                        <div class="d_ib col2"><a href="/maimai-mobile/record/"><img
+                                    src="https://maimaidx-eng.com/maimai-mobile/img/menu_record.png" class="w_112"></a>
+                        </div>
+                        <div class="d_ib col2"><a href="/maimai-mobile/map/"><img
+                                    src="https://maimaidx-eng.com/maimai-mobile/img/menu_map.png?ver=1.35"
+                                    class="w_112"></a></div>
+                    </div>
+                    <div class="p_5 p_b_10">
+                        <div class="d_ib col2"><a href="/maimai-mobile/collection/"><img
+                                    src="https://maimaidx-eng.com/maimai-mobile/img/menu_collection.png" class="w_112"></a>
+                        </div>
+                        <div class="d_ib col2"><a href="/maimai-mobile/ranking/"><img
+                                    src="https://maimaidx-eng.com/maimai-mobile/img/menu_ranking.png" class="w_112"></a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <a href="/maimai-mobile/home/"><img src="https://maimaidx-eng.com/maimai-mobile/img/logo.png"
+                    class="logo p_5"></a>
+            <a href="/maimai-mobile/home/userOption/" class="setting"><img
+                    src="https://maimaidx-eng.com/maimai-mobile/img/btn_setting.png"></a>
+        </div>
+        <div class="wrapper main_wrapper t_c">
+            <header class="f_0">
+                <div class="f_0">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 480 10"
+                        preserveAspectRatio="none" style="height:10px">
+                        <path
+                            d="M0,10 v-5 q5,5 10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 v5 Z"
+                            fill="#7ed3ff"></path>
+                    </svg>
+                    <div class="menu">
+                        <a href="/maimai-mobile/home/" class="d_ib col4 p_4"><img
+                                src="https://maimaidx-eng.com/maimai-mobile/img/menu_home.png?ver=1.35" class="w_112"></a>
+                        <a href="/maimai-mobile/playerData/" class="d_ib col4 p_4"><img
+                                src="https://maimaidx-eng.com/maimai-mobile/img/menu_playerdata.png?ver=1.35"
+                                class="w_112"></a>
+                        <a href="/maimai-mobile/friend/" class="d_ib col4 p_4"><img
+                                src="https://maimaidx-eng.com/maimai-mobile/img/menu_friend.png?ver=1.35" class="w_112"></a>
+                        <a href="/maimai-mobile/photo/" class="d_ib col4 p_4"><img
+                                src="https://maimaidx-eng.com/maimai-mobile/img/menu_photo.png?ver=1.35" class="w_112"></a>
+                    </div>
+                    <div class="menu">
+                        <a href="/maimai-mobile/record/" class="d_ib col4 p_4"><img
+                                src="https://maimaidx-eng.com/maimai-mobile/img/menu_record_on.png?ver=1.35"
+                                class="w_112"></a>
+                        <a href="/maimai-mobile/map/" class="d_ib col4 p_4"><img
+                                src="https://maimaidx-eng.com/maimai-mobile/img/menu_map.png?ver=1.35" class="w_112"></a>
+                        <a href="/maimai-mobile/collection/" class="d_ib col4 p_4"><img
+                                src="https://maimaidx-eng.com/maimai-mobile/img/menu_collection.png?ver=1.35"
+                                class="w_112"></a>
+                        <a href="/maimai-mobile/ranking/" class="d_ib col4 p_4"><img
+                                src="https://maimaidx-eng.com/maimai-mobile/img/menu_ranking.png?ver=1.35"
+                                class="w_112"></a>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 480 10"
+                        preserveAspectRatio="none" style="height:10px">
+                        <path
+                            d="M0,0 v5 q5,5 10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 v-5 Z"
+                            fill="#7ed3ff"></path>
+                    </svg>
+                </div>
+            </header>
+
+            <div class="m_t_5 m_b_10 t_l f_0">
+                <a href="/maimai-mobile/record/" class="p_r d_ib">
+                    <img src="https://maimaidx-eng.com/maimai-mobile/img/menu_sub_record_playlog.png?ver=1.35"
+                        class="w_120">
+                    <img src="https://maimaidx-eng.com/maimai-mobile/img/icon_on.png" class="submenu_selected"> </a>
+                <a href="/maimai-mobile/record/musicGenre/" class="p_r d_ib">
+                    <img src="https://maimaidx-eng.com/maimai-mobile/img/menu_sub_record_music.png?ver=1.35" class="w_120">
+                </a>
+                <a href="/maimai-mobile/record/course/" class="p_r d_ib">
+                    <img src="https://maimaidx-eng.com/maimai-mobile/img/menu_sub_record_course.png?ver=1.35" class="w_120">
+                </a>
+                <img src="https://maimaidx-eng.com/maimai-mobile/img/menu_sub_record.png" class="w_120">
+            </div>
+
+            <img src="https://maimaidx-eng.com/maimai-mobile/img/title_playlog.png" class="title m_10">
+
+            <overview />
+
+            <grayblock />
+
+            
+            <img src="https://maimaidx-eng.com/maimai-mobile/img/line_02.png" class="w_450">
+            <div class="t_c">
+                <button type="button" onclick="JavaScript:history.back();" class="f_0"><img
+                        src="https://maimaidx-eng.com/maimai-mobile/img/btn_back.png" class="w_80 m_t_10"></button>
+            </div>
+
+            <footer class="f_0">
+                <div class="footer_marquee">
+                    <div class="footer w_480">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            viewBox="0 0 480 50" preserveAspectRatio="none" style="height:50px">
+                            <path
+                                d="M0,0 v25 q5,5 10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 t10,0 v-25 Z"
+                                fill="#7cbc29"></path>
+                        </svg>
+                        <div class="m_15 m_t_0 f_13">
+                            <!-- 2019/08/08 change -->
+                            <div class="m_5"><a href="/maimai-mobile/termsOfService/" target="_blank" class="white"
+                                rel="noopener">Terms of service</a></div>
+                            <div class="m_5"><a href="/maimai-mobile/sitePolicy/" target="_blank" class="white"
+                                rel="noopener">Site Policy</a></div>
+                            <div class="m_5"><a href="https://www.sega.co.jp/en/privacypolicy/index.html" target="_blank"
+                                class="white" rel="noopener">Privacy Policy</a></div>
+
+                            <!-- 2019/08/02 del -->
+                        </div>
+                        <img src="https://maimaidx-eng.com/maimai-mobile/img/line_02.png" class="w_430 m_b_10">
+                        <a href="https://maimai.sega.com" target="_blank" rel="noopener"><img
+                                src="https://maimaidx-eng.com/maimai-mobile/img/banner_maimai.png?ver=1.35"
+                                class="footer_banner w_450 m_b_10"></a>
+                        <a href="https://chunithm.sega.com/" target="_blank" rel="noopener"><img
+                                src="https://maimaidx-eng.com/maimai-mobile/img/banner_chuni.png?ver=1.35"
+                                class="footer_banner w_450"></a>
+                        <!-- 2019/08/02 del -->
+                        <a href="https://my-aime.net/" target="_blank" class="w_450 m_10 d_ib t_l footer_banner"
+                        rel="noopener">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td><img src="https://maimaidx-eng.com/maimai-mobile/img/banner_aime.png"></td>
+                                        <td class="p_10 f_13">
+                                            Please register your Aime card <br>
+                                            within Aime service website.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </a>
+                        <img src="https://maimaidx-eng.com/maimai-mobile/img/line_02.png" class="w_430 m_b_10">
+                        <a href="https://sega.jp" target="_blank" rel="noopener"><img
+                                src="https://maimaidx-eng.com/maimai-mobile/img/logo_sega.png"></a>
+                        <div class="f_15 p_5">© SEGA</div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <img id="page-top" src="https://maimaidx-eng.com/maimai-mobile/img/btn_page_top.png" class="pointer">
+        <img id="page-bottom" src="https://maimaidx-eng.com/maimai-mobile/img/btn_page_bottom.png" class="pointer">
+        <script src="https://maimaidx-eng.com/maimai-mobile/js/jquery-3.3.1.min.js"></script>
+        <script>
+            var scrollPoint = $('.scroll_point').length;
+            $('#page-top').click(function ()
+            {
+                if(scrollPoint > 0)
+                {
+                    var fromPos = Math.floor($(window).scrollTop());
+                    var toPos = 0;
+                    $(".scroll_point").each(function ()
+                    {
+                        var targetPos = Math.floor($(this).offset().top);
+                        if(location.pathname.split('/').pop() == "updateMusic")
+                        {
+                            targetPos = targetPos - 284;
+                        }
+                        if(fromPos > targetPos)
+                        {
+                            toPos = targetPos;
+                        } else
+                        {
+                            return false;
+                        }
+                    });
+                    $('body,html').animate({ scrollTop: toPos }, 500);
+                } else
+                {
+                    $('body,html').animate({ scrollTop: 0 }, 500);
+                }
+                return false;
+            });
+            $('#page-bottom').click(function ()
+            {
+                if(scrollPoint > 0)
+                {
+                    var fromPos = Math.floor($(window).scrollTop()) + 3;
+                    var toPos = Math.floor($(document).height());
+                    $(".scroll_point").each(function ()
+                    {
+                        var targetPos = Math.floor($(this).offset().top);
+                        if(location.pathname.split('/').pop() == "updateMusic")
+                        {
+                            targetPos = targetPos - 284;
+                        }
+                        if(fromPos < targetPos)
+                        {
+                            toPos = targetPos;
+                            return false;
+                        }
+                    });
+                    $('body,html').animate({ scrollTop: toPos }, 500);
+                } else
+                {
+                    $('body,html').animate({ scrollTop: $(document).height() }, 500);
+                }
+                return false;
+            });
+            function fadeOutPageBtn()
+            {
+                $('#page-top').fadeOut(1500).animate({ duration: 'slow', easing: 'linear' });
+                $('#page-bottom').fadeOut(1500).animate({ duration: 'slow', easing: 'linear' });
+            }
+            var spmenu_toggle = $('.spmenu_toggle');
+            var spmenu_navigation = $('.spmenu_navigation');
+            spmenu_toggle.click(function ()
+            {
+                $(this).toggleClass('active');
+                if($(this).hasClass('active'))
+                {
+                    spmenu_navigation.addClass('active');
+                } else
+                {
+                    spmenu_navigation.removeClass('active');
+                }
+            });
+            spmenu_navigation.click(function ()
+            {
+                spmenu_toggle.removeClass('active');
+                $(this).removeClass('active');
+            });
+            var timeLimit = 3 * 1000;
+            var timerId = setTimeout(fadeOutPageBtn, timeLimit);
+            $(window).scroll(function ()
+            {
+                if(!spmenu_navigation.is(':visible')) spmenu_navigation.css('display', 'block');
+                if(!$('#page-top').is(':visible')) $('#page-top').fadeIn();
+                if(!$('#page-bottom').is(':visible')) $('#page-bottom').fadeIn();
+                clearTimeout(timerId);
+                timerId = setTimeout(fadeOutPageBtn, timeLimit);
+                var visible = spmenu_toggle.is(':visible');
+                if($(this).scrollTop() > 250)
+                {
+                    if(!visible)
+                        spmenu_toggle.fadeIn().animate({ 'right': '5px' }, { duration: 500, queue: false });
+                } else
+                {
+                    if(visible)
+                    {
+                        spmenu_toggle.fadeOut().animate({ 'right': '-100%' }, { duration: 500, queue: false });
+                        if(spmenu_toggle.hasClass('active'))
+                        {
+                            spmenu_toggle.removeClass('active');
+                            spmenu_navigation.removeClass('active');
+                        }
+                    }
+                }
+            });
+        </script>
+        <script>
+            $('#vsUserCtrl').click(function ()
+            {
+                if($('#vsUser span').is(':visible'))
+                {
+                    $('#vsUser span').hide();
+                    $(this).children('img').attr('src', 'https://maimaidx-eng.com/maimai-mobile/img/btn_on.png');
+                } else
+                {
+                    $('#vsUser span').show();
+                    $(this).children('img').attr('src', 'https://maimaidx-eng.com/maimai-mobile/img/btn_off.png');
+                }
+            });
+            $('#placeNameCtrl').click(function ()
+            {
+                if($('#placeName span').is(':visible'))
+                {
+                    $('#placeName span').hide();
+                    $(this).children('img').attr('src', 'https://maimaidx-eng.com/maimai-mobile/img/btn_on.png');
+                } else
+                {
+                    $('#placeName span').show();
+                    $(this).children('img').attr('src', 'https://maimaidx-eng.com/maimai-mobile/img/btn_off.png');
+                }
+            });
+            $('#matchingCtrl').click(function ()
+            {
+                if($('#matching span').is(':visible'))
+                {
+                    $('#matching span').hide();
+                    $(this).children('img').attr('src', 'https://maimaidx-eng.com/maimai-mobile/img/btn_on.png');
+                } else
+                {
+                    $('#matching span').show();
+                    $(this).children('img').attr('src', 'https://maimaidx-eng.com/maimai-mobile/img/btn_off.png');
+                }
+            });
+        </script>
+    </body>
+</html>

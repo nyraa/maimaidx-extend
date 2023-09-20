@@ -19,6 +19,8 @@ import "./injects/photosInject.js";
 import "./injects/generalInject.js";
 import "./injects/recordInject.js";
 
+// pages
+import recordPage from "./pages/recordDetails.js";
 
 // start Daemon
 import startDaemon from "./daemon.js";
@@ -195,6 +197,31 @@ const server = http.createServer(async (req, res) => {
                 "Content-Type": "application/json"
             });
             res.end(JSON.stringify(response));
+        }
+        else if(req.url.startsWith("/extend/playlogDetail/"))
+        {
+            const url = new URL("http://localhost" + req.url);
+            const recordId = url.searchParams.get("idx");
+            if(!recordId)
+            {
+                res.writeHead(400, {"Content-Type": "text/plain"});
+                res.end("400 Bad Request");
+                return;
+            }
+            const recordIdInt = parseInt(recordId);
+            const record = db.chain.get("records").find((r) => new Date(r.datetime).getTime() === recordIdInt).value();
+            if(!record)
+            {
+                res.writeHead(404, {"Content-Type": "text/plain"});
+                res.end("404 Not Found");
+                return;
+            }
+            const html = recordPage(record);
+
+            res.writeHead(200, {
+                "Content-Type": "text/html"
+            });
+            res.end(html);
         }
         else
         {
