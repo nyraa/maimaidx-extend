@@ -6,7 +6,7 @@ Router.register(/\/record\/$/, (req, html) => {
     $("footer").before(`
         <div class="t_c" id="viewmore_action">
             <script language="javascript">
-                let viewmore_offset = 0;
+                let viewmore_offset = 50;
                 let viewmore_loading = false;
                 function viewmore()
                 {
