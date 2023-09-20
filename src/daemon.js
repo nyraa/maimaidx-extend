@@ -35,6 +35,9 @@ function getRecordDetails(href)
 
 
             const [deluxscore, deluxscoreTotal, maxcombo, maxcomboTotal, maxsync, maxsyncTotal] = $(".playlog_score_block div").map((index, element) => {
+                const text = $(element).text();
+                if(text === "―")
+                    return [null, null];
                 return $(element).text().split("/").map((val) => parseInt(val.replace(/[^\d]/g, "")));
             }).toArray();
             const deluxscoreNewrecord = $(".playlog_deluxscore_newrecord").length > 0 ? true : false;
@@ -117,6 +120,10 @@ function getRecordDetails(href)
                     detailsTable,
                     rating,
                     ratingChange,
+                    maxcombo,
+                    maxcomboTotal,
+                    maxsync,
+                    maxsyncTotal,
                     matchs
                 },
                 finished: recordFetching === false
