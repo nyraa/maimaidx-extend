@@ -57,8 +57,8 @@ Router.register(/\/record\/$/, (req, html) => {
                                                         $\{record.matchingRank ? \`<img src="https://maimaidx-eng.com/maimai-mobile/img/playlog/$\{record.matchingRank}.png" class="playlog_matching_icon f_r">\` : ""}
                                                         <div class="clearfix"></div>
                                                     </div>
-                                                    <form action="/maimai-mobile/record/playlogDetail/" method="get" accept-charset="utf-8" class="m_t_5 t_r">
-                                                        <input type="hidden" name="idx" value="29,1692354402">
+                                                    <form action="/extend/playlogDetail/" method="get" accept-charset="utf-8" class="m_t_5 t_r">
+                                                        <input type="hidden" name="idx" value="$\{new Date(record.datetime).getTime()}">
                                                         <button type="submit" class="f_0"><img src="https://maimaidx-eng.com/maimai-mobile/img/btn_detail.png" class="w_84"></button>
                                                     </form>
                                                     <div class="clearfix"></div>

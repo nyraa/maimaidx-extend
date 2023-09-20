@@ -68,6 +68,7 @@ function getRecordDetails(href)
                 return obj;
             }, {});
 
+            const ratingFrame = $(".p_r.p_3.p_l_0.f_l img").attr("src").match(/rating_base_(\w+)\.png/)[1];
             const rating = parseInt($(".rating_block").text());
             const ratingChange = parseInt($(".playlog_rating_detail_block span").text().match(/([\+-]\d+)/)[1]);
 
@@ -118,6 +119,7 @@ function getRecordDetails(href)
                     fast,
                     late,
                     detailsTable,
+                    ratingFrame,
                     rating,
                     ratingChange,
                     maxcombo,
