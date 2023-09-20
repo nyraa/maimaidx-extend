@@ -152,9 +152,46 @@ function recordPage(record)
         </div>
     `;
 
+    const match = `
+        <div class="see_through_block m_10 p_5 t_l f_0" id="matching">
+            ${
+                record.matchs.map((e) => {
+                    return `
+                        <span class="playlog_${e.matchLevel}_container w_120 p_3 d_ib f_0">
+                            <img src="https://maimaidx-eng.com/maimai-mobile/img/diff_${e.matchLevel}.png" class="h_16">
+                            <img src="https://maimaidx-eng.com/maimai-mobile/img/icon_each.png" class="h_14 f_r">
+                            <div class="basic_block p_3 t_c f_11">${e.matchName}</div>
+                        </span>
+                    `;
+                })
+            }
+            ${
+                (() => {
+                    let tmp = "";
+                    for(let i = 0; i < 3 - record.matchs.length; i++)
+                    {
+                        tmp += `
+                            <span class="gray_block w_120 p_3 d_ib f_0 ">
+                                <img src="https://maimaidx-eng.com/maimai-mobile/img/icon_each.png" class="h_16 f_r">
+                                <div class="clearfix"></div>
+                                <div class="basic_block p_3 t_c f_11">―</div>
+                            </span>
+                        `;
+                    }
+                    return tmp;
+                })()
+            }
+            <div class="f_r p_t_10 d_ib f_0" id="matchingCtrl">
+                <img src="https://maimaidx-eng.com/maimai-mobile/img/btn_off.png" class="h_30 m_t_5 m_b_5">
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    `;
+
     let html = fs.readFileSync("src/pages/record.html", "utf-8");
     html = html.replace("<overview />", recordOverview);
     html = html.replace("<grayblock />", grayBlock);
+    html = html.replace("<matching />", record.matchs.length > 0 ? match : "");
     return html;
 }
 
