@@ -6,6 +6,8 @@ import * as http from "http";
 import querystring from "querystring";
 import fs from "fs";
 
+import { verifyAccount, signJWT, verifyJWT } from "./secret.js";
+
 // html inject router
 import Router from "./router.js";
 
@@ -30,7 +32,80 @@ const maimaidxUrl = "https://maimaidx-eng.com";
 
 const server = http.createServer(async (req, res) => {
     console.log(req.url, req.method);
+
+    const cookie = req.headers.cookie?.split(";").reduce((obj, e) => {
+        const [key, value] = e.split("=", 2);
+        obj[key.trim()] = value.trim();
+        return obj;
+    }, {});
+    const token = cookie?.token;
+    const [login, payload] = verifyJWT(token);
+
     if(req.url === "/login")
+    {
+        console.log("login");
+        if(!login)
+        {
+            if(req.method === "GET")
+            {
+                res.writeHead(200, {"Content-Type": "text/html"});
+                res.end(`
+                    <form action="/login" method="POST">
+                        <input type="text" name="account" placeholder="account" />
+                        <input type="password" name="password" placeholder="password" />
+                        <button type="submit">Login</button>
+                    </form>
+                `);
+            }
+            else if(req.method === "POST")
+            {
+                const postBody = await new Promise((resolve, reject) => {
+                    let body = "";
+                    req.on("data", (chunk) => {
+                        body += chunk.toString();
+                    });
+                    req.on("end", () => {
+                        resolve(body);
+                    });
+                }).then((body) => {
+                    return querystring.parse(body);
+                });
+                if(!postBody.account || !postBody.password)
+                {
+                    res.writeHead(400, {"Content-Type": "text/plain"});
+                    res.end("400 Bad Request");
+                    return;
+                }
+                if(verifyAccount(postBody.account, postBody.password))
+                {
+                    const token = signJWT({account: postBody.account});
+                    res.writeHead(302, {
+                        "Location": "/",
+                        "Set-Cookie": `token=${token}; Path=/; HttpOnly`
+                    });
+                    res.end();
+                }
+                else
+                {
+                    res.writeHead(401, {"Content-Type": "text/plain"});
+                    res.end("401 Unauthorized");
+                }
+            }
+        }
+        else
+        {
+            res.writeHead(302, {"Location": "/"});
+            res.end();
+            return;
+        }
+    }
+    if(!login)
+    {
+        res.writeHead(302, {"Location": "/login"});
+        res.end();
+        return;
+    }
+    else if(req.url === "/loginsega")
     {
         if(req.method === "GET")
         {
@@ -42,7 +117,7 @@ const server = http.createServer(async (req, res) => {
             {
                 res.writeHead(200, {"Content-Type": "text/html"});
                 res.end(`
-                    <form action="/login" method="POST">
+                    <form action="/loginsega" method="POST">
                         <input type="text" name="username" placeholder="username" />
                         <input type="password" name="password" placeholder="password" />
                         <button type="submit">Login</button>
@@ -264,7 +339,7 @@ const server = http.createServer(async (req, res) => {
             if(lastUrl.hostname === "lng-tgk-aime-gw.am-all.net")
             {
                 // redirect to login
-                res.writeHead(302, {"Location": "/login"});
+                res.writeHead(302, {"Location": "/loginsega"});
                 res.end();
                 return;
             }
