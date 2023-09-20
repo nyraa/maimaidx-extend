@@ -78,6 +78,7 @@ const server = http.createServer(async (req, res) => {
                 }
                 if(verifyAccount(postBody.account, postBody.password))
                 {
+                    console.log("login success");
                     const token = signJWT({account: postBody.account});
                     res.writeHead(302, {
                         "Location": "/",
@@ -87,6 +88,7 @@ const server = http.createServer(async (req, res) => {
                 }
                 else
                 {
+                    console.log("login failed");
                     res.writeHead(401, {"Content-Type": "text/plain"});
                     res.end("401 Unauthorized");
                 }
@@ -101,6 +103,7 @@ const server = http.createServer(async (req, res) => {
     }
     if(!login)
     {
+        console.log("not login request");
         res.writeHead(302, {"Location": "/login"});
         res.end();
         return;
