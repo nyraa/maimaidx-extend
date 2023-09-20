@@ -56,6 +56,7 @@ const server = http.createServer(async (req, res) => {
                         <button type="submit">Login</button>
                     </form>
                 `);
+                return;
             }
             else if(req.method === "POST")
             {
@@ -93,6 +94,7 @@ const server = http.createServer(async (req, res) => {
                     res.end("401 Unauthorized");
                 }
             }
+            return;
         }
         else
         {
