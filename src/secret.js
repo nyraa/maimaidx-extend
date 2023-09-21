@@ -26,7 +26,7 @@ function verifyAccount(account, password)
 
 function signJWT(payload)
 {
-    const token = sign(payload, db.data.jwtsecret);
+    const token = sign(payload, db.data.jwtsecret, {});
     return token;
 }
 
