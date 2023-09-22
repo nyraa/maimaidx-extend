@@ -222,7 +222,15 @@ export default function startDaemon()
                 db.write();
             }
         }).catch((e) => {
-            console.error(e);
+            if(e.response)
+            {
+                console.log("Photo fetch error: ")
+                console.log(e.response.status);
+            }
+            else
+            {
+                console.error(e);
+            }
         }).finally(() => {
             saveCookie();
         });
@@ -270,7 +278,15 @@ export default function startDaemon()
                 }
             });
         }).catch((e) => {
-            console.error(e);
+            if(e.response)
+            {
+                console.log("Record fetch error: ")
+                console.log(e.response.status);
+            }
+            else
+            {
+                console.error(e);
+            }
         }).finally(() => {
             saveCookie();
         });
