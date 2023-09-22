@@ -83,7 +83,7 @@ const server = http.createServer(async (req, res) => {
                     const token = signJWT({account: postBody.account});
                     res.writeHead(302, {
                         "Location": "/",
-                        "Set-Cookie": `token=${token}; Path=/; HttpOnly; Expires=${new Date(new Date() + 2147483647000).toUTCString()}`
+                        "Set-Cookie": `token=${token}; Path=/; HttpOnly; Expires=${new Date(new Date().getTime() + 2147483647000).toUTCString()}`
                     });
                     res.end();
                 }
