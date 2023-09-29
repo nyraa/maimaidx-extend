@@ -25,8 +25,8 @@ import "./injects/recordInject.js";
 import recordPage from "./pages/recordDetails.js";
 
 // start Daemon
-import startDaemon from "./daemon.js";
-startDaemon();
+import "./daemons/photoDaemon.js";
+import "./daemons/recordDaemon.js";
 
 const maimaidxUrl = "https://maimaidx-eng.com";
 
