@@ -19,7 +19,9 @@ Router.register(/.*/, (req, html) => {
 
     // replace back url
     $('button[onclick^="location.href=\'https://maimaidx-eng.com/"]').each((index, element) => {
-        $(element).attr("onclick", "location.href='/'");
+        const origHref = $(element).attr("onclick");
+        const newHref = origHref.replace("https://maimaidx-eng.com/", "/");
+        $(element).attr("onclick", newHref);
     });
 
     let replacedHtml = $.html();
