@@ -29,7 +29,22 @@ function getRecordDetails(href)
             const datetime = new Date($(".sub_title span:not(.red)").text().trim() + " GMT+0900");
             const songname = $(".basic_block.m_5.p_5.p_l_10.f_13.break").text().trim();
             const clear = $(".basic_block>img").length > 0 ? true : false;
-            const kind = $(".playlog_music_kind_icon").attr("src").match(/music_(\w+)\.png/)[1];
+            let kind, utageKind;
+            if(level === "utage")
+            {
+                utageKind = $(".p_r.t_c").map((index, element) => {
+                    const icon = $(element).find("img").attr("src").match(/\/img\/music_(\w+)\.png/)[1];
+                    const text = $(element).find(".playlog_music_kind_icon_utage_text").text();
+                    return {
+                        icon,
+                        text
+                    };
+                }).toArray();
+            }
+            else
+            {
+                kind = $(".playlog_music_kind_icon").attr("src").match(/music_(\w+)\.png/)[1];
+            }
             const coverSrc = $(".music_img").attr("src");
             const achievement = $(".playlog_achievement_txt").text().trim();
             const newrecord = $(".playlog_achievement_newrecord").length > 0 ? true : false;
@@ -107,6 +122,7 @@ function getRecordDetails(href)
                     songname,
                     clear,
                     kind,
+                    utageKind,
                     coverSrc,
                     achievement,
                     newrecord,
