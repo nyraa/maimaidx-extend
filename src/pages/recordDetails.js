@@ -8,6 +8,18 @@ function recordPage(record)
         <div class="p_10 t_l f_0 v_b">
             <div class="playlog_top_container p_r">
                 <img src="https://maimaidx-eng.com/maimai-mobile/img/diff_${record.level}.png" class="playlog_diff v_b">
+                ${record.level === "utage" || true ? `
+                    <div class="playlog_music_kind_icon_utage f_l p_a d_f">
+                        ${record?.utageKind?.reduce((prev, utageKind) => {
+                            return prev + `
+                                <div class="p_r t_c">
+                                    <img src="https://maimaidx-eng.com/maimai-mobile/img/music_${utageKind.icon}.png" class="h_25">
+                                    <div class="white playlog_music_kind_icon_utage_text t_c f_12">${utageKind.text}</div>
+                                </div>
+                            `;
+                        }, "")}
+                    </div>
+                ` : ""}
                 <div class="sub_title t_c f_r f_11">
                     <span class="red f_b v_b">TRACK ${record.trackNum.toString().padStart(2, "0")}</span>　<span class="v_b">${record.datetime}</span>
                 </div>
@@ -17,7 +29,7 @@ function recordPage(record)
                 <div class="basic_block m_5 p_5 p_l_10 f_13 break">${record.clear ? `<img src="https://maimaidx-eng.com/maimai-mobile/img/playlog/clear.png" class="w_80 f_r">` : ""}${record.songname}</div>
                 <div class="p_r f_0">
                     <img loading="lazy" src="${record.coverSrc}" class="music_img m_5 m_r_0 f_l">
-                    <img src="https://maimaidx-eng.com/maimai-mobile/img/music_${record.kind}.png" class="playlog_music_kind_icon">
+                    ${record.level !== "utage" ? `<img src="https://maimaidx-eng.com/maimai-mobile/img/music_${record.kind}.png" class="playlog_music_kind_icon">` : ""}
                     <div class="playlog_result_block m_t_5 f_l">
                         <div class="playlog_achievement_label_block">
                             <img src="https://maimaidx-eng.com/maimai-mobile/img/playlog/achievement.png">
