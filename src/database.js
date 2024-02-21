@@ -14,5 +14,13 @@ const db = new Low(adapter, {
 await db.read();
 
 db.chain = lodash.chain(db.data);
+/* update DB
+db.data.records = db.chain.get("records").map((e) => {
+    e.achievement = parseFloat(e.achievement);
+    return e;
+}).value();
+db.write();
+console.log("db updated");
+*/
 
 export default db;

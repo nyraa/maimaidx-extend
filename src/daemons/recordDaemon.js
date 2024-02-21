@@ -152,6 +152,35 @@ function getRecordDetails(href)
     });
 }
 
+function diffSinceLastPlay(db)
+{
+    const records = db.data.records;
+    const processedRecords = [];
+
+    // cache with key: songname_kind
+    const bestScoreCache = {};
+    while(records.length > 0)
+    {
+        // TODO: pop oldest record as old
+        const oldest = records.pop();
+        const songKey = `${oldest.songname}_${oldest.kind ?? oldest.level}_${oldest.level}`;
+        // TODO: find best from cache
+        let best = bestScoreCache[songKey] ?? 0;
+        const newBest = oldest.achievement;
+        // TODO: update record
+        oldest.achievementDiff = Math.round(newBest * 10000 - best * 10000) / 10000;
+        // TODO: update cache
+        if(best < newBest)
+        {
+            bestScoreCache[songKey] = newBest;
+        }
+        // TODO: add to processed records
+        processedRecords.unshift(oldest);
+    }
+    db.data.records = processedRecords;
+}
+diffSinceLastPlay(db);
+db.write();
 
 registerDaemon(1000 * 60 * 30, 0, async () => {
     const recordUrl = "https://maimaidx-eng.com/maimai-mobile/record/";
@@ -190,6 +219,8 @@ registerDaemon(1000 * 60 * 30, 0, async () => {
                 console.log("save records");
                 db.data.lastRecordTime = newLastTime.toISOString();
                 db.data.records = db.chain.get("records").orderBy((e) => new Date(e.datetime), "desc").value();
+                // calc diff since last play
+                diffSinceLastPlay(db);
                 db.write();
             }
         });
