@@ -37,7 +37,7 @@ function recordPage(record)
                         ${record.newrecord ? `<img src="https://maimaidx-eng.com/maimai-mobile/img/playlog/newrecord.png" class="playlog_achievement_newrecord">` : ""}
                         <div class="playlog_achievement_txt t_r">
                             ${record.achievement.toFixed(4).split(".")[0]}<span class="f_20">.${record.achievement.toFixed(4).split(".")[1]}%</span>
-                            <span class="f_10" style="display: block;">${record.achievementDiff >= 0 ? "+" : "-"}${record.achievementDiff}%</span>
+                            <span class="f_10" style="display: block;">${record.achievementDiff >= 0 ? "+" : "-"}${record.achievementDiff.toFixed(4)}%</span>
                         </div>
                         <img src="https://maimaidx-eng.com/maimai-mobile/img/playlog/${record.scorerank}.png?ver=1.35" class="playlog_scorerank">
                         <img src="https://maimaidx-eng.com/maimai-mobile/img/line_02.png" class="playlog_scoreline f_r">
