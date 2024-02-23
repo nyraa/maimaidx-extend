@@ -179,8 +179,6 @@ function diffSinceLastPlay(db)
     }
     db.data.records = processedRecords;
 }
-diffSinceLastPlay(db);
-db.write();
 
 registerDaemon(1000 * 60 * 30, 0, async () => {
     const recordUrl = "https://maimaidx-eng.com/maimai-mobile/record/";
