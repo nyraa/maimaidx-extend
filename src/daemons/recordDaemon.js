@@ -46,7 +46,7 @@ function getRecordDetails(href)
                 kind = $(".playlog_music_kind_icon").attr("src").match(/music_(\w+)\.png/)[1];
             }
             const coverSrc = $(".music_img").attr("src");
-            const achievement = $(".playlog_achievement_txt").text().trim();
+            const achievement = parseFloat($(".playlog_achievement_txt").text().trim());
             const newrecord = $(".playlog_achievement_newrecord").length > 0 ? true : false;
             const scorerank = $(".playlog_scorerank").attr("src").match(/playlog\/(\w+)\.png/)[1];
 
