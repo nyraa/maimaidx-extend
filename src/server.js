@@ -20,6 +20,7 @@ import { axiosInstance, saveCookie } from "./cookie.js";
 import "./injects/photosInject.js";
 import "./injects/generalInject.js";
 import "./injects/recordInject.js";
+import "./injects/playlogDetailInject.js";
 
 // pages
 import recordPage from "./pages/recordDetails.js";
