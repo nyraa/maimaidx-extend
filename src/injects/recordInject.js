@@ -5,8 +5,11 @@ import db from "../database.js";
 Router.register(/\/record\/$/, (req, html) => {
     const $ = cheerio.load(html);
 
+    // get all record div blocks
     $("div:has(>.playlog_top_container)").each((i, e) => {
         const element = $(e);
+
+        // get play time as record id and inject achievement diff
         const datetime = new Date(element.find(".sub_title span:not(.red)").text().trim() + " GMT+0900");
         const recordIdInt = datetime.getTime();
 

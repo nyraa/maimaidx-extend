@@ -161,20 +161,20 @@ function diffSinceLastPlay(db)
     const bestScoreCache = {};
     while(records.length > 0)
     {
-        // TODO: pop oldest record as old
+        // pop oldest record as old
         const oldest = records.pop();
         const songKey = `${oldest.songname}_${oldest.kind ?? oldest.level}_${oldest.level}`;
-        // TODO: find best from cache
+        // find best from cache
         let best = bestScoreCache[songKey] ?? 0;
         const newBest = oldest.achievement;
-        // TODO: update record
+        // update record
         oldest.achievementDiff = Math.round(newBest * 10000 - best * 10000) / 10000;
-        // TODO: update cache
+        // update cache
         if(best < newBest)
         {
             bestScoreCache[songKey] = newBest;
         }
-        // TODO: add to processed records
+        // add to processed records
         processedRecords.unshift(oldest);
     }
     db.data.records = processedRecords;
