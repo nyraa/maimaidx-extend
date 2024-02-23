@@ -10,7 +10,7 @@ Router.register(/\/record\/playlogDetail\//, (req, html) => {
     const record = db.chain.get("records").find((r) => new Date(r.datetime).getTime() === recordIdInt).value();
     if(!record)
     {
-        console.log("record miss");
+        console.log(`Record miss ${datetime.toDateString()}`);
         return $.html();
     }
     
