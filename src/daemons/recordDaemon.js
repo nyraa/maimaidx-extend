@@ -64,6 +64,17 @@ function getRecordDetails(href)
             const matchingIcon = $(".playlog_matching_icon");
             const matchingRank = matchingIcon.length > 0 ? $(".playlog_matching_icon").attr("src").match(/playlog\/(\w+)\.png/)[1] : null;
 
+            const perfectChallengeBlock = $(".p_r.m_t_5.f_l.f_0");
+            let perfectChallenge;
+            if(perfectChallengeBlock.length > 0)
+            {
+                const [lifeLeft, lifeTotal] = perfectChallengeBlock.find(".playlog_life_block").text().split("/").map((val) => parseInt(val.replace(/[^\d]/g, "")));
+                perfectChallenge = {
+                    lifeLeft,
+                    lifeTotal
+                };
+            }
+
             const charas = $(".playlog_chara_container").map((index, element) => {
                 const chara = $(element);
                 const id = chara.find(".chara_cycle_img").attr("src").match(/\/(\w+)\.png/)[1];
@@ -133,6 +144,7 @@ function getRecordDetails(href)
                     slot1,
                     slot2,
                     matchingRank,
+                    perfectChallenge,
                     charas,
                     fast,
                     late,
