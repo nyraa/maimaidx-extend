@@ -192,9 +192,10 @@ function diffSinceLastPlay(db)
     db.data.records = processedRecords;
 }
 
-registerDaemon(1000 * 60 * 30, 0, async () => {
+function runDaemon(dryrun = false)
+{
     const recordUrl = "https://maimaidx-eng.com/maimai-mobile/record/";
-    axiosInstance.get(recordUrl).then(async (res) => {
+    return axiosInstance.get(recordUrl).then(async (res) => {
         return res.data;
     }).then((html) => {
         const $ = cheerio.load(html);
@@ -226,12 +227,19 @@ registerDaemon(1000 * 60 * 30, 0, async () => {
 
             if(finished && newLastTime > lastTime)
             {
-                console.log("save records");
                 db.data.lastRecordTime = newLastTime.toISOString();
                 db.data.records = db.chain.get("records").orderBy((e) => new Date(e.datetime), "desc").value();
                 // calc diff since last play
                 diffSinceLastPlay(db);
-                db.write();
+                if(!dryrun)
+                {
+                    console.log("save records");
+                    db.write();
+                }
+                else
+                {
+                    console.log("dryrun");
+                }
             }
         });
     }).catch((e) => {
@@ -247,4 +255,8 @@ registerDaemon(1000 * 60 * 30, 0, async () => {
     }).finally(() => {
         saveCookie();
     });
+}
+
+registerDaemon(1000 * 60 * 30, 0, async () => {
+    runDaemon();
 });
