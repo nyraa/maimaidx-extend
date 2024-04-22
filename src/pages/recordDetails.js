@@ -53,6 +53,13 @@ function recordPage(record)
                             <div class="clearfix"></div>
                         </div>
                         <div class="clearfix"></div>
+                        ${record.perfectChallenge ? `
+                            <div class="p_r m_t_5 f_l f_0">
+                                <img src="https://maimaidx-eng.com/maimai-mobile/img/icon_perfectchallenge.png" class="h_30 p_l_5">
+                                <img src="https://maimaidx-eng.com/maimai-mobile/img/icon_life.png" class="w_96 m_b_3">
+                                <div class="playlog_life_block f_11 ${record.perfectChallenge.lifeLeft > 0 ? "white" : "red"}">${record.perfectChallenge.lifeLeft}/${record.perfectChallenge.lifeTotal}</div>
+                            </div>
+                        ` : ""}
                     </div>
                 </div>
                 <div class="clearfix"></div>
