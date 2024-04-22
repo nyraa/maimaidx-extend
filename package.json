@@ -4,9 +4,6 @@
   "scripts": {
     "start": "node src/server.js"
   },
-  "devDependencies": {
-    "bun-types": "latest"
-  },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
