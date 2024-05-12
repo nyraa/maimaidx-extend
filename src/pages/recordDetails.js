@@ -4,6 +4,15 @@ import fs from "fs";
 
 function recordPage(record)
 {
+    const formatter = new Intl.DateTimeFormat("ja", {
+        timeZone: "Asia/Tokyo",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false
+    });
     const recordOverview = `
         <div class="p_10 t_l f_0 v_b">
             <div class="playlog_top_container p_r">
@@ -21,7 +30,7 @@ function recordPage(record)
                     </div>
                 ` : ""}
                 <div class="sub_title t_c f_r f_11">
-                    <span class="red f_b v_b">TRACK ${record.trackNum.toString().padStart(2, "0")}</span>　<span class="v_b">${record.datetime}</span>
+                    <span class="red f_b v_b">TRACK ${record.trackNum.toString().padStart(2, "0")}</span>　<span class="v_b">${formatter.format(new Date(record.datetime))}</span>
                 </div>
                 <div class="clearfix"></div>
             </div>
