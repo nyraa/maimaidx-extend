@@ -29,15 +29,22 @@ Router.register(/\/photo\/$/, (req, html) => {
                         if(xhr.readyState === 4 && xhr.status === 200)
                         {
                             const data = JSON.parse(xhr.responseText);
-                            console.log(data);
+                            const formatter = new Intl.DateTimeFormat("ja", {
+                                timeZone: "Asia/Tokyo",
+                                year: "numeric",
+                                month: "2-digit",
+                                day: "2-digit",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                hour12: false
+                            });
                             for(let record of data.data)
                             {
-                                const datetime = new Date(record.datetime);
                                 const domstring = \`
                                     <div class=" m_10 p_5 f_0">
                                         <div class="music_$\{record.level}_score_back p_r p_5">
                                             <img src="https://maimaidx-eng.com/maimai-mobile/img/music_$\{record.kind}.png" class="music_kind_icon f_r">
-                                            <div class="block_info p_3 f_11 white">$\{record.datetime}</div>
+                                            <div class="block_info p_3 f_11 white">$\{formatter.format(new Date(record.datetime))}</div>
                                             <img src="https://maimaidx-eng.com/maimai-mobile/img/diff_$\{record.level}.png" class="h_16 f_l"><br>
                                             <div class="clearfix"></div>
                                             <div class="black_block w_430 m_3 m_b_5 p_5 t_l f_15 break">$\{record.songname}</div>
