@@ -45,7 +45,8 @@ Router.register(/\/record\/$/, (req, html) => {
                             const datetimeOptions = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false };
                             for(let record of data.data)
                             {
-                                const datetime = new Date(record.datetime);
+                                const datetime = new Date(new Date(record.datetime).getTime() + 60 * 60 * 1000);
+                                // normal user in GMT+8, so add 1 hour to match GMT+9
                                 const domstring = \`
                                     <div class="p_10 t_l f_0 v_b">
                                         <div class="playlog_top_container p_r">
@@ -63,7 +64,7 @@ Router.register(/\/record\/$/, (req, html) => {
                                                 </div>
                                             \` : ""}
                                             <div class="sub_title t_c f_r f_11">
-                                                <span class="red f_b v_b">TRACK $\{record.trackNum.toString().padStart(2, "0")}</span>　<span class="v_b">$\{datetime.format("ja", datetimeOptions)}</span>
+                                                <span class="red f_b v_b">TRACK $\{record.trackNum.toString().padStart(2, "0")}</span>　<span class="v_b">$\{datetime.toLocaleString("ja", datetimeOptions)}</span>
                                             </div>
                                             <div class="clearfix"></div>
                                         </div>
