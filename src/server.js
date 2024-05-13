@@ -259,26 +259,81 @@ const server = http.createServer(async (req, res) => {
         }
         else if(req.url.startsWith("/extend/recorddata/"))
         {
-            const url = new URL("http://localhost" + req.url);
-            const offset = parseInt(url.searchParams.get("offset"));
-            if(isNaN(offset))
+            if(req.method === "GET")
             {
-                res.writeHead(400, {"Content-Type": "text/plain"});
-                res.end("400 Bad Request");
-                return;
-            }
-            const take = 50;
-            const data = db.chain.get("records").drop(offset).take(take).value();
-            const response = {
-                data: data,
-                offset: offset,
-                next: db.data.records.length - offset - take > 0 ? offset + take : null
-            };
+                const url = new URL("http://localhost" + req.url);
+                const offset = parseInt(url.searchParams.get("offset"));
+                if(isNaN(offset))
+                {
+                    res.writeHead(400, {"Content-Type": "text/plain"});
+                    res.end("400 Bad Request");
+                    return;
+                }
+                const take = 50;
+                const data = db.chain.get("records").drop(offset).take(take).value();
+                const response = {
+                    data: data,
+                    offset: offset,
+                    next: db.data.records.length - offset - take > 0 ? offset + take : null
+                };
 
-            res.writeHead(200, {
-                "Content-Type": "application/json"
-            });
-            res.end(JSON.stringify(response));
+                res.writeHead(200, {
+                    "Content-Type": "application/json"
+                });
+                res.end(JSON.stringify(response));
+            }
+            else if(req.method === "POST")
+            {
+                const postBody = await new Promise((resolve, reject) => {
+                    let body = "";
+                    req.on("data", (chunk) => {
+                        body += chunk.toString();
+                    });
+                    req.on("end", () => {
+                        resolve(body);
+                    });
+                }).then((body) => {
+                    return JSON.parse(body);
+                });
+
+                const offset = postBody.offset;
+                const musicIdentifier = postBody.musicIdentifier;
+
+                const data = db.chain.get("records").drop(postBody.offset).filter((e) => {
+                    if(musicIdentifier.coverID !== e.coverSrc.split("/").pop().split(".")[0])
+                    {
+                        return false;
+                    }
+                    if(musicIdentifier.kind !== e.kind)
+                    {
+                        return false;
+                    }
+                    if(musicIdentifier.level !== e.level)
+                    {
+                        return false;
+                    }
+                    if(musicIdentifier.utageKinds.length > 0)
+                    {
+                        musicIdentifier.utageKinds.forEach((kind) => {
+                            if(!e.utageKinds.includes(kind))
+                            {
+                                return false;
+                            }
+                        });
+                    }
+                    return true;
+                }).value();
+
+                const response = {
+                    data: data,
+                    offset: postBody.offset
+                };
+
+                res.writeHead(200, {
+                    "Content-Type": "application/json"
+                });
+                res.end(JSON.stringify(response));
+            }
         }
         else if(req.url.startsWith("/extend/playlogDetail/"))
         {
