@@ -21,6 +21,7 @@ import "./injects/photosInject.js";
 import "./injects/generalInject.js";
 import "./injects/recordInject.js";
 import "./injects/playlogDetailInject.js";
+import "./injects/musicDetailInject.js";
 
 // pages
 import recordPage from "./pages/recordDetails.js";
