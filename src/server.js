@@ -303,7 +303,7 @@ const server = http.createServer(async (req, res) => {
                     {
                         return false;
                     }
-                    if(musicIdentifier.kind !== e.kind)
+                    if(e.kind && musicIdentifier.kind !== e.kind)
                     {
                         return false;
                     }
@@ -311,10 +311,10 @@ const server = http.createServer(async (req, res) => {
                     {
                         return false;
                     }
-                    if(musicIdentifier.utageKinds.length > 0)
+                    if(e.utageKinds && musicIdentifier.utageKinds.length > 0)
                     {
                         musicIdentifier.utageKinds.forEach((kind) => {
-                            if(!e.utageKinds.includes(kind))
+                            if(!e.utageKinds.find((e) => e.text === kind))
                             {
                                 return false;
                             }
