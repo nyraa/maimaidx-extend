@@ -65,7 +65,8 @@ Router.register(/\/musicDetail\/$/, (req, html) => {
                 };
                 xhr.send(JSON.stringify({
                     offset: viewmore_offset[level],
-                    musicIdentifier: ${JSON.stringify(musicIdentifier)}
+                    musicIdentifier: ${JSON.stringify(musicIdentifier)},
+                    level: level
                 }));
             }
         </script>

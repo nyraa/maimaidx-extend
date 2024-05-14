@@ -308,7 +308,7 @@ const server = http.createServer(async (req, res) => {
                     {
                         return false;
                     }
-                    if(musicIdentifier.level !== e.level)
+                    if(postBody.level !== e.level)
                     {
                         return false;
                     }
