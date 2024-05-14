@@ -12,7 +12,6 @@ Router.register(/\/musicDetail\/$/, (req, html) => {
             return element.text();
         }).toArray(),
     };
-    console.log(musicIdentifier);
     $("head").after(`
         <script language="javascript">
             let viewmore_loaded = {
