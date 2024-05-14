@@ -15,18 +15,18 @@ Router.register(/\/musicDetail\/$/, (req, html) => {
     console.log(musicIdentifier);
     $("head").after(`
         <script language="javascript">
-            let viewmore_offset = {
-                basic: 0,
-                advanced: 0,
-                expert: 0,
-                master: 0,
-                remaster: 0,
-                utage: 0
+            let viewmore_loaded = {
+                basic: false,
+                advanced: false,
+                expert: false,
+                master: false,
+                remaster: false,
+                utage: false
             };
             let viewmore_loading = false;
             function viewmore(level)
             {
-                if(viewmore_loading || viewmore_offset[level] === null)
+                if(viewmore_loading)
                 {
                     return;
                 }
@@ -50,12 +50,7 @@ Router.register(/\/musicDetail\/$/, (req, html) => {
                         for(let record of data.data)
                         {
                             ${recordDOMString}
-                            $(\`#\${level}_viewmore_btn\`).before(domstring);
-                        }
-                        viewmore_offset[level] = data.next;
-                        if(data.next === null)
-                        {
-                            $(\`#\${level}_viewmore_btn\`).remove();
+                            $(\`#$\{level}_log_block\`).append(domstring);
                         }
                         viewmore_loading = false;
                     }
@@ -64,10 +59,22 @@ Router.register(/\/musicDetail\/$/, (req, html) => {
                     viewmore_loading = false;
                 };
                 xhr.send(JSON.stringify({
-                    offset: viewmore_offset[level],
                     musicIdentifier: ${JSON.stringify(musicIdentifier)},
                     level: level
                 }));
+            }
+            function toggleLogBlock(level)
+            {
+                if(!viewmore_loaded[level])
+                {
+                    if(viewmore_loading)
+                    {
+                        return;
+                    }
+                    viewmore_loaded[level] = true;
+                    viewmore(level);
+                }
+                $(\`#\${level}_log_block\`).toggle();
             }
         </script>
     `);
@@ -76,13 +83,12 @@ Router.register(/\/musicDetail\/$/, (req, html) => {
         const element = $(e);
         const level = element.attr("class").split(" ").find((c) => c.includes("music_")).split("_")[1];
         const logBlockDOMString = `
-            <div id="${level}_log_block">
-                <button id="${level}_viewmore_btn" type="button" onclick="javascript:viewmore('${level}')" class="m_10">
-                    <img src="https://maimaidx-eng.com/maimai-mobile/img/btn_more.png" class="w_84" />
-                </button>
+            <div id="${level}_log_block" style="display: none">
             </div>
         `;
         element.after(logBlockDOMString);
+        element.attr("onclick", `toggleLogBlock("${level}")`);
+        element.attr("style", "cursor: pointer;");
     });
     return $.html();
 });

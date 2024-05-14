@@ -296,10 +296,9 @@ const server = http.createServer(async (req, res) => {
                     return JSON.parse(body);
                 });
 
-                const offset = postBody.offset;
                 const musicIdentifier = postBody.musicIdentifier;
 
-                const data = db.chain.get("records").drop(postBody.offset).filter((e) => {
+                const data = db.chain.get("records").filter((e) => {
                     if(musicIdentifier.coverID !== e.coverSrc.split("/").pop().split(".")[0])
                     {
                         return false;
