@@ -1,7 +1,3 @@
-/* const axios = require("axios");
-const {wrapper} = require("axios-cookiejar-support");
-const {CookieJar} = require("tough-cookie"); */
-
 import * as http from "http";
 import querystring from "querystring";
 import fs from "fs";
