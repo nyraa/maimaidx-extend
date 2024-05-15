@@ -407,7 +407,7 @@ const server = http.createServer(async (req, res) => {
         }
         catch(e)
         {
-            console.error(e);
+            console.error(e.response?.status, e.response?.statusText, e.config.url);
             proxyResponse = e.response;
             if(proxyResponse === undefined)
             {
