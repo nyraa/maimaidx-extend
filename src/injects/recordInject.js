@@ -21,7 +21,7 @@ Router.register(/\/record\/$/, (req, html) => {
             return;
         }
 
-        const diffDomString = `<span class="f_10" style="display: block;">${record.achievementDiff >= 0 ? "+" : "-"}${record.achievementDiff.toFixed(4)}%</span>`;
+        const diffDomString = `<span class="f_10" style="display: block;">${record.achievementDiff >= 0 ? "+" : ""}${record.achievementDiff.toFixed(4)}%</span>`;
         element.find(".playlog_achievement_txt>.f_20").after(diffDomString);
     });
 
