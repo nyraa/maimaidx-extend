@@ -15,6 +15,8 @@ Router.register(/\/photo\/$/, (req, html) => {
     $(".music__score_back").each((index, element) => {
         // replace "music__score_back" with class "music_utage_score_back"
         $(element).attr("class", $(element).attr("class").replace("music__score_back", "music_utage_score_back"));
+        // log fix message to identify if this is still needed
+        console.log("fixing utage frame");
     });
 
     // tmp fix for utage icon
