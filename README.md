@@ -1,5 +1,14 @@
 # maimaidx_extend
+A wrapper for maimai DX NET international version.
 
+## Feature
+- Save the play log and append to list (Official log count up to 50)
+- Save the memory photo and append to list (Official photo count up to 10)
+- Find the play log in song record
+- Show achievement +-% in record (Since this record starts)
+- Temp fix for utage memory photo frame
+
+## Usage
 To install dependencies:
 
 ```bash
