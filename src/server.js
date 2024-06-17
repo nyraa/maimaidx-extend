@@ -368,7 +368,9 @@ const server = http.createServer(async (req, res) => {
         {
             if(req.method === "GET")
             {
-                proxyResponse = await axiosInstance.get(maimaidxUrl + req.url);
+                proxyResponse = await axiosInstance.get(maimaidxUrl + req.url, {
+                    responseType: "arraybuffer"
+                });
             }
             else if(req.method === "POST")
             {
@@ -381,7 +383,9 @@ const server = http.createServer(async (req, res) => {
                         resolve(body);
                     });
                 });
-                proxyResponse = await axiosInstance.post(maimaidxUrl + req.url, postBody);
+                proxyResponse = await axiosInstance.post(maimaidxUrl + req.url, postBody, {
+                    responseType: "arraybuffer"
+                });
             }
             else
             {
@@ -421,8 +425,13 @@ const server = http.createServer(async (req, res) => {
         });
         if(proxyResponse.status === 200)
         {
-            const pathname = req.url.split("?")[0];
-            const html = Router.route(pathname, req, proxyResponse.data);
+            // html inject
+            let html = proxyResponse.data;
+            if(proxyResponse.headers["content-type"].startsWith("text/html"))
+            {
+                const pathname = req.url.split("?")[0];
+                html = Router.route(pathname, req, proxyResponse.data);
+            }
             res.end(html);
         }
         else
