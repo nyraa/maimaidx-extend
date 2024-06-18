@@ -42,6 +42,7 @@ const domstring = \`
                             <img src="https://maimaidx-eng.com/maimai-mobile/img/playlog/deluxscore.png" class="w_80">
                             $\{record.deluxscoreNewrecord ? \`<img src="https://maimaidx-eng.com/maimai-mobile/img/playlog/newrecord.png" class="playlog_deluxscore_newrecord">\` : ""}
                             <div class="white p_r_5 f_15 f_r">$\{record.deluxscore.toLocaleString("en-us")} / $\{record.deluxscoreTotal.toLocaleString("en-us")}</div>
+                            $\{record.deluxscoreStar > 0 ? \`<img src="https://maimaidx-eng.com/maimai-mobile/img/playlog/dxstar_$\{record.deluxscoreStar}.png" class="playlog_deluxscore_star">\` : ""}
                         </div>
                         <img src="https://maimaidx-eng.com/maimai-mobile/img/playlog/$\{record.slot1}.png?ver=1.35" class="h_35 m_5 f_l">
                         <img src="https://maimaidx-eng.com/maimai-mobile/img/playlog/$\{record.slot2}.png?ver=1.35" class="h_35 m_5 f_l">
