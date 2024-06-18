@@ -58,6 +58,9 @@ function getRecordDetails(href)
                 return $(element).text().split("/").map((val) => parseInt(val.replace(/[^\d]/g, "")));
             }).toArray();
             const deluxscoreNewrecord = $(".playlog_deluxscore_newrecord").length > 0 ? true : false;
+
+            const deluxscoreStar = parseInt($(".playlog_deluxscore_star").attr("src")?.match(/dxstar_(\d+)\.png/)?.[1] ?? 0);
+
             const slot1 = $(".playlog_result_innerblock>img").first().attr("src").match(/playlog\/(\w+)\.png/)[1];
             const slot2 = $(".playlog_result_innerblock>img").eq(1).attr("src").match(/playlog\/(\w+)\.png/)[1];
 
@@ -141,6 +144,7 @@ function getRecordDetails(href)
                     deluxscore,
                     deluxscoreTotal,
                     deluxscoreNewrecord,
+                    deluxscoreStar,
                     slot1,
                     slot2,
                     matchingRank,
