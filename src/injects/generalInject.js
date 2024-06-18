@@ -24,6 +24,28 @@ Router.register(/.*/, (req, html) => {
         $(element).attr("onclick", newHref);
     });
 
+    // insert pwa manifest
+    $('head').append('<link rel="manifest" href="/static/manifest.json" />');
+    $('head').append(`
+        <script language="javascript">
+            if('serviceWorker' in navigator)
+            {
+                window.addEventListener('load', () =>
+                {
+                    navigator.serviceWorker.register('/service-worker.js')
+                        .then(registration =>
+                        {
+                            console.log('Service Worker registered with scope:', registration.scope);
+                        })
+                        .catch(error =>
+                        {
+                            console.log('Service Worker registration failed:', error);
+                        });
+                });
+            }
+        </script>    
+    `);
+
     let replacedHtml = $.html();
     replacedHtml = replacedHtml.replace(/<!-- Google tag \(gtag\.js\) -->(\n|.)*?<!-- End Google tag \(gtag.js\) -->/, "");
     replacedHtml = replacedHtml.replace(/<!-- Google Tag Manager -->(.|\n)*?<!-- End Google Tag Manager -->/, "");

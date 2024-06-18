@@ -28,6 +28,9 @@ import "./daemons/recordDaemon.js";
 
 const maimaidxUrl = "https://maimaidx-eng.com";
 
+const pwaManifest = fs.readFileSync("./src/pwa/manifest.json");
+const serviceWorker = fs.readFileSync("./src/pwa/service-worker.js");
+
 const server = http.createServer(async (req, res) => {
     console.log(req.url, req.method);
 
@@ -101,7 +104,24 @@ const server = http.createServer(async (req, res) => {
             return;
         }
     }
-    if(!login)
+    if(req.url.startsWith("/static/"))
+    {
+        if(req.url.startsWith("/static/manifest.json"))
+        {   
+            res.writeHead(200, {
+                "Content-Type": "application/json"
+            });
+            res.end(pwaManifest);
+        }
+    }
+    else if(req.url === "/service-worker.js")
+    {
+        res.writeHead(200, {
+            "Content-Type": "application/javascript"
+        });
+        res.end(serviceWorker);
+    }
+    else if(!login)
     {
         console.log("not login request");
         res.writeHead(302, {"Location": "/login"});
@@ -423,21 +443,15 @@ const server = http.createServer(async (req, res) => {
             "Expires": -1,
             "Cache-Control": "no-cache"
         });
-        if(proxyResponse.status === 200)
+
+        // html inject
+        let html = proxyResponse.data;
+        if(proxyResponse.headers["content-type"].startsWith("text/html"))
         {
-            // html inject
-            let html = proxyResponse.data;
-            if(proxyResponse.headers["content-type"].startsWith("text/html"))
-            {
-                const pathname = req.url.split("?")[0];
-                html = Router.route(pathname, req, proxyResponse.data);
-            }
-            res.end(html);
+            const pathname = req.url.split("?")[0];
+            html = Router.route(pathname, req, proxyResponse.data);
         }
-        else
-        {
-            res.end(proxyResponse.data);
-        }
+        res.end(html);
     }
 });
 
