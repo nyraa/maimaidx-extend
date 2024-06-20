@@ -30,9 +30,14 @@ const maimaidxUrl = "https://maimaidx-eng.com";
 
 const pwaManifest = fs.readFileSync("./src/pwa/manifest.json");
 const serviceWorker = fs.readFileSync("./src/pwa/service-worker.js");
+const manifestPath = "/static/manifest.json";
+const serviceWorkerPath = "/service-worker.js";
 
 const server = http.createServer(async (req, res) => {
-    console.log(req.url, req.method);
+    if (req.url !== manifestPath && req.url !== serviceWorkerPath)
+    {
+        console.log(req.url, req.method);
+    }
 
     const cookie = req.headers.cookie?.split(";").reduce((obj, e) => {
         const [key, value] = e.split("=", 2);
@@ -106,7 +111,7 @@ const server = http.createServer(async (req, res) => {
     }
     if(req.url.startsWith("/static/"))
     {
-        if(req.url.startsWith("/static/manifest.json"))
+        if(req.url.startsWith(manifestPath))
         {   
             res.writeHead(200, {
                 "Content-Type": "application/json"
@@ -114,7 +119,7 @@ const server = http.createServer(async (req, res) => {
             res.end(pwaManifest);
         }
     }
-    else if(req.url === "/service-worker.js")
+    else if(req.url === serviceWorkerPath)
     {
         res.writeHead(200, {
             "Content-Type": "application/javascript"
