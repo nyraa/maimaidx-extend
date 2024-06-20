@@ -111,4 +111,4 @@ function photoDaemonCallback()
     });
 }
 
-registerDaemon(1000 * 60 * 30, 1000 * 60 * 15, photoDaemonCallback);
+registerDaemon(10, 5, photoDaemonCallback);

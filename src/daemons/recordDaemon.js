@@ -261,6 +261,6 @@ function runDaemon(dryrun = false)
     });
 }
 
-registerDaemon(1000 * 60 * 30, 0, async () => {
+registerDaemon(10, 0, async () => {
     runDaemon();
 });
