@@ -25,6 +25,7 @@ function photoDaemonCallback()
         if(res.request.res.responseUrl !== photoUrl)
         {
             // error, try to relogin
+            console.log(`Photo daemon login failed, redirect to ${res.request.res.responseUrl}`);
             await axiosInstance.get("https://maimaidx-eng.com/").then((res) => {
                 if(new URL(res.request.res.responseUrl).hostname === "lng-tgk-aime-gw.am-all.net")
                 {
@@ -111,4 +112,4 @@ function photoDaemonCallback()
     });
 }
 
-registerDaemon(10, 5, photoDaemonCallback);
+registerDaemon(1, 0.5, photoDaemonCallback);
