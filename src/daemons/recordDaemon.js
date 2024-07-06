@@ -198,7 +198,7 @@ function diffSinceLastPlay(db)
 
 function runDaemon(dryrun = false)
 {
-    const recordUrl = "https://maimaidx-eng.com/maimai-mobile/record/";
+    const recordUrl = "https://maimaidx-eng.com/record/";
     return axiosInstance.get(recordUrl).then(async (res) => {
         return res.data;
     }).then((html) => {
@@ -261,6 +261,6 @@ function runDaemon(dryrun = false)
     });
 }
 
-registerDaemon(10, 0, async () => {
+registerDaemon(1, 0, async () => {
     runDaemon();
 });
