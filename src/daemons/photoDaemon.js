@@ -112,4 +112,4 @@ function photoDaemonCallback()
     });
 }
 
-registerDaemon(1, 0.5, photoDaemonCallback);
+registerDaemon(20, 10, photoDaemonCallback);
