@@ -1,0 +1,14 @@
+[Unit]
+Description=maimaiDX extend server
+
+[Service]
+User=USER
+Group=GROUP
+WorkingDirectory=PATH_TO_SERVER
+ExecStart=/usr/bin/npm start
+Restart=always
+Enviroment=PATH=/usr/bin:/usr/local/bin
+Enviroment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
