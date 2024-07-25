@@ -17,9 +17,9 @@ function formatFilenameDatetime(date)
     return `${yyyy}${mm}${dd}${hh}${min}`;
 }
 
-function photoDaemonCallback()
+function photoDaemonCallback(dryrun = false, dryrunAll = false)
 {
-    const photoUrl = "https://maimaidx-eng.com/photo/";
+    const photoUrl = "https://maimaidx-eng.com/playerData/photo/";
     axiosInstance.get(photoUrl).then(async (res) => {
         let html;
         if(res.request.res.responseUrl !== photoUrl)
@@ -46,7 +46,11 @@ function photoDaemonCallback()
         const $ = cheerio.load(html);
         console.log($("title").text());
         const blocks = $(".m_10.p_5.f_0");
-        const lastTime = new Date(db.data.lastPhotoTime);
+        let lastTime = new Date(db.data.lastPhotoTime);
+        if(dryrunAll)
+        {
+            lastTime = new Date(0);
+        }
         let newLastTime = lastTime;
 
         blocks.each(async (index, element) => {
@@ -72,6 +76,9 @@ function photoDaemonCallback()
             // missing class like: music__score_back, fallback to utage
 
             const kind = block.find("img.music_kind_icon").attr("src").match(/music_(\w+)\.png/)[1];
+            const storeName = block.find(".see_through_block").text().trim();
+
+
             const datetimeString = formatFilenameDatetime(datetime);
             const filename = `${datetimeString}_${imgsrc.split("/").pop()}.jpg`;
             db.data.photos.push({
@@ -79,23 +86,30 @@ function photoDaemonCallback()
                 songname: songname,
                 level: level,
                 kind: kind,
+                storeName: storeName,
                 filename: filename
             });
-            console.log(`${datetime.toISOString()} ${songname} ${level} ${kind} ${imgsrc}`);
+            console.log(`${datetime.toISOString()} ${songname} ${level} ${kind} ${storeName} ${imgsrc}`);
 
-            const photoResponse = await axiosInstance.get(imgsrc, {
-                responseType: "arraybuffer"
-            });
-
-            const imageFileName = `photos/${filename}`;
-            fs.writeFileSync(imageFileName, photoResponse.data);
+            if(!dryrun)
+            {
+                const photoResponse = await axiosInstance.get(imgsrc, {
+                    responseType: "arraybuffer"
+                });
+    
+                const imageFileName = `photos/${filename}`;
+                fs.writeFileSync(imageFileName, photoResponse.data);
+            }
         });
 
         if(newLastTime > lastTime)
         {
             db.data.lastPhotoTime = newLastTime.toISOString();
             db.data.photos = db.chain.get("photos").orderBy((e) => new Date(e.datetime), "desc").value();
-            db.write();
+            if(!dryrun)
+            {
+                db.write();
+            }
         }
     }).catch((e) => {
         if(e.response)
