@@ -68,7 +68,7 @@ Router.register(/\/photo\/$/, (req, html) => {
                                                 </a>
                                             </div>
                                             <div class="col2 f_r">
-                                                <div class="see_through_block m_3 p_r_5 t_r f_11 break">$\{record.storeName}</div>
+                                                <div class="see_through_block m_3 p_r_5 t_r f_11 break">$\{record.storeName ?? "NO RECORD IN EXTEND DB"}</div>
                                             </div>
                                             <div class="clearfix"></div>
                                         </div>
