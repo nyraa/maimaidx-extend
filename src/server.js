@@ -49,7 +49,6 @@ const server = http.createServer(async (req, res) => {
 
     if(req.url === "/login")
     {
-        console.log("login");
         if(!login)
         {
             if(req.method === "GET")
@@ -201,39 +200,7 @@ const server = http.createServer(async (req, res) => {
     }
     else if(req.url.startsWith("/extend"))
     {
-        if(req.url.startsWith("/extend/photoproxy/"))
-        {
-            // SITE/extend/photo/user/ID
-            // TODO get /user/ID
-            const userIdPath = req.url.replace("/extend/photoproxy/", "");
-            const targetUrl = maimaidxUrl + "/maimai-mobile/img/photo/" + userIdPath;
-
-            try
-            {
-                const proxyResponse = await axiosInstance.get(targetUrl, {
-                    responseType: "arraybuffer"
-                });
-
-                // save photo image proxy cookie
-                saveCookie();
-                res.writeHead(proxyResponse.status, {
-                    "Content-Type": proxyResponse.headers["content-type"],
-                    "Expires": -1,
-                    "Cache-Control": "no-cache"
-                });
-                res.end(proxyResponse.data);
-            }
-            catch(e)
-            {
-                console.error(e);
-                res.writeHead(502, {
-                    "Content-Type": "text/plain"
-                });
-                res.end("502 Bad Gateway");
-                return;
-            }
-        }
-        else if(req.url.startsWith("/extend/photofile/"))
+        if(req.url.startsWith("/extend/photofile/"))
         {
             const filename = req.url.split("/").pop().split("?")[0];
             const filesource = "./photos/" + filename;

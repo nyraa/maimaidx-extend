@@ -4,10 +4,10 @@ import * as cheerio from "cheerio";
 Router.register(/\/photo\/$/, (req, html) => {
     const $ = cheerio.load(html);
 
-    // replace photo src
+    // replace album photo src
     $('img[src^="https://maimaidx-eng.com/maimai-mobile/img/photo/"]').each((index, element) => {
         const origSrc = $(element).attr("src");
-        const newSrc = origSrc.replace("https://maimaidx-eng.com/maimai-mobile/img/photo/", "/extend/photoproxy/");
+        const newSrc = origSrc.replace("https://maimaidx-eng.com/", "/");
         $(element).attr("src", newSrc);
     });
 
