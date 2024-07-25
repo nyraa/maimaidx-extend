@@ -40,8 +40,15 @@ const server = http.createServer(async (req, res) => {
     }
 
     const cookie = req.headers.cookie?.split(";").reduce((obj, e) => {
-        const [key, value] = e.split("=", 2);
-        obj[key.trim()] = value.trim();
+        try
+        {
+            const [key, value] = e.split("=", 2);
+            obj[key.trim()] = value.trim();
+        }
+        catch(exception)
+        {
+            console.log(e);
+        }
         return obj;
     }, {});
     const token = cookie?.token;
