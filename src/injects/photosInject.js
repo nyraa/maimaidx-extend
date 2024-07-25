@@ -62,9 +62,13 @@ Router.register(/\/photo\/$/, (req, html) => {
                                             <div class="clearfix"></div>
                                             <div class="black_block w_430 m_3 m_b_5 p_5 t_l f_15 break">$\{record.songname}</div>
                                             <img src="/extend/photofile/$\{record.filename}" class="w_430">
-                                            <div class="col2 f_l"></div>
+                                            <div class="col2 f_l">
+                                                <a href="/extend/photofile/$\{record.filename}" target="_blank">
+                                                    <img src="https://maimaidx-eng.com/maimai-mobile/img/btn_save.png" class="m_t_5 p_l_5 f_l w_112">
+                                                </a>
+                                            </div>
                                             <div class="col2 f_r">
-                                                <div class="see_through_block m_3 p_r_5 t_r f_11 break"></div>
+                                                <div class="see_through_block m_3 p_r_5 t_r f_11 break">$\{record.storeName}</div>
                                             </div>
                                             <div class="clearfix"></div>
                                         </div>
