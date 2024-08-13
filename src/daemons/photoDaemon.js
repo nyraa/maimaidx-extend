@@ -70,7 +70,23 @@ function photoDaemonCallback(dryrun = false, dryrunAll = false)
 
             const level = block.find("div.p_r.p_5").attr("class").match(/music_(\w+)_score_back/)?.[1] ?? "utage";
 
-            const kind = block.find("img.music_kind_icon").attr("src").match(/music_(\w+)\.png/)[1];
+            let kind, utageKind;
+            if(level === "utage")
+            {
+                utageKind = $(".music_kind_icon_utage").map((index, element) => {
+                    const tag = $(element);
+                    const icon = tag.find("img").attr("src").match(/\/img\/music_(\w+)\.png/)[1];
+                    const text = tag.find(".music_kind_icon_utage_text_photo").text();
+                    return {
+                        icon,
+                        text
+                    };
+                }).toArray();
+            }
+            else
+            {
+                kind = block.find("img.music_kind_icon").attr("src").match(/music_(\w+)\.png/)[1];
+            }
             const storeName = block.find(".see_through_block").text().trim();
 
 
@@ -81,10 +97,11 @@ function photoDaemonCallback(dryrun = false, dryrunAll = false)
                 songname: songname,
                 level: level,
                 kind: kind,
+                utageKind: utageKind,
                 storeName: storeName,
                 filename: filename
             });
-            console.log(`${datetime.toISOString()} ${songname} ${level} ${kind} ${storeName} ${imgsrc}`);
+            console.log(`${datetime.toISOString()} ${songname} ${level} ${kind} utage[${utageKind?.map((e) => e.text)?.join(" ")}] ${storeName} ${imgsrc}`);
 
             if(!dryrun)
             {
