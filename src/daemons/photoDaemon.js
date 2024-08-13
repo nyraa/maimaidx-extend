@@ -68,12 +68,7 @@ function photoDaemonCallback(dryrun = false, dryrunAll = false)
             const songname = block.find(".black_block").text();
             const imgsrc = block.find("img.w_430").attr("src");
 
-            // tmp fix for utage frame missing on official photo page
-            // original:
-            // const level = block.find("div.p_r.p_5").attr("class").match(/music_(\w+)_score_back/)[1];
-            // tmp fix:
             const level = block.find("div.p_r.p_5").attr("class").match(/music_(\w+)_score_back/)?.[1] ?? "utage";
-            // missing class like: music__score_back, fallback to utage
 
             const kind = block.find("img.music_kind_icon").attr("src").match(/music_(\w+)\.png/)[1];
             const storeName = block.find(".see_through_block").text().trim();
