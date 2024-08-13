@@ -56,9 +56,16 @@ Router.register(/\/photo\/$/, (req, html) => {
                                 const domstring = \`
                                     <div class=" m_10 p_5 f_0">
                                         <div class="music_$\{record.level}_score_back p_r p_5">
-                                            <img src="https://maimaidx-eng.com/maimai-mobile/img/music_$\{record.kind}.png" class="music_kind_icon f_r">
+                                            $\{record.kind ? \`<img src="https://maimaidx-eng.com/maimai-mobile/img/music_$\{record.kind}.png" class="music_kind_icon f_r">\` : ""}
                                             <div class="block_info p_3 f_11 white">$\{formatter.format(new Date(record.datetime))}</div>
-                                            <img src="https://maimaidx-eng.com/maimai-mobile/img/diff_$\{record.level}.png" class="h_16 f_l"><br>
+                                            <img src="https://maimaidx-eng.com/maimai-mobile/img/diff_$\{record.level}.png" class="h_16 f_l">
+                                            <br>
+                                            $\{record.utageKind ? record.utageKind.map((tag) => \`
+                                                <div class="music_kind_icon_utage f_l">
+                                                    <img src="https://maimaidx-eng.com/maimai-mobile/img/music_$\{tag.icon}.png" class="h_20">
+                                                    <div class="white music_kind_icon_utage_text_photo f_10 t_c">$\{tag.text}</div>
+                                                </div>
+                                            \`) : ""}
                                             <div class="clearfix"></div>
                                             <div class="black_block w_430 m_3 m_b_5 p_5 t_l f_15 break">$\{record.songname}</div>
                                             <img src="/extend/photofile/$\{record.filename}" class="w_430">
