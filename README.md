@@ -6,6 +6,7 @@ A wrapper for maimai DX NET international version.
 - Save the memory photo and append to list (Official photo count up to 10)
 - Find the play log in song record
 - Show achievement +-% in record (Since this record starts)
+- Show the play count for today
 
 ## Usage
 To install dependencies:
