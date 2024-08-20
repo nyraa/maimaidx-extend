@@ -11,19 +11,6 @@ Router.register(/\/photo\/$/, (req, html) => {
         $(element).attr("src", newSrc);
     });
 
-    // tmp fix for utage frame
-    $(".music__score_back").each((index, element) => {
-        // replace "music__score_back" with class "music_utage_score_back"
-        $(element).attr("class", $(element).attr("class").replace("music__score_back", "music_utage_score_back"));
-        // log fix message to identify if this is still needed
-        console.log("fixing utage frame");
-    });
-
-    // tmp fix for utage icon
-    $('img[src^="https://maimaidx-eng.com/maimai-mobile/img/diff_.png"]').each((index, element) => {
-        $(element).attr("src", "https://maimaidx-eng.com/maimai-mobile/img/diff_utage.png");
-    });
-
     // inject more photo
     $("footer").before(`
         <div class="t_c" id="viewmore_action">
