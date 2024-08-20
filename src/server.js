@@ -1,6 +1,7 @@
 import * as http from "http";
 import querystring from "querystring";
 import fs from "fs";
+import { getCacheFileSync } from "./cache.js";
 
 import { verifyAccount, signJWT, verifyJWT } from "./secret.js";
 
@@ -29,8 +30,6 @@ import "./daemons/recordDaemon.js";
 
 const maimaidxUrl = "https://maimaidx-eng.com";
 
-const pwaManifest = fs.readFileSync("./src/pwa/manifest.json");
-const serviceWorker = fs.readFileSync("./src/pwa/service-worker.js");
 const manifestPath = "/static/manifest.json";
 const serviceWorkerPath = "/service-worker.js";
 
@@ -123,7 +122,7 @@ const server = http.createServer(async (req, res) => {
             res.writeHead(200, {
                 "Content-Type": "application/json"
             });
-            res.end(pwaManifest);
+            res.end(getCacheFileSync("./src/pwa/manifest.json"));
         }
     }
     else if(req.url === serviceWorkerPath)
@@ -131,7 +130,7 @@ const server = http.createServer(async (req, res) => {
         res.writeHead(200, {
             "Content-Type": "application/javascript"
         });
-        res.end(serviceWorker);
+        res.end(getCacheFileSync("./src/pwa/service-worker.js"));
     }
     else if(!login)
     {
