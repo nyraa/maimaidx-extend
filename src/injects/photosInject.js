@@ -19,6 +19,9 @@ Router.register(/\/photo\/$/, (req, html) => {
         </script>
     `);
 
+    // remove body context menu limitation
+    $("body").removeAttr("oncontextmenu");
+
     // inject more photo
     $("footer").before(`
         <div class="t_c" id="viewmore_action">
