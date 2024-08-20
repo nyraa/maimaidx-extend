@@ -1,5 +1,6 @@
 import Router from "../router.js";
 import * as cheerio from "cheerio";
+import { getCacheFileSync } from "../cache.js";
 
 Router.register(/\/photo\/$/, (req, html) => {
     const $ = cheerio.load(html);
@@ -10,6 +11,13 @@ Router.register(/\/photo\/$/, (req, html) => {
         const newSrc = origSrc.replace("https://maimaidx-eng.com/", "/");
         $(element).attr("src", newSrc);
     });
+
+    // add download attribute to save button (on client side)
+    $("body").append(`
+        <script language="javascript">
+            ${getCacheFileSync("src/injects/client/saveButton.js.txt")}
+        </script>
+    `);
 
     // inject more photo
     $("footer").before(`

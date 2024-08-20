@@ -1,0 +1,25 @@
+$(document).ready(() => {
+    const formatter = new Intl.DateTimeFormat("ja", {
+        timeZone: "Asia/Tokyo",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false
+    });
+    document.querySelectorAll(".m_10.p_5.f_0").forEach((element) => {
+        const datetime = new Date(element.querySelector(".block_info").textContent.trim() + " GMT+0900");
+        const datetimePart = formatter.formatToParts(datetime).reduce((prev, part) => {
+            prev[part.type] = part.value;
+            return prev;
+        }, {});
+        const datetimeString = `${datetimePart.year}-${datetimePart.month}-${datetimePart.day}_${datetimePart.hour}-${datetimePart.minute}`;
+        const songname = element.querySelector(".black_block").textContent;
+        const level = element.querySelector(".p_r.p_5").className.match(/music_(\w+)_score_back/)?.[1];
+        const storeName = element.querySelector(".see_through_block").textContent.trim();
+        const imageName = element.querySelector("img.w_430").src.split("/").pop();
+        const filename = `${datetimeString}_${songname}_${level}_${storeName}_${imageName}.jpg`.replace(/[<>:"/\\|?*]/g, "_");
+        element.querySelector(".col2.f_l a").download = filename;
+    });
+});
