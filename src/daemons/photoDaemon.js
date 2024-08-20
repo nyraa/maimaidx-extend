@@ -68,7 +68,7 @@ function photoDaemonCallback(dryrun = false, dryrunAll = false)
             const songname = block.find(".black_block").text();
             const imgsrc = block.find("img.w_430").attr("src");
 
-            const level = block.find("div.p_r.p_5").attr("class").match(/music_(\w+)_score_back/)?.[1] ?? "utage";
+            const level = block.find("div.p_r.p_5").attr("class").match(/music_(\w+)_score_back/)?.[1];
 
             let kind, utageKind;
             if(level === "utage")
