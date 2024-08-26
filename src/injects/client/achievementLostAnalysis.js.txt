@@ -39,17 +39,11 @@ const Scores = [
         500, 500, 400, 250, 0
     ],
     [   // Break
-        2500
+        2500, 2500, 2500, 2000, 1500, 1250, 1000, 0
     ],
-    [   // BreakBouns
-        100
+    [   // BREAKBONUS
+        100, 75, 50, 40, 40, 40, 30, 0
     ]
-];
-const BreakScores = [ // Break
-    2500, 2500, 2500, 2000, 1500, 1250, 1000, 0
-];
-const BreakBounsScores = [ // BreakBouns
-    100, 75, 50, 40, 40, 40, 30, 0
 ];
 
 
@@ -105,8 +99,8 @@ function calcKnownScore(achievement)
 
     // break only
     // critical and good only have one type of judgement
-    const knownBreak = achievement.detail[NoteType.BREAK][Judgement.Critical] * BreakScores[JudgementDetail.Critical] + achievement.detail[NoteType.BREAK][Judgement.Good] * BreakScores[JudgementDetail.Good];
-    const knownBouns = achievement.detail[NoteType.BREAK][Judgement.Critical] * BreakBounsScores[JudgementDetail.Critical] + achievement.detail[NoteType.BREAK][Judgement.Good] * BreakBounsScores[JudgementDetail.Good];
+    const knownBreak = achievement.detail[NoteType.BREAK][Judgement.Critical] * Scores[NoteType.BREAK][JudgementDetail.Critical] + achievement.detail[NoteType.BREAK][Judgement.Good] * Scores[NoteType.BREAK][JudgementDetail.Good];
+    const knownBouns = achievement.detail[NoteType.BREAK][Judgement.Critical] * Scores[NoteType.BREAKBONUS][JudgementDetail.Critical] + achievement.detail[NoteType.BREAK][Judgement.Good] * Scores[NoteType.BREAKBONUS][JudgementDetail.Good];
 
     return {
         ignoreBreak: knownScore + knownBreak,
@@ -147,8 +141,8 @@ function tryBreak(achievement, theory, known, target)
                 {
                     for(great3rd = 0; great3rd <= totalGreat - great - great2nd; ++great3rd)
                     {
-                        score = known.ignoreBreak + perfect * BreakScores[JudgementDetail.Perfect] + perfect2nd * BreakScores[JudgementDetail.Perfect2nd] + great * BreakScores[JudgementDetail.Great] + great2nd * BreakScores[JudgementDetail.Great2nd] + great3rd * BreakScores[JudgementDetail.Great3rd];
-                        bounsScore = known.breakOnly + perfect * BreakBounsScores[JudgementDetail.Perfect] + perfect2nd * BreakBounsScores[JudgementDetail.Perfect2nd] + great * BreakBounsScores[JudgementDetail.Great] + great2nd * BreakBounsScores[JudgementDetail.Great2nd] + great3rd * BreakBounsScores[JudgementDetail.Great3rd];
+                        score = known.ignoreBreak + perfect * Scores[NoteType.BREAK][JudgementDetail.Perfect] + perfect2nd * Scores[NoteType.BREAK][JudgementDetail.Perfect2nd] + great * Scores[NoteType.BREAK][JudgementDetail.Great] + great2nd * Scores[NoteType.BREAK][JudgementDetail.Great2nd] + great3rd * Scores[NoteType.BREAK][JudgementDetail.Great3rd];
+                        bounsScore = known.breakOnly + perfect * Scores[NoteType.BREAKBONUS][JudgementDetail.Perfect] + perfect2nd * Scores[NoteType.BREAKBONUS][JudgementDetail.Perfect2nd] + great * Scores[NoteType.BREAKBONUS][JudgementDetail.Great] + great2nd * Scores[NoteType.BREAKBONUS][JudgementDetail.Great2nd] + great3rd * Scores[NoteType.BREAKBONUS][JudgementDetail.Great3rd];
                         if(calcAchievement(theory.ignoreBreak, theory.breakOnly, score, bounsScore) === target)
                         {
                             success = true;
