@@ -24,6 +24,18 @@ Router.register(/.*/, (req, html) => {
         $(element).attr("onclick", newHref);
     });
 
+    // replace css and js(jquery) url
+    $('link[href^="https://maimaidx-eng.com/"][rel="stylesheet"]').each((index, element) => {
+        const origHref = $(element).attr("href");
+        const newHref = origHref.replace("https://maimaidx-eng.com/", "/");
+        $(element).attr("href", newHref);
+    });
+    $('script[src^="https://maimaidx-eng.com/"]').each((index, element) => {
+        const origSrc = $(element).attr("src");
+        const newSrc = origSrc.replace("https://maimaidx-eng.com/", "/");
+        $(element).attr("src", newSrc);
+    });
+
     // insert pwa manifest
     $('head').append('<link rel="manifest" href="/static/manifest.json" />');
     $('head').append(`
