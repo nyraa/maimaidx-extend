@@ -1,0 +1,201 @@
+const NoteType = {
+    TAP: 0,
+    HOLD: 1,
+    SLIDE: 2,
+    TOUCH: 3,
+    BREAK: 4,
+    BREAKBONUS: 5
+}
+const JudgementDetail = {
+    Critical: 0,
+    Perfect: 1,
+    Perfect2nd: 2,
+    Great: 3,
+    Great2nd: 4,
+    Great3rd: 5,
+    Good: 6,
+    Miss: 7
+};
+const Judgement = {
+    Critical: 0,
+    Perfect: 1,
+    Great: 2,
+    Good: 3,
+    Miss: 4
+};
+
+const Scores = [
+    // Critical, Perfect, Great, Good, Miss
+    [ // Tap
+        500, 500, 400, 250, 0
+    ],
+    [ // Hold
+        1000, 1000, 800, 500, 0
+    ],
+    [ // Slide
+        1500, 1500, 1200, 750, 0
+    ],
+    [ // Touch
+        500, 500, 400, 250, 0
+    ],
+    [   // Break
+        2500
+    ],
+    [   // BreakBouns
+        100
+    ]
+];
+const BreakScores = [ // Break
+    2500, 2500, 2500, 2000, 1500, 1250, 1000, 0
+];
+const BreakBounsScores = [ // BreakBouns
+    100, 75, 50, 40, 40, 40, 30, 0
+];
+
+
+// exclude break
+const LossPoints = [
+    // Tap
+    [0, 0, 100, 250, 500],
+    // Hold
+    [0, 0, 200, 500, 1000],
+    // Slide
+    [0, 0, 300, 750, 1500],
+    // Touch
+    [0, 0, 100, 250, 500]
+];
+const BreakLossPoints = [
+    0, 0, 0, 500, 1000, 1250, 1500, 2500
+];
+
+const BounsLossPoints = [
+    0, 25, 50, 60, 60, 60, 70, 100
+];
+
+function getAchievement()
+{
+    const detail = Array.from(document.querySelectorAll(".playlog_notes_detail tr:not(:first-child)")).map((element) =>
+    {
+        return Array.from(element.querySelectorAll("td")).map((e) => parseInt(e.textContent)).map((e) => isNaN(e) ? 0 : e);
+    });
+    const totalCount = detail.map((a) => a.reduce((acc, cur) => acc + cur, 0));
+
+    return {
+        detail: detail,
+        totalCount: totalCount
+    };
+}
+
+function calcTheory(achievement)
+{
+    const theoryScore = achievement.totalCount.map((e, i) => e * Scores[i][Judgement.Critical]).reduce((acc, cur) => acc + cur, 0);
+    const theoryBouns = achievement.totalCount[NoteType.BREAK] * Scores[NoteType.BREAKBONUS][Judgement.Critical];
+    return {
+        ignoreBreak: theoryScore,
+        breakOnly: theoryBouns
+    };
+}
+
+function calcKnownScore(achievement)
+{
+    // without break
+    const knownScore = achievement.detail.slice(NoteType.TAP, NoteType.BREAK)
+        .map((a, noteType) => a.reduce((acc, cur, judgement) => acc + cur * Scores[noteType][judgement], 0))    // dot product with Scores
+        .reduce((acc, cur) => acc + cur, 0);    // sumj
+
+    // break only
+    // critical and good only have one type of judgement
+    const knownBreak = achievement.detail[NoteType.BREAK][Judgement.Critical] * BreakScores[JudgementDetail.Critical] + achievement.detail[NoteType.BREAK][Judgement.Good] * BreakScores[JudgementDetail.Good];
+    const knownBouns = achievement.detail[NoteType.BREAK][Judgement.Critical] * BreakBounsScores[JudgementDetail.Critical] + achievement.detail[NoteType.BREAK][Judgement.Good] * BreakBounsScores[JudgementDetail.Good];
+
+    return {
+        ignoreBreak: knownScore + knownBreak,
+        breakOnly: knownBouns
+    };
+}
+
+function toFixed4(num)
+{
+    return Math.floor(num * 10000) / 10000;
+}
+
+function calcAchievement(theoryScore, theoryBouns, score, bouns)
+{
+    const achievementIgnoreBreak = score / theoryScore * 100;
+    const achievementBreakOnly = bouns / theoryBouns;
+    const achievementDec = achievementIgnoreBreak + achievementBreakOnly;
+    return toFixed4(achievementDec);
+}
+
+function tryBreak(achievement, theory, known, target)
+{
+    let score = 0;
+    let bounsScore = 0;
+    const totalPerfect = achievement.detail[NoteType.BREAK][Judgement.Perfect];
+    const totalGreat = achievement.detail[NoteType.BREAK][Judgement.Great];
+    let perfect, perfect2nd, great, great2nd, great3rd;
+    let success = false;
+
+    console.log(totalPerfect, totalGreat);
+    tryLoop: for(perfect = 0; perfect <= totalPerfect; ++perfect)
+    {
+        for(perfect2nd = 0; perfect2nd <= totalPerfect - perfect; ++perfect2nd)
+        {
+            for(great = 0; great <= totalGreat; ++great)
+            {
+                for(great2nd = 0; great2nd <= totalGreat - great; ++great2nd)
+                {
+                    for(great3rd = 0; great3rd <= totalGreat - great - great2nd; ++great3rd)
+                    {
+                        score = known.ignoreBreak + perfect * BreakScores[JudgementDetail.Perfect] + perfect2nd * BreakScores[JudgementDetail.Perfect2nd] + great * BreakScores[JudgementDetail.Great] + great2nd * BreakScores[JudgementDetail.Great2nd] + great3rd * BreakScores[JudgementDetail.Great3rd];
+                        bounsScore = known.breakOnly + perfect * BreakBounsScores[JudgementDetail.Perfect] + perfect2nd * BreakBounsScores[JudgementDetail.Perfect2nd] + great * BreakBounsScores[JudgementDetail.Great] + great2nd * BreakBounsScores[JudgementDetail.Great2nd] + great3rd * BreakBounsScores[JudgementDetail.Great3rd];
+                        if(calcAchievement(theory.ignoreBreak, theory.breakOnly, score, bounsScore) === target)
+                        {
+                            success = true;
+                            break tryLoop;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    console.log(success, perfect, perfect2nd, great, great2nd, great3rd);
+    return {
+        success,
+        perfect,
+        perfect2nd,
+        great,
+        great2nd,
+        great3rd
+    };
+}
+
+function init()
+{
+    const achievement = getAchievement();
+    const theory = calcTheory(achievement);
+    const known = calcKnownScore(achievement);
+    const target = parseFloat(document.querySelector(".playlog_achievement_txt").textContent.split("%")[0]);
+    const breakDetail = tryBreak(achievement, theory, known, target);
+    // calc loss points
+    const lossAchievement = achievement.detail.slice(NoteType.TAP, NoteType.BREAK)
+        .map((a, noteType) => a.map((noteCount, judgement) => noteCount * LossPoints[noteType][judgement]).map((score) => (score / theory.ignoreBreak * 100).toFixed(4)));
+
+        // break
+    const lossPointsBreak = [
+        0,  // critical
+        breakDetail.perfect * BreakLossPoints[JudgementDetail.Perfect] + breakDetail.perfect2nd * BreakLossPoints[JudgementDetail.Perfect2nd],
+        breakDetail.great * BreakLossPoints[JudgementDetail.Great] + breakDetail.great2nd * BreakLossPoints[JudgementDetail.Great2nd] + breakDetail.great3rd * BreakLossPoints[JudgementDetail.Great3rd],
+        achievement.detail[NoteType.BREAK][Judgement.Good] * BreakLossPoints[JudgementDetail.Good],
+        achievement.detail[NoteType.BREAK][Judgement.Miss] * BreakLossPoints[JudgementDetail.Miss]
+    ];
+    const lossPointsBouns = [
+        0,
+        breakDetail.perfect * BounsLossPoints[JudgementDetail.Perfect] + breakDetail.perfect2nd * BounsLossPoints[JudgementDetail.Perfect2nd],
+        breakDetail.great * BounsLossPoints[JudgementDetail.Great] + breakDetail.great2nd * BounsLossPoints[JudgementDetail.Great2nd] + breakDetail.great3rd * BounsLossPoints[JudgementDetail.Great3rd],
+        achievement.detail[NoteType.BREAK][Judgement.Good] * BounsLossPoints[JudgementDetail.Good],
+        achievement.detail[NoteType.BREAK][Judgement.Miss] * BounsLossPoints[JudgementDetail.Miss]
+    ];
+    const lossBreakAchievement = lossPointsBreak.map((score, i) => (score / theory.ignoreBreak * 100 + lossPointsBouns[i] / theory.breakOnly).toFixed(4));
+    // update DOM
+}
