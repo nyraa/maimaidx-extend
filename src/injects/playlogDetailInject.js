@@ -1,6 +1,7 @@
 import Router from "../router.js";
 import * as cheerio from "cheerio";
 import db from "../database.js";
+import { getCacheFileSync } from "../cache.js";
 
 // inject play log detail page
 Router.register(/\/record\/playlogDetail\//, (req, html) => {
@@ -20,5 +21,17 @@ Router.register(/\/record\/playlogDetail\//, (req, html) => {
     // inject achievement diff
     const diffDomString = `<span class="f_10" style="display: block;">${record.achievementDiff >= 0 ? "+" : "-"}${record.achievementDiff.toFixed(4)}%</span>`;
     $(".playlog_achievement_txt>.f_20").after(diffDomString);
+
+    // inject chievement analysis
+    $("body").append(`
+        <script language="javascript">
+            ${getCacheFileSync("src/injects/client/achievementLostAnalysis.js.txt")}
+        </script>
+    `);
+    $("head").append(`
+        <style>
+            ${getCacheFileSync("src/injects/client/achievementLostAnalysis.css")}
+        </style>
+    `);
     return $.html();
 });

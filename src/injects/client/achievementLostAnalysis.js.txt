@@ -173,9 +173,9 @@ function init()
     const breakDetail = tryBreak(achievement, theory, known, target);
     // calc loss points
     const lossAchievement = achievement.detail.slice(NoteType.TAP, NoteType.BREAK)
-        .map((a, noteType) => a.map((noteCount, judgement) => noteCount * LossPoints[noteType][judgement]).map((score) => (score / theory.ignoreBreak * 100).toFixed(4)));
+        .map((a, noteType) => a.map((noteCount, judgement) => noteCount * LossPoints[noteType][judgement]).map((score) => (score / theory.ignoreBreak * 100)));
 
-        // break
+    // break
     const lossPointsBreak = [
         0,  // critical
         breakDetail.perfect * BreakLossPoints[JudgementDetail.Perfect] + breakDetail.perfect2nd * BreakLossPoints[JudgementDetail.Perfect2nd],
@@ -190,6 +190,49 @@ function init()
         achievement.detail[NoteType.BREAK][Judgement.Good] * BounsLossPoints[JudgementDetail.Good],
         achievement.detail[NoteType.BREAK][Judgement.Miss] * BounsLossPoints[JudgementDetail.Miss]
     ];
-    const lossBreakAchievement = lossPointsBreak.map((score, i) => (score / theory.ignoreBreak * 100 + lossPointsBouns[i] / theory.breakOnly).toFixed(4));
+    const lossBreakAchievement = lossPointsBreak.map((score, i) => parseFloat((score / theory.ignoreBreak * 100 + lossPointsBouns[i] / theory.breakOnly).toFixed(4)));
     // update DOM
+    console.log(lossAchievement, lossBreakAchievement);
+    document.querySelectorAll(".playlog_notes_detail tr:not(:first-child):not(:last-child)").forEach((element, i) =>
+    {
+        const lossPoints = lossAchievement[i];
+        const sum = lossPoints.reduce((acc, cur) => acc + cur, 0);
+        sum > 0 && $(element).find("th").append(`<span>-${sum.toFixed(4)}%</span>`);
+        $(element).find("td").each((j, e) =>
+        {
+            lossPoints[j] > 0 && $(e).append(`<span>-.${lossPoints[j].toFixed(4).split(".")[1]}%</span>`);
+        });
+    });
+    const breakLossSum = lossBreakAchievement.reduce((acc, cur) => acc + cur, 0);
+    if(breakLossSum > 0)
+    {
+        const breakElement = document.querySelectorAll(".playlog_notes_detail tr:last-child");
+        $(breakElement).find("th").append(`<span>-${breakLossSum.toFixed(4)}%</span>`);
+        $(breakElement).find("td").each((j, e) =>
+        {
+            lossBreakAchievement[j] > 0 && $(e).append(`<span>-.${lossBreakAchievement[j].toFixed(4).split(".")[1]}%</span>`);
+        });
+    }
 }
+window.addEventListener("load", () =>
+{
+    let isInit = false;
+    $(".playlog_rating_detail_block").after($(`<img src="https://maimaidx-eng.com/maimai-mobile/img/btn_on.png" class="h_30" id="detail_control" />`).click(() =>
+    {
+        if(!isInit)
+        {
+            isInit = true;
+            init();
+        }
+        if($(".playlog_notes_detail").hasClass("display_detail"))
+        {
+            $(".playlog_notes_detail").removeClass("display_detail");
+            $("#detail_control").attr("src", "https://maimaidx-eng.com/maimai-mobile/img/btn_on.png");
+        }
+        else
+        {
+            $(".playlog_notes_detail").addClass("display_detail");
+            $("#detail_control").attr("src", "https://maimaidx-eng.com/maimai-mobile/img/btn_off.png");
+        }
+    }));
+});
