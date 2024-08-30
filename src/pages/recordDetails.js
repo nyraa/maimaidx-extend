@@ -1,6 +1,14 @@
-import * as cheerio from "cheerio";
-import exp from "constants";
-import fs from "fs";
+import emptyPage from "./empty.js";
+import { getCacheFileSync } from "../cache.js";
+
+const achievementLostAnalysisHeader = `
+    <script language="javascript">
+        ${getCacheFileSync("src/injects/client/achievementLostAnalysis.js.txt")}
+    </script>
+    <style>
+        ${getCacheFileSync("src/injects/client/achievementLostAnalysis.css")}
+    </style>
+`;
 
 function recordPage(record)
 {
@@ -13,6 +21,7 @@ function recordPage(record)
         minute: "2-digit",
         hour12: false
     });
+    const recordHeader = `<img src="https://maimaidx-eng.com/maimai-mobile/img/title_playlog.png" class="title m_10" />`;
     const recordOverview = `
         <div class="p_10 t_l f_0 v_b">
             <div class="playlog_top_container p_r">
@@ -220,11 +229,9 @@ function recordPage(record)
         </div>
     `;
 
-    let html = fs.readFileSync("src/pages/record.html", "utf-8");
-    html = html.replace("<overview />", recordOverview);
-    html = html.replace("<grayblock />", grayBlock);
-    html = html.replace("<matching />", record.matchs.length > 0 ? match : "");
-    return html;
+    const acnivementAnalysis = getCacheFileSync("src/injects/client/achievementLostAnalysis.js.txt");
+    const page = emptyPage(true, true, true, "maimai DX NET－Game Record－", achievementLostAnalysisHeader, recordHeader + recordOverview + grayBlock + (record.matchs.length > 0 ? match : ""));
+    return page;
 }
 
 export default recordPage;

@@ -1,0 +1,109 @@
+<img id="page-top" src="https://maimaidx-eng.com/maimai-mobile/img/btn_page_top.png" class="pointer">
+<img id="page-bottom" src="https://maimaidx-eng.com/maimai-mobile/img/btn_page_bottom.png" class="pointer">
+<script>
+    var scrollPoint = $('.scroll_point').length;
+    $('#page-top').click(function ()
+    {
+        if(scrollPoint > 0)
+        {
+            var fromPos = Math.floor($(window).scrollTop());
+            var toPos = 0;
+            $(".scroll_point").each(function ()
+            {
+                var targetPos = Math.floor($(this).offset().top);
+                if(location.pathname.split('/').pop() == "updateMusic")
+                {
+                    targetPos = targetPos - 284;
+                }
+                if(fromPos > targetPos)
+                {
+                    toPos = targetPos;
+                } else
+                {
+                    return false;
+                }
+            });
+            $('body,html').animate({ scrollTop: toPos }, 500);
+        } else
+        {
+            $('body,html').animate({ scrollTop: 0 }, 500);
+        }
+        return false;
+    });
+    $('#page-bottom').click(function ()
+    {
+        if(scrollPoint > 0)
+        {
+            var fromPos = Math.floor($(window).scrollTop()) + 3;
+            var toPos = Math.floor($(document).height());
+            $(".scroll_point").each(function ()
+            {
+                var targetPos = Math.floor($(this).offset().top);
+                if(location.pathname.split('/').pop() == "updateMusic")
+                {
+                    targetPos = targetPos - 284;
+                }
+                if(fromPos < targetPos)
+                {
+                    toPos = targetPos;
+                    return false;
+                }
+            });
+            $('body,html').animate({ scrollTop: toPos }, 500);
+        } else
+        {
+            $('body,html').animate({ scrollTop: $(document).height() }, 500);
+        }
+        return false;
+    });
+    function fadeOutPageBtn()
+    {
+        $('#page-top').fadeOut(1500).animate({ duration: 'slow', easing: 'linear' });
+        $('#page-bottom').fadeOut(1500).animate({ duration: 'slow', easing: 'linear' });
+    }
+    var spmenu_toggle = $('.spmenu_toggle');
+    var spmenu_navigation = $('.spmenu_navigation');
+    spmenu_toggle.click(function ()
+    {
+        $(this).toggleClass('active');
+        if($(this).hasClass('active'))
+        {
+            spmenu_navigation.addClass('active');
+        } else
+        {
+            spmenu_navigation.removeClass('active');
+        }
+    });
+    spmenu_navigation.click(function ()
+    {
+        spmenu_toggle.removeClass('active');
+        $(this).removeClass('active');
+    });
+    var timeLimit = 3 * 1000;
+    var timerId = setTimeout(fadeOutPageBtn, timeLimit);
+    $(window).scroll(function ()
+    {
+        if(!spmenu_navigation.is(':visible')) spmenu_navigation.css('display', 'block');
+        if(!$('#page-top').is(':visible')) $('#page-top').fadeIn();
+        if(!$('#page-bottom').is(':visible')) $('#page-bottom').fadeIn();
+        clearTimeout(timerId);
+        timerId = setTimeout(fadeOutPageBtn, timeLimit);
+        var visible = spmenu_toggle.is(':visible');
+        if($(this).scrollTop() > 250)
+        {
+            if(!visible)
+                spmenu_toggle.fadeIn().animate({ 'right': '5px' }, { duration: 500, queue: false });
+        } else
+        {
+            if(visible)
+            {
+                spmenu_toggle.fadeOut().animate({ 'right': '-100%' }, { duration: 500, queue: false });
+                if(spmenu_toggle.hasClass('active'))
+                {
+                    spmenu_toggle.removeClass('active');
+                    spmenu_navigation.removeClass('active');
+                }
+            }
+        }
+    });
+</script>

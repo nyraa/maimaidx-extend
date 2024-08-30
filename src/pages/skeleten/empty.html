@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes">
+        <script>
+            var baseW = 768;
+            var iOSW = 0;
+            var ua = navigator.userAgent.toLowerCase();
+            var isiOS = (ua.indexOf("iphone") > -1) || (ua.indexOf("ipod") > -1) || (ua.indexOf("ipad") > -1);
+            if(isiOS)
+            {
+                iOSW = document.documentElement.clientWidth;
+            }
+            window.addEventListener("resize", updateMetaViewport, false);
+            window.addEventListener("orientationchange", updateMetaViewport, false);
+            var ev = document.createEvent("UIEvent");
+            ev.initEvent("resize", true, true)
+            window.dispatchEvent(ev);
+            function updateMetaViewport()
+            {
+                var viewportContent;
+                var w = window.outerWidth;
+                if(isiOS)
+                {
+                    w = iOSW;
+                }
+                if(w < baseW)
+                {
+                    viewportContent = "width=480,initial-scale=" + w / 480 + ",user-scalable=yes,shrink-to-fit=no";
+                } else
+                {
+                    viewportContent = "width=device-width,initial-scale=1.0,user-scalable=yes,shrink-to-fit=no";
+                }
+                document.querySelector("meta[name='viewport']").setAttribute("content", viewportContent);
+            }
+        </script>
+        <meta name="format-detection" content="telephone=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8; IE=EmulateIE9">
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Cache-Control" content="no-cache">
+        <meta http-equiv="Expires" content="-1">
+        <meta name="robots" content="INDEX, FOLLOW">
+        <meta name="author" content="(C) SEGA">
+        <meta name="copyright" content="©SEGA">
+        <meta name="description"
+            content="This is an official website of 'maimai DX', the latest game in maimai series which created by SEGA Interactive Co., Ltd.">
+        <meta name="keywords" content="maimaiDXNET,maimaiDX,maimai deluxe,sega">
+        <meta name="theme-color" content="#51bcf3">
+        <meta name="mkd" content="7293c62586ebaef13ae029c8c814ce04">
+
+        <title>{{title}}</title>
+        <link rel="stylesheet" href="/maimai-mobile/css/common.css?ver=1.45?20230401">
+        <link rel="apple-touch-icon-precomposed" href="https://maimaidx-eng.com/maimai-mobile/apple-touch-icon.png">
+        <link rel="icon" type="image/png" href="https://maimaidx-eng.com/maimai-mobile/apple-touch-icon.png">
+        <link rel="manifest" href="/static/manifest.json">
+        <script language="javascript">
+            if('serviceWorker' in navigator)
+            {
+                window.addEventListener('load', () =>
+                {
+                    navigator.serviceWorker.register('/service-worker.js')
+                        .then(registration =>
+                        {
+                            console.log('Service Worker registered with scope:', registration.scope);
+                        })
+                        .catch(error =>
+                        {
+                            console.log('Service Worker registration failed:', error);
+                        });
+                });
+            }
+        </script>
+        {{header}}
+    </head>
+
+    <body oncontextmenu="return false;">
+        <div class="wrapper t_c">
+            <a href="/maimai-mobile/home/"><img src="https://maimaidx-eng.com/maimai-mobile/img/logo.png"
+                    class="logo p_5"></a>
+        </div>
+        <div class="wrapper main_wrapper t_c">
+            {{content}}
+            {{back}}
+            {{footer}}
+        </div>
+        <script src="/maimai-mobile/js/jquery-3.3.1.min.js"></script>
+        {{scroll}}
+    </body>
+</html>
