@@ -195,20 +195,20 @@ function init()
     {
         const lossPoints = lossAchievement[i];
         const sum = lossPoints.reduce((acc, cur) => acc + cur, 0);
-        sum > 0 && $(element).find("th").append(`<span>-${sum.toFixed(4)}%</span>`);
+        sum > 0 && $(element).find("th").append(`<span>${sum.toFixed(4)}%</span>`);
         $(element).find("td").each((j, e) =>
         {
-            lossPoints[j] > 0 && $(e).append(`<span>-.${lossPoints[j].toFixed(4).split(".")[1]}%</span>`);
+            lossPoints[j] > 0 && $(e).append(`<span>${lossPoints[j].toFixed(4)}%</span>`);
         });
     });
     const breakLossSum = lossBreakAchievement.reduce((acc, cur) => acc + cur, 0);
     if(breakLossSum > 0)
     {
         const breakElement = document.querySelectorAll(".playlog_notes_detail tr:last-child");
-        $(breakElement).find("th").append(`<span>-${breakLossSum.toFixed(4)}%</span>`);
+        $(breakElement).find("th").append(`<span>${breakLossSum.toFixed(4)}%</span>`);
         $(breakElement).find("td").each((j, e) =>
         {
-            lossBreakAchievement[j] > 0 && $(e).append(`<span>-.${lossBreakAchievement[j].toFixed(4).split(".")[1]}%</span>`);
+            lossBreakAchievement[j] > 0 && $(e).append(`<span>${lossBreakAchievement[j].toFixed(4)}%</span>`);
             if(j == 1)  // perfect
             $(e).append(`<span class="break_detail">(${breakDetail.perfect}/${breakDetail.perfect2nd})</span>`);
             else if(j == 2) // great
