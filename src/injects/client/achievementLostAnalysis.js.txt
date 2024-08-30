@@ -209,6 +209,10 @@ function init()
         $(breakElement).find("td").each((j, e) =>
         {
             lossBreakAchievement[j] > 0 && $(e).append(`<span>-.${lossBreakAchievement[j].toFixed(4).split(".")[1]}%</span>`);
+            if(j == 1)  // perfect
+            $(e).append(`<span class="break_detail">(${breakDetail.perfect}/${breakDetail.perfect2nd})</span>`);
+            else if(j == 2) // great
+            $(e).append(`<span class="break_detail">(${breakDetail.great}/${breakDetail.great2nd}/${breakDetail.great3rd})</span>`);
         });
     }
 }

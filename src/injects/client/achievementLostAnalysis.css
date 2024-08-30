@@ -5,12 +5,19 @@
 .playlog_notes_detail td>span
 {
     font-size: 8px;
+}
+.playlog_notes_detail td>span:not(.break_detail)
+{
     color: red;
 }
 .playlog_notes_detail.display_detail tr:not(:first-child) th
 {
     font-size: 8px;
     line-height: 0.7rem;
+}
+.playlog_notes_detail.display_detail tr:not(:first-child) td
+{
+    vertical-align: top;
 }
 .playlog_notes_detail.display_detail span
 {
