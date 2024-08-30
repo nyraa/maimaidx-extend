@@ -130,7 +130,6 @@ function tryBreak(achievement, theory, known, target)
     let perfect, perfect2nd, great, great2nd, great3rd;
     let success = false;
 
-    console.log(totalPerfect, totalGreat);
     tryLoop: for(perfect = 0; perfect <= totalPerfect; ++perfect)
     {
         for(perfect2nd = 0; perfect2nd <= totalPerfect - perfect; ++perfect2nd)
@@ -153,7 +152,7 @@ function tryBreak(achievement, theory, known, target)
             }
         }
     }
-    console.log(success, perfect, perfect2nd, great, great2nd, great3rd);
+    // console.log(success, perfect, perfect2nd, great, great2nd, great3rd);
     return {
         success,
         perfect,
@@ -192,7 +191,6 @@ function init()
     ];
     const lossBreakAchievement = lossPointsBreak.map((score, i) => parseFloat((score / theory.ignoreBreak * 100 + lossPointsBouns[i] / theory.breakOnly).toFixed(4)));
     // update DOM
-    console.log(lossAchievement, lossBreakAchievement);
     document.querySelectorAll(".playlog_notes_detail tr:not(:first-child):not(:last-child)").forEach((element, i) =>
     {
         const lossPoints = lossAchievement[i];
