@@ -12,8 +12,6 @@ Router.register(/\/playerData\/$/, (req, html) => {
             continue;
         let datetime = new Date(record.datetime);
 
-        // offset: from +9 to +8
-        datetime.setHours(datetime.getHours() - 1);
         if(datetime.getDate() === now.getDate() && datetime.getMonth() === now.getMonth() && datetime.getFullYear() === now.getFullYear())
         {
             creditsToday++;
