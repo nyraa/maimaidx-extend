@@ -7,6 +7,7 @@ A wrapper for maimai DX NET international version.
 - Find the play log in song record
 - Show achievement +-% in record (Since this record starts)
 - Show the play count for today
+- Play log achievement analysis
 
 ## Usage
 To install dependencies:
