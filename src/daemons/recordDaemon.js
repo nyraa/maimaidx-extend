@@ -67,15 +67,25 @@ function getRecordDetails(href)
             const matchingIcon = $(".playlog_matching_icon");
             const matchingRank = matchingIcon.length > 0 ? $(".playlog_matching_icon").attr("src").match(/playlog\/(\w+)\.png/)[1] : null;
 
-            const perfectChallengeBlock = $(".p_r.m_t_5.f_l.f_0");
+            const challengeBlock = $(".p_r.m_t_5.f_l.f_0");
             let perfectChallenge;
-            if(perfectChallengeBlock.length > 0)
+            let courseChallenge;    // 段位認定
+            if(challengeBlock.length > 0)
             {
-                const [lifeLeft, lifeTotal] = perfectChallengeBlock.find(".playlog_life_block").text().split("/").map((val) => parseInt(val.replace(/[^\d]/g, "")));
-                perfectChallenge = {
+                let challengeBadge = challengeBlock.find("img.h_30.p_l_5").attr("src").match(/icon_(\w+)\.png/)[1];
+                const [lifeLeft, lifeTotal] = challengeBlock.find(".playlog_life_block").text().split("/").map((val) => parseInt(val.replace(/[^\d]/g, "")));
+                const challengeLife = {
                     lifeLeft,
                     lifeTotal
-                };
+                }
+                if(challengeBadge === "perfectchallenge")
+                {
+                    perfectChallenge = challengeLife;
+                }
+                else if(challengeBadge === "course")
+                {
+                    courseChallenge = challengeLife;
+                }
             }
 
             const charas = $(".playlog_chara_container").map((index, element) => {
@@ -149,6 +159,7 @@ function getRecordDetails(href)
                     slot2,
                     matchingRank,
                     perfectChallenge,
+                    courseChallenge,
                     charas,
                     fast,
                     late,
@@ -229,7 +240,7 @@ function runDaemon(dryrun = false)
             console.log(details);
 
 
-            if(finished && newLastTime > lastTime)
+            if(finished && newLastTime > lastTime || dryrun)
             {
                 db.data.lastRecordTime = newLastTime.toISOString();
                 db.data.records = db.chain.get("records").orderBy((e) => new Date(e.datetime), "desc").value();
