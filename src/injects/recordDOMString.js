@@ -56,6 +56,13 @@ const domstring = \`
                             <div class="playlog_life_block f_11 $\{record.perfectChallenge.lifeLeft > 0 ? "white" : "red"}">$\{record.perfectChallenge.lifeLeft}/$\{record.perfectChallenge.lifeTotal}</div>
                         </div>
                     \` : ""}
+                    $\{record.courseChallenge ? \`
+                        <div class="p_r m_t_5 f_l f_0">
+                            <img src="https://maimaidx-eng.com/maimai-mobile/img/course/icon_course.png" class="h_30 p_l_5">
+                            <img src="https://maimaidx-eng.com/maimai-mobile/img/course/icon_course_life.png" class="w_96 m_b_3">
+                            <div class="playlog_life_block f_11 $\{record.courseChallenge.lifeLeft > 0 ? "white" : "red"}">$\{record.courseChallenge.lifeLeft}/$\{record.courseChallenge.lifeTotal}</div>
+                        </div>
+                    \` : ""}
                     <form action="/extend/playlogDetail/" method="get" accept-charset="utf-8" class="m_t_5 t_r">
                         <input type="hidden" name="idx" value="$\{new Date(record.datetime).getTime()}">
                         <button type="submit" class="f_0"><img src="https://maimaidx-eng.com/maimai-mobile/img/btn_detail.png" class="w_84"></button>
