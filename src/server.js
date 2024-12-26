@@ -20,6 +20,7 @@ import "./injects/recordInject.js";
 import "./injects/playlogDetailInject.js";
 import "./injects/musicDetailInject.js";
 import "./injects/playerDataInject.js";
+import "./injects/ratingInject.js";
 
 // pages
 import recordPage from "./pages/recordDetails.js";
