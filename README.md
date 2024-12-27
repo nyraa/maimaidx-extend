@@ -8,6 +8,7 @@ A wrapper for maimai DX NET international version.
 - Show achievement +-% in record (Since this record starts)
 - Show the play count for today
 - Play log achievement analysis
+- Best 50 rating analysis (Database required)
 
 ## Usage
 To install dependencies:
