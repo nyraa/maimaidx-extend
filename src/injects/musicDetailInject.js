@@ -2,9 +2,12 @@ import Router from "../router.js";
 import * as cheerio from "cheerio";
 import recordDOMString from "./recordDOMString.js";
 
+import { isRatingAvailable, calculateTheoryRatings, getRatingTable, calculateRating } from "../rating.js";
+
 Router.register(/\/musicDetail\/$/, (req, html) => {
     const $ = cheerio.load(html);
     const musicIdentifier = {
+        songName: $(".m_5.f_15.break").text().trim(),
         coverID: $("img.w_180.m_5.f_l").attr("src").split("/").pop().split(".")[0],
         kind: $(".basic_block .f_l.h_20").attr("src")?.split("/")?.pop()?.split(".")?.[0]?.split("_")?.[1] ?? "utage",
         utageKinds: $(".music_kind_icon_utage_text_detail").map((i, e) => {
@@ -88,6 +91,40 @@ Router.register(/\/musicDetail\/$/, (req, html) => {
         element.after(logBlockDOMString);
         element.attr("onclick", `toggleLogBlock("${level}")`);
         element.attr("style", "cursor: pointer;");
+    });
+
+    const musicDetailTableRow = $(".music_detail_table tr");
+    const ratingTable = getRatingTable();
+    musicDetailTableRow.each((i, e) => {
+        const tr = $(e);
+        const difficulty = tr.find("button").attr("class").match(/music_(\w+)_btn/)[1];
+        const bestAchievementText = $(`#${difficulty} .music_score_block.w_120.d_ib.t_r.f_12`);
+        const bestAchievement = bestAchievementText.length > 0 ? parseInt(bestAchievementText.text().replace(/[^0-9]/g, "")) : 0;
+        const theoryRate = calculateTheoryRatings(musicIdentifier.songName, musicIdentifier.kind, difficulty);
+        const myRating = calculateRating(musicIdentifier.songName, musicIdentifier.kind, difficulty, bestAchievement);
+        let isMyBestMark = false;
+        for (let i = ratingTable.length - 1; i >= 0; --i)
+        {
+            if(!isMyBestMark && bestAchievement >= ratingTable[i].achieve)
+            {
+                tr.after(`
+                    <tr>
+                        <td>${myRating.rank}</td>
+                        <td>${bestAchievement}</td>
+                        <td>${myRating.rate}</td>
+                    </tr>
+                `);
+                isMyBestMark = true;
+            }
+            const offsetDetail = ratingTable[i];
+            tr.after(`
+                <tr>
+                    <td>${offsetDetail.rank}</td>
+                    <td>${offsetDetail.achieve}</td>
+                    <td>${theoryRate[i]}</td>
+                </tr>
+            `);
+        }
     });
     return $.html();
 });

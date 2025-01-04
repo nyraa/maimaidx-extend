@@ -39,6 +39,11 @@ function isRatingAvailable()
     return availableFlag;
 }
 
+function getRatingTable()
+{
+    return ratingTable;
+}
+
 
 function getLevel(songName, kind, difficulty)
 {
@@ -66,6 +71,8 @@ function calculateTheoryRatings(songName, kind, difficulty)
         const rate = Math.floor(level * offsetDetail.achieve * offsetDetail.offset / 10000000);
         theoryRates.push(rate);
     }
+    theoryRateCache[level] = theoryRates;   
+    return theoryRates;
 }
 
 function calculateRating(songName, kind, difficulty, achievement)
@@ -75,11 +82,13 @@ function calculateRating(songName, kind, difficulty, achievement)
 
     // find highest rating under the achievement
     let offset = 0;
+    let rank;
     for(let i = ratingTable.length - 1; i >= 0; i--)
     {
         if(achievement >= ratingTable[i].achieve)
         {
             offset = ratingTable[i].offset;
+            rank = ratingTable[i].rank;
             break;
         }
     }
@@ -89,7 +98,9 @@ function calculateRating(songName, kind, difficulty, achievement)
     return {
         rate,
         theoryRate,
+        offset,
+        rank
     }
 }
 
-export { isRatingAvailable, calculateRating, calculateTheoryRatings };
+export { isRatingAvailable, calculateRating, calculateTheoryRatings, getRatingTable };

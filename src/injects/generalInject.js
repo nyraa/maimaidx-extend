@@ -64,4 +64,4 @@ Router.register(/.*/, (req, html) => {
     replacedHtml = replacedHtml.replace(/<!-- Google Tag Manager \(noscript\) -->(.|\n)*?<!-- End Google Tag Manager \(noscript\) -->/, "");
     replacedHtml = replacedHtml.replace(/\(function\(i,s,o,g,r,a,m\)(.|\n)*?ga\('send', 'pageview'\);/, "");
     return replacedHtml;
-});
+}, true);
