@@ -1,0 +1,95 @@
+import fs from "fs";
+
+const readData = (filePath) =>
+{
+    try
+    {
+        const data = fs.readFileSync(filePath, "utf8");
+        return JSON.parse(data);
+    }
+    catch(error)
+    {
+        if(error.code === "ENOENT")
+        {
+            console.error(`File not found: ${filePath}`);
+        } else
+        {
+            console.error(`Error reading file: ${filePath}`);
+        }
+        return null;
+    }
+};
+
+
+const musicData = readData("const/MusicData.json");
+const ratingTable = readData("const/RatingTable.json");
+let availableFlag = false;
+
+if(musicData && ratingTable)
+{
+    availableFlag = true;
+}
+else
+{
+    console.warn("Rating data is not available.");
+}
+
+function isRatingAvailable()
+{
+    return availableFlag;
+}
+
+
+function getLevel(songName, kind, difficulty)
+{
+    const song = musicData[`${songName}_${kind}`];
+    if(song == undefined)
+    {
+        return 0;
+    }
+    return song[difficulty].level;
+}
+
+const theoryRateCache = {};
+
+function calculateTheoryRatings(songName, kind, difficulty)
+{
+    const level = getLevel(songName, kind, difficulty);
+    if(theoryRateCache[level] != undefined)
+    {
+        return theoryRateCache[level];
+    }
+    const theoryRates = [];
+    for(let i = 0; i < ratingTable.length; i++)
+    {
+        const offsetDetail = ratingTable[i];
+        const rate = Math.floor(level * offsetDetail.achieve * offsetDetail.offset / 10000000);
+        theoryRates.push(rate);
+    }
+}
+
+function calculateRating(songName, kind, difficulty, achievement)
+{
+    // limit the achievement
+    achievement = achievement > ratingTable[ratingTable.length - 1].achieve ? ratingTable[ratingTable.length - 1].achieve : achievement;
+
+    // find highest rating under the achievement
+    let offset = 0;
+    for(let i = ratingTable.length - 1; i >= 0; i--)
+    {
+        if(achievement >= ratingTable[i].achieve)
+        {
+            offset = ratingTable[i].offset;
+            break;
+        }
+    }
+    const level = getLevel(songName, kind, difficulty);
+    const rate = Math.floor(level * achievement * offset / 10000000);
+    const theoryRate = Math.floor(level * 1010000 * ratingTable[ratingTable.length - 1].offset / 10000000);
+    return {
+        rate,
+        theoryRate,
+    }
+}
+
+export { isRatingAvailable, calculateRating, calculateTheoryRatings };
