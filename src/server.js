@@ -426,7 +426,7 @@ const server = http.createServer(async (req, res) => {
 
         // html inject
         let html = proxyResponse.data;
-        const isError = proxyResponse.data.includes("<title>maimai DX NET－Error－</title>");
+        const isError = proxyResponse.data.includes("<title>maimai DX NET－Error－</title>") || proxyResponse.data.includes("Sorry, servers are under maintenance.");
         if(proxyResponse.headers["content-type"].startsWith("text/html"))
         {
             const pathname = req.url.split("?")[0];
