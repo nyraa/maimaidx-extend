@@ -23,11 +23,14 @@ const readData = (filePath) =>
 
 const musicData = readData("const/MusicData.json");
 const ratingTable = readData("const/RatingTable.json");
+let theoryRatingTable;
 let availableFlag = false;
 
 if(musicData && ratingTable)
 {
     availableFlag = true;
+    theoryRatingTable = ratingTable;
+    theoryRatingTable.push({ achieve: 1010000, offset: ratingTable[ratingTable.length - 1].offset, rank: ratingTable[ratingTable.length - 1].rank });
 }
 else
 {
@@ -42,6 +45,11 @@ function isRatingAvailable()
 function getRatingTable()
 {
     return ratingTable;
+}
+
+function getTheoryRatingTable()
+{
+    return theoryRatingTable;
 }
 
 
@@ -60,18 +68,22 @@ const theoryRateCache = {};
 function calculateTheoryRatings(songName, kind, difficulty)
 {
     const level = getLevel(songName, kind, difficulty);
+    if(level == 0)
+    {
+        return undefined;
+    }
     if(theoryRateCache[level] != undefined)
     {
         return theoryRateCache[level];
     }
     const theoryRates = [];
-    for(let i = 0; i < ratingTable.length; i++)
+    for(let i = 0; i < theoryRatingTable.length; i++)
     {
-        const offsetDetail = ratingTable[i];
+        const offsetDetail = theoryRatingTable[i];
         const rate = Math.floor(level * offsetDetail.achieve * offsetDetail.offset / 10000000);
         theoryRates.push(rate);
     }
-    theoryRateCache[level] = theoryRates;   
+    theoryRateCache[level] = theoryRates;
     return theoryRates;
 }
 
@@ -103,4 +115,4 @@ function calculateRating(songName, kind, difficulty, achievement)
     }
 }
 
-export { isRatingAvailable, calculateRating, calculateTheoryRatings, getRatingTable };
+export { isRatingAvailable, calculateRating, calculateTheoryRatings, getRatingTable, getTheoryRatingTable };
