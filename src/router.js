@@ -6,30 +6,30 @@ class Router
         this.pathRoutes = new Map();
     }
 
-    register(route, callback)
+    register(route, callback, routesEvenError = false)
     {
         if(route instanceof RegExp)
         {
-            this.regexRoutes.push({ regex: route, callback: callback });
+            this.regexRoutes.push({ regex: route, callback: callback, routesEvenError: routesEvenError });
         } else
         {
-            this.pathRoutes.set(route, callback);
+            this.pathRoutes.set(route, { callback: callback, routesEvenError: routesEvenError });
         }
     }
 
-    route(path, req, html)
+    route(path, req, html, isError)
     {
         // path
-        const pathCallback = this.pathRoutes.get(path);
-        if(pathCallback)
+        const routeRegister = this.pathRoutes.get(path);
+        if(routeRegister && (!isError || routeRegister.routesEvenError))
         {
-            html = pathCallback(req, html);
+            html = routeRegister.callback(req, html);
         }
 
         // regex
         for(const regexRoute of this.regexRoutes)
         {
-            if(regexRoute.regex.test(path))
+            if((!isError || regexRoute.routesEvenError) && regexRoute.regex.test(path))
             {
                 html = regexRoute.callback(req, html);
             }
