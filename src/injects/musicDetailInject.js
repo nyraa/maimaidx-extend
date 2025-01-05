@@ -98,45 +98,57 @@ Router.register(/\/musicDetail\/$/, (req, html) => {
         element.attr("style", "cursor: pointer;");
     });
 
-    const musicDetailTableRow = $(".music_detail_table tr");
-    const ratingTable = getTheoryRatingTable();
-    musicDetailTableRow.each((i, e) => {
-        const tr = $(e);
-        const difficulty = tr.find("button").attr("class").match(/music_(\w+)_btn/)[1];
-        const bestAchievementText = $(`#${difficulty} .music_score_block.w_120.d_ib.t_r.f_12`);
-        const bestAchievement = bestAchievementText.length > 0 ? parseInt(bestAchievementText.text().replace(/[^0-9]/g, "")) : 0;
-        const theoryRate = calculateTheoryRatings(musicIdentifier.songName, musicIdentifier.kind, difficulty);
-        if(theoryRate == undefined)
-        {
-            return;
-        }
-        const myRating = calculateRating(musicIdentifier.songName, musicIdentifier.kind, difficulty, bestAchievement);
-        let isMyBestMark = false;
-        for (let i = ratingTable.length - 1; i >= 0; --i)
-        {
-            if(!isMyBestMark && bestAchievement >= ratingTable[i].achieve)
+    if(isRatingAvailable())
+    {
+        const musicDetailTableRow = $(".music_detail_table tr");
+        const ratingTable = getTheoryRatingTable();
+        musicDetailTableRow.each((i, e) => {
+            const tr = $(e);
+            const difficulty = tr.find("button").attr("class").match(/music_(\w+)_btn/)[1];
+            const bestAchievementText = $(`#${difficulty} .music_score_block.w_120.d_ib.t_r.f_12`);
+            const bestAchievement = bestAchievementText.length > 0 ? parseInt(bestAchievementText.text().replace(/[^0-9]/g, "")) : 0;
+            const theoryRate = calculateTheoryRatings(musicIdentifier.songName, musicIdentifier.kind, difficulty);
+            if(theoryRate == undefined)
             {
                 tr.after(`
-                    <tr class="t_r rating_table_${difficulty} orange" style="display: none">
-                        <td class="p_5">${myRating.rank}</td>
-                        <td>${achivevmentToString(bestAchievement)}</td>
-                        <td>${myRating.rate}</td>
+                    <tr class="t_r rating_table_${difficulty}" style="display: none">
+                        <td class="p_5">-</td>
+                        <td>-</td>
+                        <td>-</td>
                     </tr>
                 `);
-                isMyBestMark = true;
             }
-            const offsetDetail = ratingTable[i];
-            tr.after(`
-                <tr class="t_r rating_table_${difficulty}" style="display: none">
-                    <td class="p_5">${offsetDetail.rank}</td>
-                    <td>${achivevmentToString(offsetDetail.achieve)}</td>
-                    <td>${theoryRate[i]}${!isMyBestMark ? `(+${theoryRate[i] - myRating.rate})` : ""}</td>
-                </tr>
-            `);
-        }
-        const musicLvBack = tr.find(".music_lv_back");
-        musicLvBack.attr("onclick", `$(".rating_table_${difficulty}").toggle()`);
-        musicLvBack.attr("class", musicLvBack.attr("class") + " pointer");
-    });
+            else
+            {
+                const myRating = calculateRating(musicIdentifier.songName, musicIdentifier.kind, difficulty, bestAchievement);
+                let isMyBestMark = false;
+                for (let i = ratingTable.length - 1; i >= 0; --i)
+                {
+                    if(!isMyBestMark && bestAchievement >= ratingTable[i].achieve)
+                    {
+                        tr.after(`
+                            <tr class="t_r rating_table_${difficulty} orange" style="display: none">
+                                <td class="p_5">${myRating.rank}</td>
+                                <td>${achivevmentToString(bestAchievement)}</td>
+                                <td>${myRating.rate}</td>
+                            </tr>
+                        `);
+                        isMyBestMark = true;
+                    }
+                    const offsetDetail = ratingTable[i];
+                    tr.after(`
+                        <tr class="t_r rating_table_${difficulty}" style="display: none">
+                            <td class="p_5">${offsetDetail.rank}</td>
+                            <td>${achivevmentToString(offsetDetail.achieve)}</td>
+                            <td>${theoryRate[i]}${!isMyBestMark ? `(+${theoryRate[i] - myRating.rate})` : ""}</td>
+                        </tr>
+                    `);
+                }
+            }
+            const musicLvBack = tr.find(".music_lv_back");
+            musicLvBack.attr("onclick", `$(".rating_table_${difficulty}").toggle()`);
+            musicLvBack.attr("class", musicLvBack.attr("class") + " pointer");
+        });
+    }
     return $.html();
 });
