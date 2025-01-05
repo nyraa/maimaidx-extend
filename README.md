@@ -9,6 +9,7 @@ A wrapper for maimai DX NET international version.
 - Show the play count for today
 - Play log achievement analysis
 - Best 50 rating analysis (Database required)
+- Song score page rating table preview (Database required)
 
 ## Usage
 To install dependencies:
