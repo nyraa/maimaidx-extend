@@ -145,6 +145,13 @@ Router.register(/\/musicDetail\/$/, (req, html) => {
                     `);
                 }
             }
+            tr.after(`
+                <tr class="t_r rating_table_${difficulty} blue" style="display: none">
+                    <td class="p_5">Rank</td>
+                    <td>Achieve</td>
+                    <td>Rating</td>
+                </tr>
+            `);
             const musicLvBack = tr.find(".music_lv_back");
             musicLvBack.attr("onclick", `$(".rating_table_${difficulty}").toggle()`);
             musicLvBack.attr("class", musicLvBack.attr("class") + " pointer");
