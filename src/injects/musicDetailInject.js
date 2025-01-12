@@ -105,6 +105,10 @@ Router.register(/\/musicDetail\/$/, (req, html) => {
         musicDetailTableRow.each((i, e) => {
             const tr = $(e);
             const difficulty = tr.find("button").attr("class").match(/music_(\w+)_btn/)[1];
+            if(difficulty == "utage")
+            {
+                return;
+            }
             const bestAchievementText = $(`#${difficulty} .music_score_block.w_120.d_ib.t_r.f_12`);
             const bestAchievement = bestAchievementText.length > 0 ? parseInt(bestAchievementText.text().replace(/[^0-9]/g, "")) : 0;
             const theoryRate = calculateTheoryRatings(musicIdentifier.songName, musicIdentifier.kind, difficulty);
