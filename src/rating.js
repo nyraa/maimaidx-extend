@@ -122,4 +122,4 @@ function calculateRating(songName, kind, difficulty, achievement)
     }
 }
 
-export { isRatingAvailable, calculateRating, calculateTheoryRatings, getRatingTable, getTheoryRatingTable };
+export { isRatingAvailable, calculateRating, calculateTheoryRatings, getRatingTable, getTheoryRatingTable, getLevel };

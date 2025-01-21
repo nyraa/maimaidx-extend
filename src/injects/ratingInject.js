@@ -1,7 +1,7 @@
 import Router from "../router.js";
 import * as cheerio from "cheerio";
 
-import { isRatingAvailable, calculateRating } from "../rating.js";
+import { isRatingAvailable, calculateRating, getLevel } from "../rating.js";
 
 if(isRatingAvailable())
 {
@@ -20,8 +20,13 @@ if(isRatingAvailable())
             element.find(".music_name_block").after(`
                 <div class="music_score_block w_120 f_l f_12 t_l">
                     ${rate}/${theoryRate}<span class="red"> (-${theoryRate - rate})</span>
-                </div>    
+                </div>
             `);
+            const level = getLevel(songName, songKind, difficulty);
+            if(level != 0)
+            {
+                element.find(".music_lv_block").text(level.toFixed(1));
+            }
             totalRating += rate;
         });
         // console.log("Total Rating:", totalRating);
