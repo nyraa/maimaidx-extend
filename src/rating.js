@@ -52,15 +52,22 @@ function getTheoryRatingTable()
     return theoryRatingTable;
 }
 
+const difficultyMap = {
+    "basic": 0,
+    "advanced": 1,
+    "expert": 2,
+    "master": 3,
+    "remaster": 4,
+};
 
 function getLevel(songName, kind, difficulty)
 {
-    const song = musicData[`${songName}_${kind}`];
-    if(song == undefined)
+    const level = musicData?.[songName]?.[kind]?.[difficultyMap[difficulty]];
+    if(level == undefined)
     {
         return 0;
     }
-    return song[difficulty].level;
+    return level;
 }
 
 const theoryRateCache = {};
