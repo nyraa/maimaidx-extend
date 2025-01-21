@@ -7,7 +7,7 @@ if(isRatingAvailable())
 {
     Router.register(/\/home\/ratingTargetMusic\/$/, (req, html) => {
         const $ = cheerio.load(html);
-        const songBlocks = $(".pointer.w_450.m_15.p_3.f_0").slice(0, 50);
+        const songBlocks = $(".pointer.w_450.m_15.p_3.f_0"); //.slice(0, 50);
         let totalRating = 0;
         songBlocks.each((i, e) => {
             const element = $(e);
