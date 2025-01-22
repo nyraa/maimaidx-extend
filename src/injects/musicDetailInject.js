@@ -2,7 +2,7 @@ import Router from "../router.js";
 import * as cheerio from "cheerio";
 import recordDOMString from "./recordDOMString.js";
 
-import { isRatingAvailable, calculateTheoryRatings, getTheoryRatingTable, calculateRating } from "../rating.js";
+import { isRatingAvailable, calculateTheoryRatings, getTheoryRatingTable, calculateRating, getLevel } from "../rating.js";
 
 function achivevmentToString(achieve)
 {
@@ -159,6 +159,11 @@ Router.register(/\/musicDetail\/$/, (req, html) => {
             const musicLvBack = tr.find(".music_lv_back");
             musicLvBack.attr("onclick", `$(".rating_table_${difficulty}").toggle()`);
             musicLvBack.attr("class", musicLvBack.attr("class") + " pointer");
+            const lv = getLevel(musicIdentifier.songName, musicIdentifier.kind, difficulty);
+            if(lv != 0)
+            {
+                musicLvBack.text(lv.toFixed(1));
+            }
         });
     }
     return $.html();
