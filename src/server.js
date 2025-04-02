@@ -369,7 +369,7 @@ const server = http.createServer(async (req, res) => {
             if(req.method === "GET")
             {
                 proxyResponse = await axiosInstance.get(maimaidxUrl + req.url, {
-                    responseType: "arraybuffer"
+                    responseType: "arraybuffer",
                 });
             }
             else if(req.method === "POST")
@@ -384,7 +384,10 @@ const server = http.createServer(async (req, res) => {
                     });
                 });
                 proxyResponse = await axiosInstance.post(maimaidxUrl + req.url, postBody, {
-                    responseType: "arraybuffer"
+                    responseType: "arraybuffer",
+                    headers: {
+                        "Content-Type": req.headers["content-type"]
+                    }
                 });
             }
             else
