@@ -30,7 +30,6 @@ if(musicData && ratingTable)
 {
     availableFlag = true;
     theoryRatingTable = ratingTable;
-    theoryRatingTable.push({ achieve: 1010000, offset: ratingTable[ratingTable.length - 1].offset, rank: ratingTable[ratingTable.length - 1].rank });
 }
 else
 {
@@ -113,7 +112,7 @@ function calculateRating(songName, kind, difficulty, achievement)
     }
     const level = getLevel(songName, kind, difficulty);
     const rate = Math.floor(level * achievement * offset / 10000000);
-    const theoryRate = Math.floor(level * 1010000 * ratingTable[ratingTable.length - 1].offset / 10000000);
+    const theoryRate = Math.floor(level * 1005000 * ratingTable[ratingTable.length - 1].offset / 10000000);
     return {
         rate,
         theoryRate,
