@@ -27,7 +27,9 @@ function getRecordDetails(href)
             const level = $(".playlog_diff").attr("src").match(/diff_(\w+)\.png/)[1];
             const trackNum = parseInt($(".sub_title .red").text().match(/TRACK (\d+)/)[1]);
             const datetime = new Date($(".sub_title span:not(.red)").text().trim() + " GMT+0900");
-            const songname = $(".basic_block.m_5.p_5.p_l_10.f_13.break").text().trim();
+            const songname = $(".basic_block.m_5.p_5.p_l_10.f_13.break").contents().filter(function() {
+                return this.type === "text";
+            }).text().trim();
             const clear = $(".basic_block>img").length > 0 ? true : false;
             let kind, utageKind;
             if(level === "utage")
@@ -91,7 +93,7 @@ function getRecordDetails(href)
             const charas = $(".playlog_chara_container").map((index, element) => {
                 const chara = $(element);
                 const id = chara.find(".chara_cycle_img").attr("src").match(/\/(\w+)\.png/)[1];
-                const star = parseInt(chara.find(".playlog_chara_star_block").text().match(/(\d+)/)[1]);
+                const star = parseInt(chara.find(".collection_chara_awakening_block_txt ").text().match(/(\d+)/)[1]);
                 const level = parseInt(chara.find(".playlog_chara_lv_block").text().match(/(\d+)/)[1]);
                 return {
                     id,
