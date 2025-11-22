@@ -2,6 +2,7 @@ import Router from "../router.js";
 import * as cheerio from "cheerio";
 import db from "../database.js";
 import recordDOMString from "./recordDOMString.js";
+import { getLevel } from "../rating.js";
 
 Router.register(/\/record\/$/, (req, html) => {
     const $ = cheerio.load(html);
@@ -18,11 +19,28 @@ Router.register(/\/record\/$/, (req, html) => {
         if(!record)
         {
             console.log(`Record miss ${datetime.toDateString()}`);
-            return;
+        }
+        else
+        {
+            const diffDomString = `<span class="f_10" style="display: block;">${record.achievementDiff >= 0 ? "+" : ""}${record.achievementDiff.toFixed(4)}%</span>`;
+            element.find(".playlog_achievement_txt>.f_20").after(diffDomString);
         }
 
-        const diffDomString = `<span class="f_10" style="display: block;">${record.achievementDiff >= 0 ? "+" : ""}${record.achievementDiff.toFixed(4)}%</span>`;
-        element.find(".playlog_achievement_txt>.f_20").after(diffDomString);
+        // get decimal level and replace original level
+        const songname = element.find(".basic_block.m_5.p_5.p_l_10.f_13.break").contents().filter(function() {
+            return this.type === "text";
+        }).text().trim() || "\u3000";
+        // \u3000 for x0o0x empty name song
+        const difficulty = element.find(".playlog_diff").attr("src").match(/diff_(\w+)\.png/)[1];
+        if(difficulty !== "utage")
+        {
+            const kind = element.find(".playlog_music_kind_icon").attr("src").match(/music_(\w+)\.png/)[1];
+            const levelDecimal = getLevel(songname, kind, difficulty);
+            if(levelDecimal !== 0)
+            {
+                element.find(".music_lv_back").text(levelDecimal.toFixed(1));
+            }
+        }
     });
 
     $("footer").before(`
