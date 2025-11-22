@@ -3,8 +3,8 @@ const recordDOMString = `
 const domstring = \`
     <div class="p_10 t_l f_0 v_b">
         <div class="playlog_top_container p_r">
-            <img src="https://maimaidx-eng.com/maimai-mobile/img/diff_$\{record.level}.png" class="playlog_diff v_b">
-            $\{record.level === "utage" || true ? \`
+            <img src="https://maimaidx-eng.com/maimai-mobile/img/diff_$\{record.difficulty}.png" class="playlog_diff v_b">
+            $\{record.difficulty === "utage" || true ? \`
                 <div class="playlog_music_kind_icon_utage f_l p_a d_f">
                     $\{record?.utageKind?.reduce((prev, utageKind) => {
                         return prev + \`
@@ -21,11 +21,13 @@ const domstring = \`
             </div>
             <div class="clearfix"></div>
         </div>
-        <div class="playlog_$\{record.level}_container">
-            <div class="basic_block m_5 p_5 p_l_10 f_13 break">$\{record.clear ? \`<img src="https://maimaidx-eng.com/maimai-mobile/img/playlog/clear.png" class="w_80 f_r">\` : ""}$\{record.songname}</div>
+        <div class="playlog_$\{record.difficulty}_container">
+            <div class="basic_block m_5 p_5 p_l_10 f_13 break">
+                $\{record.songname}
+            </div>
             <div class="p_r f_0">
                 <img loading="lazy" src="$\{record.coverSrc}" class="music_img m_5 m_r_0 f_l">
-                $\{record.level !== "utage" ? \`<img src="https://maimaidx-eng.com/maimai-mobile/img/music_$\{record.kind}.png" class="playlog_music_kind_icon">\` : ""}
+                $\{record.difficulty !== "utage" ? \`<img src="https://maimaidx-eng.com/maimai-mobile/img/music_$\{record.kind}.png" class="playlog_music_kind_icon">\` : ""}
                 <div class="playlog_result_block m_t_5 f_l">
                     <div class="playlog_achievement_label_block">
                         <img src="https://maimaidx-eng.com/maimai-mobile/img/playlog/achievement.png">

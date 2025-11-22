@@ -16,10 +16,10 @@ $(document).ready(() => {
         }, {});
         const datetimeString = `${datetimePart.year}-${datetimePart.month}-${datetimePart.day}_${datetimePart.hour}-${datetimePart.minute}`;
         const songname = element.querySelector(".black_block").textContent;
-        const level = element.querySelector(".p_r.p_5").className.match(/music_(\w+)_score_back/)?.[1];
+        const difficulty = element.querySelector(".p_r.p_5").className.match(/music_(\w+)_score_back/)?.[1];
         const storeName = element.querySelector(".see_through_block").textContent.trim();
         const imageName = element.querySelector("img.w_430").src.split("/").pop();
-        const filename = `${datetimeString}_${songname}_${level}_${storeName}_${imageName}.jpg`.replace(/[<>:"/\\|?*]/g, "_");
+        const filename = `${datetimeString}_${songname}_${difficulty}_${storeName}_${imageName}.jpg`.replace(/[<>:"/\\|?*]/g, "_");
         element.querySelector(".col2.f_l a").download = filename;
     });
 });

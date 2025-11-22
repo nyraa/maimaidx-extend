@@ -303,7 +303,7 @@ const server = http.createServer(async (req, res) => {
                     {
                         return false;
                     }
-                    if(postBody.level !== e.level)
+                    if(postBody.difficulty !== e.difficulty)
                     {
                         return false;
                     }

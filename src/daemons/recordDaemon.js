@@ -24,15 +24,14 @@ function getRecordDetails(href)
         axiosInstance.get(href).then((res) => {
             const $ = cheerio.load(res.data);
 
-            const level = $(".playlog_diff").attr("src").match(/diff_(\w+)\.png/)[1];
+            const difficulty = $(".playlog_diff").attr("src").match(/diff_(\w+)\.png/)[1];
             const trackNum = parseInt($(".sub_title .red").text().match(/TRACK (\d+)/)[1]);
             const datetime = new Date($(".sub_title span:not(.red)").text().trim() + " GMT+0900");
             const songname = $(".basic_block.m_5.p_5.p_l_10.f_13.break").contents().filter(function() {
                 return this.type === "text";
             }).text().trim();
-            const clear = $(".basic_block>img").length > 0 ? true : false;
             let kind, utageKind;
-            if(level === "utage")
+            if(difficulty === "utage")
             {
                 utageKind = $(".p_r.t_c").map((index, element) => {
                     const icon = $(element).find("img").attr("src").match(/\/img\/music_(\w+)\.png/)[1];
@@ -121,10 +120,10 @@ function getRecordDetails(href)
                 {
                     return null;
                 }
-                const matchLevel = container.attr("class").match(/playlog_(\w+)_container/)[1];
+                const matchDifficulty = container.attr("class").match(/playlog_(\w+)_container/)[1];
                 const matchName = container.text().trim();
                 return {
-                    matchLevel,
+                    matchDifficulty,
                     matchName
                 };
             }).toArray();
@@ -143,10 +142,9 @@ function getRecordDetails(href)
             resolve({
                 details: {
                     datetime,
-                    level,
+                    difficulty,
                     trackNum,
                     songname,
-                    clear,
                     kind,
                     utageKind,
                     coverSrc,
@@ -192,7 +190,7 @@ function diffSinceLastPlay(db)
     {
         // pop oldest record as old
         const oldest = records.pop();
-        const songKey = `${oldest.songname}_${oldest.kind ?? oldest.level}_${oldest.level}`;
+        const songKey = `${oldest.songname}_${oldest.kind ?? oldest.difficulty}_${oldest.difficulty}`;
         // find best from cache
         let best = bestScoreCache[songKey] ?? 0;
         const newBest = oldest.achievement;

@@ -31,7 +31,7 @@ Router.register(/\/musicDetail\/$/, (req, html) => {
                 utage: false
             };
             let viewmore_loading = false;
-            function viewmore(level)
+            function viewmore(difficulty)
             {
                 if(viewmore_loading)
                 {
@@ -57,7 +57,7 @@ Router.register(/\/musicDetail\/$/, (req, html) => {
                         for(let record of data.data)
                         {
                             ${recordDOMString}
-                            $(\`#$\{level}_log_block\`).append(domstring);
+                            $(\`#$\{difficulty}_log_block\`).append(domstring);
                         }
                         viewmore_loading = false;
                     }
@@ -67,34 +67,34 @@ Router.register(/\/musicDetail\/$/, (req, html) => {
                 };
                 xhr.send(JSON.stringify({
                     musicIdentifier: ${JSON.stringify(musicIdentifier)},
-                    level: level
+                    difficulty: difficulty
                 }));
             }
-            function toggleLogBlock(level)
+            function toggleLogBlock(difficulty)
             {
-                if(!viewmore_loaded[level])
+                if(!viewmore_loaded[difficulty])
                 {
                     if(viewmore_loading)
                     {
                         return;
                     }
-                    viewmore_loaded[level] = true;
-                    viewmore(level);
+                    viewmore_loaded[difficulty] = true;
+                    viewmore(difficulty);
                 }
-                $(\`#\${level}_log_block\`).toggle();
+                $(\`#\${difficulty}_log_block\`).toggle();
             }
         </script>
     `);
     const scoreBlocks = $(".music_basic_score_back, .music_advanced_score_back, .music_expert_score_back, .music_master_score_back, .music_remaster_score_back, .music_utage_score_back");
     scoreBlocks.each((i, e) => {
         const element = $(e);
-        const level = element.attr("class").split(" ").find((c) => c.includes("music_")).split("_")[1];
+        const difficulty = element.attr("class").split(" ").find((c) => c.includes("music_")).split("_")[1];
         const logBlockDOMString = `
-            <div id="${level}_log_block" style="display: none">
+            <div id="${difficulty}_log_block" style="display: none">
             </div>
         `;
         element.after(logBlockDOMString);
-        element.attr("onclick", `toggleLogBlock("${level}")`);
+        element.attr("onclick", `toggleLogBlock("${difficulty}")`);
         element.attr("style", "cursor: pointer;");
     });
 

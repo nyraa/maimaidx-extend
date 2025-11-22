@@ -68,10 +68,10 @@ function photoDaemonCallback(dryrun = false, dryrunAll = false)
             const songname = block.find(".black_block").text();
             const imgsrc = block.find("img.w_430").attr("src");
 
-            const level = block.find("div.p_r.p_5").attr("class").match(/music_(\w+)_score_back/)?.[1];
+            const difficulty = block.find("div.p_r.p_5").attr("class").match(/music_(\w+)_score_back/)?.[1];
 
             let kind, utageKind;
-            if(level === "utage")
+            if(difficulty === "utage")
             {
                 utageKind = $(".music_kind_icon_utage").map((index, element) => {
                     const tag = $(element);
@@ -95,13 +95,13 @@ function photoDaemonCallback(dryrun = false, dryrunAll = false)
             db.data.photos.push({
                 datetime: datetime.toISOString(),
                 songname: songname,
-                level: level,
+                difficulty: difficulty,
                 kind: kind,
                 utageKind: utageKind,
                 storeName: storeName,
                 filename: filename
             });
-            console.log(`${datetime.toISOString()} ${songname} ${level} ${kind} utage[${utageKind?.map((e) => e.text)?.join(" ")}] ${storeName} ${imgsrc}`);
+            console.log(`${datetime.toISOString()} ${songname} ${difficulty} ${kind} utage[${utageKind?.map((e) => e.text)?.join(" ")}] ${storeName} ${imgsrc}`);
 
             if(!dryrun)
             {
