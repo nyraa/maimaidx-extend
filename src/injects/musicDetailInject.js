@@ -163,6 +163,7 @@ Router.register(/\/musicDetail\/$/, (req, html) => {
             if(lv != 0)
             {
                 musicLvBack.text(lv.toFixed(1));
+                $(`#${difficulty} .music_lv_back`).text(lv.toFixed(1));
             }
         });
     }
