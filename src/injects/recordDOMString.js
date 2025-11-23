@@ -22,7 +22,10 @@ const domstring = \`
             <div class="clearfix"></div>
         </div>
         <div class="playlog_$\{record.difficulty}_container">
-            <div class="basic_block m_5 p_5 p_l_10 f_13 break">
+            <div class="basic_block m_5 m_t_17 m_r_60 p_5 p_l_10 f_13 break">
+                <div class="w_80 f_r">
+					<div class="music_lv_back m_3 m_b_0 f_r t_c f_14 p_a playlog_level_icon">$\{record.level.toFixed(1)}</div>
+				</div>
                 $\{record.songname}
             </div>
             <div class="p_r f_0">

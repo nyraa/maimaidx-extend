@@ -13,6 +13,9 @@ import db from "./database.js";
 
 import { axiosInstance, saveCookie } from "./cookie.js";
 
+// rating
+import { getLevel } from "./rating.js";
+
 // inject
 import "./injects/photosInject.js";
 import "./injects/generalInject.js";
@@ -266,7 +269,10 @@ const server = http.createServer(async (req, res) => {
                     return;
                 }
                 const take = 50;
-                const data = db.chain.get("records").drop(offset).take(take).value();
+                const data = db.chain.get("records").drop(offset).take(take).value().map((record) => {
+                    record.level = getLevel(record.songname, record.kind, record.difficulty);
+                    return record;
+                });
                 const response = {
                     data: data,
                     offset: offset,
