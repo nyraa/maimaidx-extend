@@ -44,7 +44,14 @@ function recordPage(record)
                 <div class="clearfix"></div>
             </div>
             <div class="playlog_${record.difficulty}_container">
-                <div class="basic_block m_5 p_5 p_l_10 f_13 break">${record.songname}</div>
+                <div class="basic_block m_5 m_t_17 m_r_60 p_5 p_l_10 f_13 break">
+                    <div class="w_80 f_r">
+                        <div class="music_lv_back m_3 m_b_0 f_r t_c f_14 p_a playlog_level_icon">
+                            ${record.level.toFixed(1)}
+                        </div>
+                    </div>
+                    ${record.songname}
+                </div>
                 <div class="p_r f_0">
                     <img loading="lazy" src="${record.coverSrc}" class="music_img m_5 m_r_0 f_l">
                     ${record.difficulty !== "utage" ? `<img src="https://maimaidx-eng.com/maimai-mobile/img/music_${record.kind}.png" class="playlog_music_kind_icon">` : ""}

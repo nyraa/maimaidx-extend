@@ -354,6 +354,7 @@ const server = http.createServer(async (req, res) => {
                 res.end("404 Not Found");
                 return;
             }
+            record.level = getLevel(record.songname, record.kind, record.difficulty);
             const html = recordPage(record);
 
             res.writeHead(200, {
