@@ -36,6 +36,13 @@ Router.register(/.*/, (req, html) => {
         $(element).attr("src", newSrc);
     });
 
+    // replace my photo icon and friend photo icon to proxy
+    $('img[src="https://maimaidx-eng.com/maimai-mobile/img/Icon/"],img[src^="https://maimaidx-eng.com/maimai-mobile/img/Icon/friend"]').each((index, element) => {
+        const origSrc = $(element).attr("src");
+        const newSrc = origSrc.replace("https://maimaidx-eng.com/", "/");
+        $(element).attr("src", newSrc);
+    });
+
     // insert pwa manifest
     $('head').append('<link rel="manifest" href="/static/manifest.json" />');
     $('head').append(`
