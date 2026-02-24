@@ -2,7 +2,8 @@
   "name": "maimaidx_extend",
   "module": "server.js",
   "scripts": {
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "migrate": "node scripts/migrate.js"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

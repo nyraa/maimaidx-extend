@@ -1,8 +1,8 @@
-import db from "./database.js";
+import db from "../src/database.js";
 import fs from "fs";
 import path from "path";
 
-const migrationFiles = fs.readdirSync(path.join(import.meta.dirname, "migration")).filter((file) => file.endsWith(".js")).sort();
+const migrationFiles = fs.readdirSync(path.join(process.cwd(), "migration")).filter((file) => file.endsWith(".js")).sort();
 
 // backup before migration
 const backupDir = path.join(process.cwd(), "data", "backup");
@@ -25,7 +25,7 @@ for (const file of migrationFiles) {
     console.log(`Running migration: ${file}`);
     try
     {
-        const migrate = (await import(path.join(import.meta.dirname, "migration", file))).default;
+        const migrate = (await import(path.join(process.cwd(), "migration", file))).default;
         await migrate(db);
         db.data.migrations.push({ file, date: new Date().toISOString() });
         await db.write();
