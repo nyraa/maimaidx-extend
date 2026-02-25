@@ -69,24 +69,22 @@ function getRecordDetails(href)
             const matchingRank = matchingIcon.length > 0 ? $(".playlog_matching_icon").attr("src").match(/playlog\/(\w+)\.png/)[1] : null;
 
             const challengeBlock = $(".p_r.m_t_5.f_l.f_0");
-            let perfectChallenge;
-            let courseChallenge;    // 段位認定
+            let challengeType;
+            let challengeLife;
             if(challengeBlock.length > 0)
             {
                 let challengeBadge = challengeBlock.find("img.h_30.p_l_5").attr("src").match(/icon_(\w+)\.png/)[1];
+                /* badges include:
+                perfectchallenge
+                course
+                kaleidxscope
+                */
                 const [lifeLeft, lifeTotal] = challengeBlock.find(".playlog_life_block").text().split("/").map((val) => parseInt(val.replace(/[^\d]/g, "")));
-                const challengeLife = {
+                challengeLife = {
                     lifeLeft,
                     lifeTotal
                 }
-                if(challengeBadge === "perfectchallenge")
-                {
-                    perfectChallenge = challengeLife;
-                }
-                else if(challengeBadge === "course")
-                {
-                    courseChallenge = challengeLife;
-                }
+                challengeType = challengeBadge;
             }
 
             const charas = $(".playlog_chara_container").map((index, element) => {
@@ -158,8 +156,8 @@ function getRecordDetails(href)
                     slot1,
                     slot2,
                     matchingRank,
-                    perfectChallenge,
-                    courseChallenge,
+                    challengeType,
+                    challengeLife,
                     charas,
                     fast,
                     late,

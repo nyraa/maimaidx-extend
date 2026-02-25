@@ -56,18 +56,25 @@ const domstring = \`
                         $\{record.matchingRank ? \`<img src="https://maimaidx-eng.com/maimai-mobile/img/playlog/$\{record.matchingRank}.png" class="playlog_matching_icon f_r">\` : ""}
                         <div class="clearfix"></div>
                     </div>
-                    $\{record.perfectChallenge ? \`
+                    $\{record.challengeType === "perfectchallenge" ? \`
                         <div class="p_r m_t_5 f_l f_0">
                             <img src="https://maimaidx-eng.com/maimai-mobile/img/icon_perfectchallenge.png" class="h_30 p_l_5">
                             <img src="https://maimaidx-eng.com/maimai-mobile/img/icon_life.png" class="w_96 m_b_3">
-                            <div class="playlog_life_block f_11 $\{record.perfectChallenge.lifeLeft > 0 ? "white" : "red"}">$\{record.perfectChallenge.lifeLeft}/$\{record.perfectChallenge.lifeTotal}</div>
+                            <div class="playlog_life_block f_11 $\{record.challengeLife.lifeLeft > 0 ? "white" : "red"}">$\{record.challengeLife.lifeLeft}/$\{record.challengeLife.lifeTotal}</div>
                         </div>
                     \` : ""}
-                    $\{record.courseChallenge ? \`
+                    $\{record.challengeType === "course" ? \`
                         <div class="p_r m_t_5 f_l f_0">
                             <img src="https://maimaidx-eng.com/maimai-mobile/img/course/icon_course.png" class="h_30 p_l_5">
                             <img src="https://maimaidx-eng.com/maimai-mobile/img/course/icon_course_life.png" class="w_96 m_b_3">
-                            <div class="playlog_life_block f_11 $\{record.courseChallenge.lifeLeft > 0 ? "white" : "red"}">$\{record.courseChallenge.lifeLeft}/$\{record.courseChallenge.lifeTotal}</div>
+                            <div class="playlog_life_block f_11 $\{record.challengeLife.lifeLeft > 0 ? "white" : "red"}">$\{record.challengeLife.lifeLeft}/$\{record.challengeLife.lifeTotal}</div>
+                        </div>
+                    \` : ""}
+                    $\{record.challengeType === "kaleidxscope" ? \`
+                        <div class="p_r m_t_5 f_l f_0">
+                            <img src="https://maimaidx-eng.com/maimai-mobile/img/icon_kaleidxscope.png" class="h_30 p_l_5">
+                            <img src="https://maimaidx-eng.com/maimai-mobile/img/icon_life.png" class="w_96 m_b_3">
+                            <div class="playlog_life_block f_11 $\{record.challengeLife.lifeLeft > 0 ? "white" : "red"}">$\{record.challengeLife.lifeLeft}/$\{record.challengeLife.lifeTotal}</div>
                         </div>
                     \` : ""}
                     <form action="/extend/playlogDetail/" method="get" accept-charset="utf-8" class="m_t_5 t_r">
