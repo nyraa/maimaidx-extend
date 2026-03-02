@@ -9,7 +9,7 @@ const backupDir = path.join(process.cwd(), "data", "backup");
 if (!fs.existsSync(backupDir)) {
     fs.mkdirSync(backupDir, { recursive: true });
 }
-const backupFile = path.join(backupDir, `backup_${new Date().toISOString()}.json`);
+const backupFile = path.join(backupDir, `backup_${new Date().toISOString().replace(/:/g, "-")}.json`);
 // copy file
 fs.copyFileSync(path.join(process.cwd(), "data", "db.json"), backupFile);
 console.log(`Database backed up to ${backupFile}`);
