@@ -24,5 +24,18 @@ To run:
 node server.js
 ```
 
+## When updating
+Sometimes `db.json` format updates over feature updates, apply migration before new pulled code by run:
+
+```bash
+npm migrate
+```
+
+If you want to create a migration, run following command to create one from template:
+
+```bash
+npm migrate:create
+```
+
 This project was created using `bun init` in bun v1.0.0. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
 But bun is so buggy, now replaced by nodejs.
