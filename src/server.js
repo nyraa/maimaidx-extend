@@ -185,7 +185,7 @@ const server = http.createServer(async (req, res) => {
             }
             await axiosInstance.get("https://lng-tgk-aime-gw.am-all.net/common_auth/login?site_id=maimaidxex&redirect_url=https://maimaidx-eng.com/maimai-mobile/&back_url=https://maimai.sega.com/");
             
-            const loginResponse = await axiosInstance.post("https://lng-tgk-aime-gw.am-all.net/common_auth/login/sid/", `retention=1&sid=${postBody.username}&password=${postBody.password}`, {
+            const loginResponse = await axiosInstance.post("https://lng-tgk-aime-gw.am-all.net/common_auth/login/sid", `retention=1&sid=${postBody.username}&password=${postBody.password}`, {
                 "headers": {
                     "Content-Type": "application/x-www-form-urlencoded",
                 }
