@@ -25,7 +25,7 @@ node server.js
 ```
 
 ## When updating
-Sometimes `db.json` format updates over feature updates, apply migration before new pulled code by run:
+Sometimes `db.json` format updates over feature updating, make sure to run the migration after pulling the code from repo::
 
 ```bash
 npm migrate
