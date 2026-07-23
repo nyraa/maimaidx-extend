@@ -118,6 +118,7 @@ Router.register(/\/musicDetail\/$/, (req, html) => {
                     <tr class="t_r rating_table_${difficulty}" style="display: none">
                         <td class="p_5">-</td>
                         <td>-</td>
+                        <td></td>
                         <td>-</td>
                     </tr>
                 `);
@@ -134,6 +135,7 @@ Router.register(/\/musicDetail\/$/, (req, html) => {
                             <tr class="t_r rating_table_${difficulty} orange" style="display: none">
                                 <td class="p_5">${myRating.rank}</td>
                                 <td>${achivevmentToString(bestAchievement)}</td>
+                                <td></td>
                                 <td>${myRating.rate}</td>
                             </tr>
                         `);
@@ -144,6 +146,7 @@ Router.register(/\/musicDetail\/$/, (req, html) => {
                         <tr class="t_r rating_table_${difficulty}" style="display: none">
                             <td class="p_5">${offsetDetail.rank}</td>
                             <td>${achivevmentToString(offsetDetail.achieve)}</td>
+                            <td></td>
                             <td>${theoryRate[i]}${!isMyBestMark ? `(+${theoryRate[i] - myRating.rate})` : ""}</td>
                         </tr>
                     `);
@@ -153,6 +156,7 @@ Router.register(/\/musicDetail\/$/, (req, html) => {
                 <tr class="t_r rating_table_${difficulty} blue" style="display: none">
                     <td class="p_5">Rank</td>
                     <td>Achieve</td>
+                    <td></td>
                     <td>Rating</td>
                 </tr>
             `);
