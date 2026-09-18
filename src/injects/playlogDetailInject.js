@@ -2,7 +2,7 @@ import Router from "../router.js";
 import * as cheerio from "cheerio";
 import db from "../database.js";
 import { getCacheFileSync } from "../cache.js";
-import { getLevel } from "../rating.js";
+import { getLevel } from "../data/rating.js";
 
 // inject play log detail page
 Router.register(/\/record\/playlogDetail\//, (req, html) => {

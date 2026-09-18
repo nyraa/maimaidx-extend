@@ -2,7 +2,7 @@ import Router from "../router.js";
 import * as cheerio from "cheerio";
 import db from "../database.js";
 import recordDOMString from "./recordDOMString.js";
-import { getLevel } from "../rating.js";
+import { getLevel } from "../data/rating.js";
 
 Router.register(/\/record\/$/, (req, html) => {
     const $ = cheerio.load(html);

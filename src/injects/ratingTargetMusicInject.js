@@ -1,7 +1,7 @@
 import Router from "../router.js";
 import * as cheerio from "cheerio";
 
-import { isRatingAvailable, calculateRating, getLevel } from "../rating.js";
+import { isRatingAvailable, calculateRating, getLevel } from "../data/rating.js";
 
 if(isRatingAvailable())
 {

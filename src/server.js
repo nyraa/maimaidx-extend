@@ -14,7 +14,7 @@ import db from "./database.js";
 import { axiosInstance, saveCookie } from "./cookie.js";
 
 // rating
-import { getLevel } from "./rating.js";
+import { getLevel } from "./data/rating.js";
 
 // inject
 import "./injects/photosInject.js";

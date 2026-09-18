@@ -2,7 +2,7 @@ import Router from "../router.js";
 import * as cheerio from "cheerio";
 import recordDOMString from "./recordDOMString.js";
 
-import { isRatingAvailable, calculateTheoryRatings, getTheoryRatingTable, calculateRating, getLevel } from "../rating.js";
+import { isRatingAvailable, calculateTheoryRatings, getTheoryRatingTable, calculateRating, getLevel } from "../data/rating.js";
 
 function achivevmentToString(achieve)
 {
