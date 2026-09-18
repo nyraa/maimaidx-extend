@@ -24,6 +24,8 @@ import "./injects/playlogDetailInject.js";
 import "./injects/musicDetailInject.js";
 import "./injects/playerDataInject.js";
 import "./injects/ratingTargetMusicInject.js"; // comment out this line if you don't have related table
+import "./injects/mapsInject.js"; // comment out this line if you don't have related table
+import "./injects/mapDetailInject.js"; // comment out this line if you don't have related table
 
 // pages
 import recordPage from "./pages/recordDetails.js";
