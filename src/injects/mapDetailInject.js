@@ -1,6 +1,6 @@
 import Router from "../router.js";
 import * as cheerio from "cheerio";
-import { mapData } from "../data/map.js";
+import { mapData, numberWithCommas } from "../data/map.js";
 
 Router.register(/\/(eventMapDetail)|(mapDetail)\//, (req, html) => {
     const $ = cheerio.load(html);
@@ -10,7 +10,7 @@ Router.register(/\/(eventMapDetail)|(mapDetail)\//, (req, html) => {
     {
         const currentDistanceElement = $(".mapdetail_total");
         const currentDistance = parseInt(currentDistanceElement.text().trim().match(/((\d|,)+)/)[1].replace(",", ""));
-        currentDistanceElement.text(`${currentDistance} / ${mapInfo.distance} Km`);
+        currentDistanceElement.text(`${numberWithCommas(currentDistance)} / ${numberWithCommas(mapInfo.distance)} Km`);
     }
     return $.html();
 });
