@@ -14,7 +14,7 @@ Router.register(/\/map\/(eventMap\/)?/, (req, html) => {
             const currentDistanceElement = element.find(".basic_block").contents().filter(function() {
                 return this.type === "text";
             })[0];
-            const currentDistance = parseInt(currentDistanceElement.data.trim().match(/(\d+)/)[1]);
+            const currentDistance = parseInt(currentDistanceElement.data.trim().match(/((\d|,)+)/)[1].replace(",", ""));
             currentDistanceElement.data = `${currentDistance} / ${mapInfo.distance > 0 ? mapInfo.distance : "\u221E"} Km`;
         }
     });

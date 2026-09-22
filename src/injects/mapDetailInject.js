@@ -9,7 +9,7 @@ Router.register(/\/(eventMapDetail)|(mapDetail)\//, (req, html) => {
     if(mapInfo && mapInfo.distance > 0)
     {
         const currentDistanceElement = $(".mapdetail_total");
-        const currentDistance = parseInt(currentDistanceElement.text().trim().match(/(\d+)/)[1]);
+        const currentDistance = parseInt(currentDistanceElement.text().trim().match(/((\d|,)+)/)[1].replace(",", ""));
         currentDistanceElement.text(`${currentDistance} / ${mapInfo.distance} Km`);
     }
     return $.html();
