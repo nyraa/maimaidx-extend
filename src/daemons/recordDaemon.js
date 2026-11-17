@@ -111,6 +111,15 @@ function getRecordDetails(href)
             const ratingFrame = $(".p_r.p_3.p_l_0.f_l img").attr("src").match(/rating_base_(\w+)\.png/)[1];
             const rating = parseInt($(".rating_block").text());
             const ratingChange = parseInt($(".playlog_rating_detail_block span").text().match(/([\+-]\d+)/)[1]);
+            
+            const $vsUser = $('#vsUser');
+
+            const vsUser = $vsUser.length ? {
+                name: $vsUser.find('.p_l_5.p_r_5').contents().first().text().trim(),
+                achievement: parseFloat($vsUser.find('.p_l_5.p_r_5 span').text()),
+                ratingFrame: $vsUser.find('img[src*="rating_base_"]').attr('src')?.match(/rating_base_(\w+)\.png/)?.[1],
+                rating: parseInt($vsUser.find('.rating_block').text(), 10)
+            } : null;
 
             const matchs = $("#matching>span").map((index, element) => {
                 const container = $(element);
@@ -169,7 +178,8 @@ function getRecordDetails(href)
                     maxcomboTotal,
                     maxsync,
                     maxsyncTotal,
-                    matchs
+                    matchs,
+                    vsUser
                 },
                 finished: recordFetching === false
             });
