@@ -112,7 +112,7 @@ function getRecordDetails(href)
             const rating = parseInt($(".rating_block").text());
             const ratingChange = parseInt($(".playlog_rating_detail_block span").text().match(/([\+-]\d+)/)[1]);
 
-            const matchs = $(".see_through_block>span").map((index, element) => {
+            const matchs = $("#matching>span").map((index, element) => {
                 const container = $(element);
                 if(container.hasClass("gray_block"))
                 {
